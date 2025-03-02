@@ -28,7 +28,9 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+The Open Payments .NET SDK is designed to empower developers in the .NET ecosystem by providing a ready-to-use, strongly typed library for integrating with the Open Payments API. It abstracts the complexities of HTTP communication, authentication, and data serialization, enabling developers to quickly build applications that can initiate payments and handle user interactions in a secure and standardized way.
+
+By leveraging an OpenAPI-driven approach and NSwag-generated client code, the SDK ensures that all interactions with the Open Payments adhere to the latest specifications. This results in a consistent, maintainable, and testable codebase, allowing .NET developers to focus on implementing business logic rather than worrying about the intricacies of low-level API integrations.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
