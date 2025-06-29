@@ -1,6 +1,7 @@
 name: Build and Test HttpSignatureUtils
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
