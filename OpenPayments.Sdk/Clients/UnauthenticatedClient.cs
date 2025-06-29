@@ -1,13 +1,9 @@
-using System;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using OpenPayments.Sdk.Generated.Wallet;
 using OpenPayments.Sdk.Generated.Resource;
 
-namespace OpenPayments.Sdk;
+namespace OpenPayments.Sdk.Clients;
 
 /// <summary>
 /// Convenience facade for read-only (public) Open Payments API operations that do **not** require HTTP Signatures.

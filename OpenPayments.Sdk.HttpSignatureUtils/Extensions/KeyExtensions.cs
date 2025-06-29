@@ -1,7 +1,6 @@
 using NSec.Cryptography;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pkcs;
-using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Utilities.IO.Pem;
 
 internal static class KeyExtensions
