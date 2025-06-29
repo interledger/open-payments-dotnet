@@ -1,0 +1,3 @@
+[submodule "openapi/open-payments"]
+	path = openapi/open-payments
+	url = https://github.com/interledger/open-payments.git
