@@ -1,0 +1,51 @@
+name: Build and Test HttpSignatureUtils
+
+on:
+  push:
+    paths:
+      - 'OpenPayments.Sdk.HttpSignatureUtils/**'
+      - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+      - '.github/workflows/dotnet.yml'
+  pull_request:
+    paths:
+      - 'OpenPayments.Sdk.HttpSignatureUtils/**'
+      - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9.0 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
+      - name: Install NSwag CLI
+        run: dotnet tool install --global NSwag.ConsoleCore
+
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Build models
+        run: make models
+
+      - name: Restore dependencies
+        run: dotnet restore OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj
+
+      - name: Build solution
+        run: dotnet build OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test OpenPayments.Sdk.HttpSignatureUtils.Tests/OpenPayments.Sdk.HttpSignatureUtils.Tests.csproj --no-build --configuration Release --verbosity normal
