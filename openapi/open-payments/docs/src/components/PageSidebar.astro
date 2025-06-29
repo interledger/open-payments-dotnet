@@ -1,0 +1,18 @@
+---
+import Default from '@astrojs/starlight/components/PageSidebar.astro';
+
+const removeOverview = [
+ 'resources/glossary',
+]
+const { id, toc } = Astro.locals.starlightRoute;
+const noOverview = removeOverview.includes(id);
+
+if (noOverview && toc) {
+	Astro.locals.starlightRoute.toc = {
+		...toc,
+		items: toc.items.slice(1),
+	};
+}
+---
+
+<Default />

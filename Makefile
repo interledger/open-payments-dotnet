@@ -1,23 +1,23 @@
 .PHONY: auth-server-generate as-models resource-server-generate rs-models wallet-address-models wa-models models
 
 auth-server-generate:
-	swagger-cli bundle OpenPaymentsSDK/OpenAPI/auth-server.yaml --outfile OpenPaymentsSDK/OpenAPI/auth-server-bundled.yaml --type yaml && \
-	nswag openapi2csclient /input:OpenPaymentsSDK/OpenAPI/auth-server-bundled.yaml /output:OpenPaymentsSDK/Generated/OpenPaymentsAuthServer.cs /namespace:OpenPaymentsSDK.Generated && \
-	rm -rf OpenPaymentsSDK/OpenAPI/auth-server-bundled.yaml
+	npx swagger-cli bundle openapi/open-payments/openapi/auth-server.yaml -o OpenPayments.Sdk/tmp/auth-bundled.json -t json && \
+	nswag openapi2csclient /input:OpenPayments.Sdk/tmp/auth-bundled.json /output:OpenPayments.Sdk/Generated/AuthServerClient.cs /namespace:OpenPayments.Sdk.Generated.Auth /classname:AuthServerClient /injectHttpClient:true && \
+	rm -rf OpenPayments.Sdk/tmp/auth-bundled.json
 
 as-models: auth-server-generate
 
 resource-server-generate:
-	swagger-cli bundle OpenPaymentsSDK/OpenAPI/resource-server.yaml --outfile OpenPaymentsSDK/OpenAPI/resource-server-bundled.yaml --type yaml && \
-	nswag openapi2csclient /input:OpenPaymentsSDK/OpenAPI/resource-server-bundled.yaml /output:OpenPaymentsSDK/Generated/OpenPaymentsResourceServer.cs /namespace:OpenPaymentsSDK.Generated && \
-	rm -rf OpenPaymentsSDK/OpenAPI/resource-server-bundled.yaml
+	npx swagger-cli bundle openapi/open-payments/openapi/resource-server.yaml -o OpenPayments.Sdk/tmp/resource-bundled.json -t json && \
+	nswag openapi2csclient /input:OpenPayments.Sdk/tmp/resource-bundled.json /output:OpenPayments.Sdk/Generated/ResourceServerClient.cs /namespace:OpenPayments.Sdk.Generated.Resource /classname:ResourceServerClient /injectHttpClient:true && \
+	rm -rf OpenPayments.Sdk/tmp/resource-bundled.json
 
 rs-models: resource-server-generate
 
 wallet-address-models:
-	swagger-cli bundle OpenPaymentsSDK/OpenAPI/wallet-address-server.yaml --outfile OpenPaymentsSDK/OpenAPI/wallet-address-server-bundled.yaml --type yaml && \
-	nswag openapi2csclient /input:OpenPaymentsSDK/OpenAPI/wallet-address-server-bundled.yaml /output:OpenPaymentsSDK/Generated/OpenPaymentsWalletAddressServer.cs /namespace:OpenPaymentsSDK.Generated && \
-	rm -rf OpenPaymentsSDK/OpenAPI/wallet-address-server-bundled.yaml
+	npx swagger-cli bundle openapi/open-payments/openapi/wallet-address-server.yaml -o OpenPayments.Sdk/tmp/wallet-bundled.json -t json && \
+	nswag openapi2csclient /input:OpenPayments.Sdk/tmp/wallet-bundled.json /output:OpenPayments.Sdk/Generated/WalletAddressClient.cs /namespace:OpenPayments.Sdk.Generated.Wallet /classname:WalletAddressClient /injectHttpClient:true && \
+	rm -rf OpenPayments.Sdk/tmp/wallet-bundled.json
 
 wa-models: wallet-address-models
 
