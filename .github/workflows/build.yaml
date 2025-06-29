@@ -38,6 +38,9 @@ jobs:
       - name: Install NSwag CLI
         run: dotnet tool install --global NSwag.ConsoleCore
 
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
