@@ -55,13 +55,11 @@ jobs:
 
       - name: Run tests
         run: |
-          dotnet test OpenPayments.Sdk.HttpSignatureUtils.Tests/OpenPayments.Sdk.HttpSignatureUtils.Tests.csproj \
-          --no-build --configuration Release --verbosity normal \
-          --collect:"XPlat Code Coverage"
+          dotnet test OpenPayments.Sdk.HttpSignatureUtils.Tests/OpenPayments.Sdk.HttpSignatureUtils.Tests.csproj --collect:"XPlat Code Coverage"
 
       - name: Generate coverage report
         run: |
-          reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+          reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
