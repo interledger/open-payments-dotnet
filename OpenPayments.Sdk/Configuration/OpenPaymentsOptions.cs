@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
 
 namespace OpenPayments.Sdk.Configuration;
 
@@ -9,22 +9,10 @@ namespace OpenPayments.Sdk.Configuration;
 /// <remarks>
 /// Used with <see cref="ServiceCollectionExtensions.UseOpenPayments"/> to select between
 /// authenticated and unauthenticated client setups./// </remarks>
-
 public class OpenPaymentsOptions
 {
-    internal Action<IServiceCollection>? RegisterClient { get; private set; }
-
     /// <summary>
-    /// Configures the OpenPayments SDK to use the unauthenticated client implementation.
+    /// Indicates whether the <see cref="UnauthenticatedClient"/> should be registered.
     /// </summary>
-    /// <remarks>
-    /// This method registers the <see cref="UnauthenticatedClient"/> as a typed <see cref="HttpClient"/> service.
-    /// </remarks>
-    public void UseUnauthenticatedClient()
-    {
-        RegisterClient = services =>
-        {
-            services.AddHttpClient<UnauthenticatedClient>();
-        };
-    }
+    public bool UseUnauthenticatedClient { get; set; }
 }

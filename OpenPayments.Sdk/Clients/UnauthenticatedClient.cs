@@ -5,27 +5,21 @@ using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Clients;
 
-/// <summary>
-/// Convenience facade for read-only (public) Open Payments API operations that do **not** require HTTP Signatures.
-/// </summary>
-public sealed class UnauthenticatedClient
+/// <inheritdoc/>
+/// <remarks>
+/// Create a new UnauthenticatedClient wrapping an existing <see cref="HttpClient"/>.
+/// </remarks>
+/// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
+public sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedClient
 {
-    private readonly HttpClient _http;
+    private readonly HttpClient _http = http;
 
     /// <summary>
-    /// Create a new UnauthenticatedClient wrapping an existing <see cref="HttpClient"/>.
+    /// Create a new UnauthenticatedClient
     /// </summary>
-    /// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-    public UnauthenticatedClient(HttpClient http)
-    {
-        _http = http ?? throw new ArgumentNullException(nameof(http));
-    }
+    public UnauthenticatedClient() : this(new HttpClient()) { }
 
-    /// <summary>
-    /// Resolve a wallet-address URL (or payment pointer) and return its public metadata.
-    /// </summary>
-    /// <param name="walletAddressOrPaymentPointer">Absolute wallet-address URL (e.g. <c>https://wallet.example/alice</c>) OR payment pointer (<c>$wallet.example/alice</c>).</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <inheritdoc/>
     public async Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(walletAddressOrPaymentPointer))
@@ -39,11 +33,7 @@ public sealed class UnauthenticatedClient
         return await client.GetWalletAddressAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Fetch an <b>incoming payment</b> resource by its absolute URL.
-    /// </summary>
-    /// <param name="incomingPaymentUrl">Absolute <c>incoming-payments/&lt;id&gt;</c> URL.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <inheritdoc/>
     public async Task<PublicIncomingPayment> GetIncomingPaymentAsync(string incomingPaymentUrl, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(incomingPaymentUrl))

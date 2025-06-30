@@ -1,5 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Configuration;
+
+namespace OpenPayments.Sdk.Extensions;
 
 /// <summary>
 /// Provides extension methods for registering OpenPayments services in the dependency injection container.
@@ -20,8 +23,24 @@ public static class ServiceCollectionExtensions
         var options = new OpenPaymentsOptions();
         configure(options);
 
-        options.RegisterClient?.Invoke(services);
+        services.AddHttpClient();
+        if (options.UseUnauthenticatedClient)
+        {
+            services.AddSingleton<UnauthenticatedClient>();
+            services.AddSingleton<IUnauthenticatedClient>(sp =>
+                sp.GetRequiredService<UnauthenticatedClient>());
+        }
 
         return services;
     }
-}
+
+    /// <summary>
+    /// Configures the UnauthenticatedClient to be used with OpenPayments.
+    /// </summary>
+    /// <param name="options">The OpenPayments options to modify.</param>
+    public static void UseUnauthenticatedClient(this OpenPaymentsOptions options)
+    {
+        options.UseUnauthenticatedClient = true;
+    }
+}   
+    
