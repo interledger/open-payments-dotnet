@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'OpenPayments.Sdk/**'
+      - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
       - '.github/workflows/dotnet.yml'
   pull_request:
     paths:
+      - 'OpenPayments.Sdk/**'
+      - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
 
@@ -48,18 +52,18 @@ jobs:
         run: make models
 
       - name: Restore dependencies
-        run: dotnet restore OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj
+        run: dotnet restore
 
       - name: Build solution
-        run: dotnet build OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj --no-restore --configuration Release
+        run: dotnet build --no-restore --configuration Release
 
       - name: Run tests
         run: |
-          dotnet test OpenPayments.Sdk.HttpSignatureUtils.Tests/OpenPayments.Sdk.HttpSignatureUtils.Tests.csproj --collect:"XPlat Code Coverage"
+          dotnet test --collect:"XPlat Code Coverage"
 
       - name: Generate coverage report
         run: |
-          reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
+          reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html -classfilters:"-OpenPayments.Sdk.Generated.*"
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
