@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenPayments.Sdk.HttpSignat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenPayments.Snippets", "OpenPayments.Snippets\OpenPayments.Snippets.csproj", "{2B5ADC76-5DDC-48A6-B664-DD864279E347}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenPayments.Sdk.Tests", "OpenPayments.Sdk.Tests\OpenPayments.Sdk.Tests.csproj", "{8A37590B-B283-49A4-AD86-23BA55B99CAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{2B5ADC76-5DDC-48A6-B664-DD864279E347}.Release|x64.Build.0 = Release|Any CPU
 		{2B5ADC76-5DDC-48A6-B664-DD864279E347}.Release|x86.ActiveCfg = Release|Any CPU
 		{2B5ADC76-5DDC-48A6-B664-DD864279E347}.Release|x86.Build.0 = Release|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Debug|x64.Build.0 = Debug|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Release|x64.ActiveCfg = Release|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Release|x64.Build.0 = Release|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A37590B-B283-49A4-AD86-23BA55B99CAE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
