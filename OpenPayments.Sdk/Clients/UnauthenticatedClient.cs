@@ -44,7 +44,7 @@ public sealed class UnauthenticatedClient
     /// </summary>
     /// <param name="incomingPaymentUrl">Absolute <c>incoming-payments/&lt;id&gt;</c> URL.</param>
     /// <param name="cancellationToken">Optional cancellation token.</param>
-    public async Task<IncomingPayment> GetIncomingPaymentAsync(string incomingPaymentUrl, CancellationToken cancellationToken = default)
+    public async Task<PublicIncomingPayment> GetIncomingPaymentAsync(string incomingPaymentUrl, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(incomingPaymentUrl))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(incomingPaymentUrl));
@@ -56,7 +56,7 @@ public sealed class UnauthenticatedClient
         response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        var model = JsonConvert.DeserializeObject<IncomingPayment>(json);
+        var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
         if (model == null)
             throw new InvalidOperationException("Server returned empty or invalid IncomingPayment JSON.");
         return model;
