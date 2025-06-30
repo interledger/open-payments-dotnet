@@ -27,9 +27,7 @@ public sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedCli
 
         var url = NormalizeWalletAddress(walletAddressOrPaymentPointer);
 
-        // NSwag-generated client requires a base URL ending with '/'.
-        var httpClient = _http;
-        var client = new WalletAddressClient(httpClient) { BaseUrl = url }; // setter adds trailing '/'
+        var client = new WalletAddressClient(_http) { BaseUrl = url }; // setter adds trailing '/'
         return await client.GetWalletAddressAsync(cancellationToken).ConfigureAwait(false);
     }
 
@@ -39,17 +37,18 @@ public sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedCli
         if (string.IsNullOrWhiteSpace(incomingPaymentUrl))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(incomingPaymentUrl));
 
-        using var request = new HttpRequestMessage(HttpMethod.Get, incomingPaymentUrl);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        using var request = new HttpRequestMessage(HttpMethod.Get, incomingPaymentUrl)
+        {
+            Headers = { Accept = { new("application/json") } }
+        };
 
         using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
-        if (model == null)
-            throw new InvalidOperationException("Server returned empty or invalid IncomingPayment JSON.");
-        return model;
+        
+        return model ?? throw new InvalidOperationException("Server returned empty or invalid IncomingPayment JSON.");
     }
 
     private static string NormalizeWalletAddress(string input)
