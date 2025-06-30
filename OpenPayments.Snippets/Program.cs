@@ -1,11 +1,17 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Parsing;
-using System.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
+using OpenPayments.Snippets.Services.Unauthenticated;
 
 var services = new ServiceCollection();
+
+// let's register OP SDK here
+services.UseOpenPayments(opts => opts.UseUnauthenticatedClient());
+services.AddTransient<WalletAddressService>();
+services.AddTransient<IncomingPaymentService>();
+
+var provider = services.BuildServiceProvider();
 
 Option<string> resourceUrlOption = new("--resource", "-r")
 {
@@ -26,34 +32,17 @@ var incomingPaymentCommand = new Command("IncomingPayment") {
 incomingPaymentCommand.SetAction(async result =>
 {
     var incomingPaymentUrl = result.GetRequiredValue(resourceUrlOption);
+    var incomingPaymentService = provider.GetRequiredService<IncomingPaymentService>();
 
-    services.UseOpenPayments(opts => opts.UseUnauthenticatedClient());
-
-    var provider = services.BuildServiceProvider();
-    var client = provider.GetRequiredService<UnauthenticatedClient>();
-
-    var incomingPayment = await client.GetIncomingPaymentAsync(incomingPaymentUrl);
-    Console.WriteLine("===Incoming Payment Info===");
-    Console.WriteLine("AssetCode: {0}", incomingPayment.ReceivedAmount.AssetCode);
-    Console.WriteLine("AssetScale: {0}", incomingPayment.ReceivedAmount.AssetScale);
-    Console.WriteLine("Value: {0}", incomingPayment.ReceivedAmount.Value);
+    await incomingPaymentService.DisplayIncomingPaymentInfoAsync(incomingPaymentUrl);
 });
 
 walletAddressCommand.SetAction(async result =>
 {
     var address = result.GetRequiredValue(resourceUrlOption);
-    services.UseOpenPayments(opts => opts.UseUnauthenticatedClient());
+    var walletService = provider.GetRequiredService<WalletAddressService>();
 
-    var provider = services.BuildServiceProvider();
-    var client = provider.GetRequiredService<UnauthenticatedClient>();
-
-    var walletAddressData = await client.GetWalletAddressAsync(address);
-    Console.WriteLine("===Wallet Info===");
-    Console.WriteLine("PublicName: {0}", walletAddressData.PublicName);
-    Console.WriteLine("AssetCode: {0}", walletAddressData.AssetCode);
-    Console.WriteLine("AssetScale: {0}", walletAddressData.AssetScale);
-    Console.WriteLine("AuthServer: {0}", walletAddressData.AuthServer);
-    Console.WriteLine("ResourceServer: {0}", walletAddressData.ResourceServer);
+    await walletService.DisplayWalletInfoAsync(address);
 });
 
 rootCommand.Add(walletAddressCommand);
