@@ -14,11 +14,6 @@ public sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedCli
 {
     private readonly HttpClient _http = http;
 
-    /// <summary>
-    /// Create a new UnauthenticatedClient
-    /// </summary>
-    public UnauthenticatedClient() : this(new HttpClient()) { }
-
     /// <inheritdoc/>
     public async Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
     {
