@@ -8,7 +8,7 @@ public class UnauthenticatedClient_Tests
     [Collection("UnauthenticatedClient")]
     public class UnauthenticatedClient_WalletAddress_Tests
     {
-        private readonly UnauthenticatedClient _client;
+        private readonly IUnauthenticatedClient _client;
         private readonly UnauthenticatedClientFixture _fixture;
 
         public UnauthenticatedClient_WalletAddress_Tests(UnauthenticatedClientFixture fixture)

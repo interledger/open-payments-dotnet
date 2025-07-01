@@ -1,7 +1,9 @@
-using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using OpenPayments.Sdk.Generated.Wallet;
 using OpenPayments.Sdk.Generated.Resource;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("OpenPayments.Sdk.Tests")]
 
 namespace OpenPayments.Sdk.Clients;
 
@@ -10,7 +12,7 @@ namespace OpenPayments.Sdk.Clients;
 /// Create a new UnauthenticatedClient wrapping an existing <see cref="HttpClient"/>.
 /// </remarks>
 /// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-public sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedClient
+internal sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedClient
 {
     private readonly HttpClient _http = http;
 
@@ -42,7 +44,7 @@ public sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedCli
 
         var json = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
-        
+
         return model ?? throw new InvalidOperationException("Server returned empty or invalid IncomingPayment JSON.");
     }
 
