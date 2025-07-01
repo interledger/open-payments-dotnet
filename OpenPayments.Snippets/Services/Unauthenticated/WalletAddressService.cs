@@ -6,6 +6,22 @@ public class WalletAddressService(IUnauthenticatedClient client)
 {
     private readonly IUnauthenticatedClient _client = client;
 
+    public async Task DisplayWalletAddressKeysAsync(string address)
+    {
+        var walletAddressKeys = await _client.GetWalletAddressKeysAsync(address);
+
+        Console.WriteLine("=== Wallet Keys ===");
+        foreach (var key in walletAddressKeys.Keys)
+        {
+            Console.WriteLine("Alg: {0}", key.Alg);
+            Console.WriteLine("Crv: {0}", key.Crv);
+            Console.WriteLine("Kid: {0}", key.Kid);
+            Console.WriteLine("Kty: {0}", key.Kty);
+            Console.WriteLine("X: {0}", key.X);
+            Console.WriteLine("===================");
+        }
+    }
+
     public async Task DisplayWalletInfoAsync(string address)
     {
         var walletAddressData = await client.GetWalletAddressAsync(address);

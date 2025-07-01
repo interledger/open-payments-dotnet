@@ -1,6 +1,5 @@
 ﻿using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Extensions;
 using OpenPayments.Snippets.Services.Unauthenticated;
 
@@ -19,10 +18,17 @@ Option<string> resourceUrlOption = new("--resource", "-r")
     Required = true
 };
 
+Option<bool> walletAddressKeysOption = new("--keys", "-k")
+{
+    Description = "If specified, returns only the wallet address keys (JWKS)."
+};
+
+
 var rootCommand = new RootCommand("OpenPayments CLI");
 var walletAddressCommand = new Command("WalletAddress")
 {
-    resourceUrlOption
+    resourceUrlOption,
+    walletAddressKeysOption
 };
 
 var incomingPaymentCommand = new Command("IncomingPayment") {
@@ -39,10 +45,18 @@ incomingPaymentCommand.SetAction(async result =>
 
 walletAddressCommand.SetAction(async result =>
 {
+    var keys = result.GetValue(walletAddressKeysOption);
     var address = result.GetRequiredValue(resourceUrlOption);
     var walletService = provider.GetRequiredService<WalletAddressService>();
 
-    await walletService.DisplayWalletInfoAsync(address);
+    if (keys)
+    {
+        await walletService.DisplayWalletAddressKeysAsync(address);
+    }
+    else
+    {
+        await walletService.DisplayWalletInfoAsync(address);
+    }
 });
 
 rootCommand.Add(walletAddressCommand);
