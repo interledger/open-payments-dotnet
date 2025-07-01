@@ -77,8 +77,8 @@ internal static class HttpRequestSigner
 
     public static async Task<SignatureHeaders> SignHttpRequestAsync(HttpRequestMessage request, Key privateKey, string keyId)
     {
-        if (request == null) throw new ArgumentNullException(nameof(request));
-        if (privateKey == null) throw new ArgumentNullException(nameof(privateKey));
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(privateKey);
         if (string.IsNullOrWhiteSpace(keyId)) throw new ArgumentException("KeyId cannot be empty.", nameof(keyId));
 
         var components = new List<string> { "@method", "@target-uri" };
