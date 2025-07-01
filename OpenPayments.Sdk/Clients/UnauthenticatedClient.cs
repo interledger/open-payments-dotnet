@@ -12,20 +12,20 @@ namespace OpenPayments.Sdk.Clients;
 /// Create a new UnauthenticatedClient wrapping an existing <see cref="HttpClient"/>.
 /// </remarks>
 /// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-internal sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedClient
+internal sealed class UnauthenticatedClient(HttpClient http) : WalletAddressClientBase(http), IUnauthenticatedClient
 {
-    private readonly HttpClient _http = http;
-
     /// <inheritdoc/>
     public async Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(walletAddressOrPaymentPointer))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(walletAddressOrPaymentPointer));
+        return await GetWalletAddressInternalAsync(walletAddressOrPaymentPointer, cancellationToken)
+            .ConfigureAwait(false);
+    }
 
-        var url = NormalizeWalletAddress(walletAddressOrPaymentPointer);
-
-        var client = new WalletAddressClient(_http) { BaseUrl = url }; // setter adds trailing '/'
-        return await client.GetWalletAddressAsync(cancellationToken).ConfigureAwait(false);
+    /// <inheritdoc/>
+    public async Task<JsonWebKeySet> GetWalletAddressKeysAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
+    {
+        return await GetWalletAddressKeysInternalAsync(walletAddressOrPaymentPointer, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -46,21 +46,5 @@ internal sealed class UnauthenticatedClient(HttpClient http) : IUnauthenticatedC
         var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
 
         return model ?? throw new InvalidOperationException("Server returned empty or invalid IncomingPayment JSON.");
-    }
-
-    private static string NormalizeWalletAddress(string input)
-    {
-        // If it's already a URI – return as-is
-        if (Uri.TryCreate(input, UriKind.Absolute, out var uri))
-            return uri.ToString();
-
-        // Otherwise treat as payment pointer ($example.com/alice)
-        if (input.StartsWith('$'))
-        {
-            var withoutDollar = input.Substring(1);
-            return $"https://{withoutDollar}"; // Payment-pointer → HTTPS URL
-        }
-
-        throw new ArgumentException("Input must be an absolute URL or a payment pointer string starting with '$'.", nameof(input));
     }
 } 

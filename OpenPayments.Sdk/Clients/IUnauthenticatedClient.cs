@@ -17,6 +17,14 @@ public interface IUnauthenticatedClient
     Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves the JSON Web Key Set (JWKS) from the specified wallet address or payment pointer.
+    /// </summary>
+    /// <param name="walletAddressOrPaymentPointer">Absolute wallet-address URL (e.g. <c>https://wallet.example/alice</c>) OR payment pointer (<c>$wallet.example/alice</c>).</param>
+    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <returns></returns>
+    Task<JsonWebKeySet> GetWalletAddressKeysAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Fetch an <b>incoming payment</b> resource by its absolute URL.
     /// </summary>
     /// <param name="incomingPaymentUrl">Absolute <c>incoming-payments/&lt;id&gt;</c> URL.</param>
