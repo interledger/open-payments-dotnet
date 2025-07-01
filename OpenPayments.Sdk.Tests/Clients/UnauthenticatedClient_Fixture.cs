@@ -16,6 +16,8 @@ public class UnauthenticatedClientFixture
 
     public PublicIncomingPayment IncomingPayment { get; private set; }
 
+    public JsonWebKeySet WalletAddressKeys { get; private set; }
+
     public UnauthenticatedClientFixture()
     {
         WalletAddress = new WalletAddress()
@@ -37,6 +39,19 @@ public class UnauthenticatedClientFixture
                 Value = "100"
             },
             AuthServer = new Uri(BaseUrl + "/auth")
+        };
+
+        WalletAddressKeys = new JsonWebKeySet()
+        {
+            Keys = {
+                new JsonWebKey {
+                    Kty = JsonWebKeyKty.OKP,
+                    Crv = JsonWebKeyCrv.Ed25519,
+                    Kid = "test-kid",
+                    Alg = JsonWebKeyAlg.EdDSA,
+                    X = "public-key"
+                }
+            }
         };
     }
 

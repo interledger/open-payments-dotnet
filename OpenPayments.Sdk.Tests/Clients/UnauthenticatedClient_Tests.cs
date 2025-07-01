@@ -8,7 +8,7 @@ public class UnauthenticatedClient_Tests
     [Collection("UnauthenticatedClient")]
     public class UnauthenticatedClient_WalletAddress_Tests
     {
-        private readonly IUnauthenticatedClient _client;
+        private readonly UnauthenticatedClient _client;
         private readonly UnauthenticatedClientFixture _fixture;
 
         public UnauthenticatedClient_WalletAddress_Tests(UnauthenticatedClientFixture fixture)
@@ -36,6 +36,40 @@ public class UnauthenticatedClient_Tests
         public async Task GetWalletAddressAsync_InvalidInput_Throws(string url)
         {
             await Assert.ThrowsAsync<ArgumentException>(() => _client.GetWalletAddressAsync(url));
+        }
+    }
+
+    [Collection("UnauthenticatedClient")]
+    public class UnauthenticatedClient_WalletAddressKeys_Tests
+    {
+        private readonly UnauthenticatedClient _client;
+        private readonly UnauthenticatedClientFixture _fixture;
+
+        public UnauthenticatedClient_WalletAddressKeys_Tests(UnauthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+
+            var httpClient = _fixture.CreateHttpClientMock(_fixture.WalletAddressKeys);
+            _client = new UnauthenticatedClient(httpClient);
+        }
+
+        [Theory]
+        [InlineData("https://example.com/alice")]
+        [InlineData("$example.com/bond")]
+        public async Task GetWalletAddressKeysAsync_WithUrlOrPaymentPointer_ReturnsModel(string url)
+        {
+            var result = await _client.GetWalletAddressKeysAsync(url);
+
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.WalletAddressKeys);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("foobar")]
+        public async Task GetWalletAddressKeysAsync_InvalidInput_Throws(string url)
+        {
+            await Assert.ThrowsAsync<ArgumentException>(() => _client.GetWalletAddressKeysAsync(url));
         }
     }
 
