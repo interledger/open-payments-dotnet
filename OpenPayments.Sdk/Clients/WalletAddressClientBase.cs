@@ -5,14 +5,17 @@ namespace OpenPayments.Sdk.Clients;
 
 internal abstract class WalletAddressClientBase
 {
-    protected readonly HttpClient _http;
+    protected readonly WalletAddressClient _client;
+    protected readonly HttpClient _httpClient;
 
     protected WalletAddressClientBase(HttpClient http)
     {
-        _http = http;
+        _httpClient = http;
+        _client = new WalletAddressClient(http);
     }
 
-    private WalletAddressClient GetWalletAddressClient(string walletAddressOrPaymentPointer, string suffix = "") {
+    private string GetWalletAddressUrl(string walletAddressOrPaymentPointer, string suffix = "")
+    {
         if (string.IsNullOrWhiteSpace(walletAddressOrPaymentPointer))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(walletAddressOrPaymentPointer));
 
@@ -21,25 +24,25 @@ internal abstract class WalletAddressClientBase
 
         if (!string.IsNullOrWhiteSpace(suffix))
         {
-            builder.Append(suffix);   
+            builder.Append(suffix);
         }
 
-        var client = new WalletAddressClient(_http) { BaseUrl = builder.ToString() };
-
-        return client;
+        return builder.ToString();
     }
 
     protected async Task<WalletAddress> GetWalletAddressInternalAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
     {
-        return await GetWalletAddressClient(walletAddressOrPaymentPointer)
-            .GetWalletAddressAsync(cancellationToken)
+        string walletAddress = GetWalletAddressUrl(walletAddressOrPaymentPointer);
+        return await _client
+            .GetWalletAddressAsync(walletAddress, cancellationToken)
             .ConfigureAwait(false);
     }
 
     protected async Task<JsonWebKeySet> GetWalletAddressKeysInternalAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
     {
-        return await GetWalletAddressClient(walletAddressOrPaymentPointer, "/jwks.json")
-            .GetWalletAddressKeysAsync(cancellationToken)
+        string walletAddress = GetWalletAddressUrl(walletAddressOrPaymentPointer);
+        return await _client
+            .GetWalletAddressKeysAsync(walletAddress, cancellationToken)
             .ConfigureAwait(false);
     }
 

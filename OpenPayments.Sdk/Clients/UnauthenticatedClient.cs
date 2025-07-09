@@ -39,7 +39,7 @@ internal sealed class UnauthenticatedClient(HttpClient http) : WalletAddressClie
             Headers = { Accept = { new("application/json") } }
         };
 
-        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        using var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
@@ -47,4 +47,4 @@ internal sealed class UnauthenticatedClient(HttpClient http) : WalletAddressClie
 
         return model ?? throw new InvalidOperationException("Server returned empty or invalid IncomingPayment JSON.");
     }
-} 
+}
