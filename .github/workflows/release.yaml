@@ -58,14 +58,18 @@ jobs:
         run: |
           reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html -classfilters:"-OpenPayments.Sdk.Generated.*"
 
-      # - name: Upload coverage report artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: coverage-report
-      #     path: coverage-report
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
 
-      - name: Pack
-        run: dotnet pack OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-build -o ./nupkg
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+
+      - name: Pack with version from tag
+        run: dotnet pack OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-build -o ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }} 
 
       - name: Generate changelog
         uses: heinrichreimer/github-changelog-generator-action@v2.3
