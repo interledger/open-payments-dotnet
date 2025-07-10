@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>OpenPayments.Sdk</PackageId>
+    <Authors>Interledger Foundation - Tech Team</Authors>
+    <Description>.NET SDK for OpenPayments</Description>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
