@@ -17,9 +17,10 @@ public class OpenPaymentsOptions_Tests
     [Fact]
     public void UseUnauthenticatedClient_Extension_ShouldSetFlagToTrue()
     {
-        var options = new OpenPaymentsOptions();
-
-        options.UseUnauthenticatedClient();
+        var options = new OpenPaymentsOptions()
+        {
+            UseUnauthenticatedClient = true
+        };
 
         Assert.True(options.UseUnauthenticatedClient);
     }

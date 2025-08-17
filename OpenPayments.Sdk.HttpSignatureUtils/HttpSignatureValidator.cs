@@ -1,11 +1,9 @@
-using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using NSec.Cryptography;
 
 using OpenPayments.Sdk.HttpSignatureUtils;
 
-internal class HttpSignatureValidator : IHttpSignatureValidator
+public class HttpSignatureValidator : IHttpSignatureValidator
 {
     private readonly ISignatureInputParser _parser;
     private readonly ISignatureInputValidator _validator;

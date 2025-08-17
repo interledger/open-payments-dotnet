@@ -33,14 +33,5 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-
-    /// <summary>
-    /// Configures the UnauthenticatedClient to be used with OpenPayments.
-    /// </summary>
-    /// <param name="options">The OpenPayments options to modify.</param>
-    public static void UseUnauthenticatedClient(this OpenPaymentsOptions options)
-    {
-        options.UseUnauthenticatedClient = true;
-    }
 }   
     

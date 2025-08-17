@@ -11,7 +11,10 @@ public class ServiceCollectionExtensions_Tests
     {
         var services = new ServiceCollection();
 
-        services.UseOpenPayments(options => options.UseUnauthenticatedClient());
+        services.UseOpenPayments(options =>
+        {
+            options.UseUnauthenticatedClient = true;
+        });
         var provider = services.BuildServiceProvider();
 
         var client = provider.GetService<IUnauthenticatedClient>();

@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-internal class SignatureInputBuilder : ISignatureInputBuilder
+public class SignatureInputBuilder : ISignatureInputBuilder
 {
     public async Task<string?> BuildBaseAsync(List<string> components, HttpRequestMessage request, string sigInput)
     {

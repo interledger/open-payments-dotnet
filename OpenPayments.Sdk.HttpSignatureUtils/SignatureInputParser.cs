@@ -1,4 +1,4 @@
-internal class SignatureInputParser : ISignatureInputParser
+public class SignatureInputParser : ISignatureInputParser
 {
     public List<string>? GetComponents(string sigInput)
     {

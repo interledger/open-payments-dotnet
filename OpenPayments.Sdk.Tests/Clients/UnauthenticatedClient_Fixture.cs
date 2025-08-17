@@ -32,7 +32,7 @@ public class UnauthenticatedClientFixture
 
         IncomingPayment = new PublicIncomingPayment
         {
-            ReceivedAmount = new IncomingAmount()
+            ReceivedAmount = new Amount()
             {
                 AssetCode = "EUR",
                 AssetScale = 2,

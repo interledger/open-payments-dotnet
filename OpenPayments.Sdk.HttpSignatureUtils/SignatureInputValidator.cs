@@ -1,6 +1,6 @@
 using OpenPayments.Sdk.HttpSignatureUtils;
 
-internal class SignatureInputValidator : ISignatureInputValidator
+public class SignatureInputValidator : ISignatureInputValidator
 {
     public bool Validate(List<string> components, HttpRequestMessage request)
     {

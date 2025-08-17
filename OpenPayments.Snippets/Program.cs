@@ -6,7 +6,9 @@ using OpenPayments.Snippets.Services.Unauthenticated;
 var services = new ServiceCollection();
 
 // let's register OP SDK here
-services.UseOpenPayments(opts => opts.UseUnauthenticatedClient());
+services.UseOpenPayments(opts => {
+    opts.UseUnauthenticatedClient = true;
+});
 services.AddTransient<WalletAddressService>();
 services.AddTransient<IncomingPaymentService>();
 

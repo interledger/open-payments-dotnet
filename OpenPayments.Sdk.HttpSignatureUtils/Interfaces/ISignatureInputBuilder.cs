@@ -1,4 +1,4 @@
-internal interface ISignatureInputBuilder
+public interface ISignatureInputBuilder
 {
     Task<string?> BuildBaseAsync(List<string> components, HttpRequestMessage request, string sigInput);
 }
