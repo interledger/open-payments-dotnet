@@ -12,7 +12,7 @@ namespace OpenPayments.Sdk.Clients;
 /// Create a new UnauthenticatedClient wrapping an existing <see cref="HttpClient"/>.
 /// </remarks>
 /// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-internal sealed class UnauthenticatedClient(HttpClient http) : WalletAddressClientBase(http), IUnauthenticatedClient
+internal class UnauthenticatedClient(HttpClient http) : WalletAddressClientBase(http), IUnauthenticatedClient
 {
     /// <inheritdoc/>
     public async Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)

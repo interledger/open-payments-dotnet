@@ -1,5 +1,8 @@
 using OpenPayments.Sdk.HttpSignatureUtils;
 
+/// <summary>
+/// 
+/// </summary>
 public static class HttpClientSignatureExtensions
 {
     // public static async Task<bool> ValidateRequestSignatureAsync(

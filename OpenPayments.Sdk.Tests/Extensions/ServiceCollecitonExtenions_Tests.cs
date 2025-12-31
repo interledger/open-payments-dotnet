@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Extensions;
 
@@ -11,10 +12,7 @@ public class ServiceCollectionExtensions_Tests
     {
         var services = new ServiceCollection();
 
-        services.UseOpenPayments(options =>
-        {
-            options.UseUnauthenticatedClient = true;
-        });
+        services.UseOpenPayments(options => { options.UseUnauthenticatedClient = true; });
         var provider = services.BuildServiceProvider();
 
         var client = provider.GetService<IUnauthenticatedClient>();
@@ -31,6 +29,51 @@ public class ServiceCollectionExtensions_Tests
         var provider = services.BuildServiceProvider();
 
         var client = provider.GetService<IUnauthenticatedClient>();
+        Assert.Null(client);
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithUseAuthenticatedClient_RegistersServices()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+        var provider = services.BuildServiceProvider();
+
+        var client = provider.GetService<IAuthenticatedClient>();
+        Assert.NotNull(client);
+        Assert.IsType<AuthenticatedClient>(client);
+    }
+    
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsException()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+        });
+        var provider = services.BuildServiceProvider();
+        
+        Assert.Throws<InvalidOperationException>(() => provider.GetService<IAuthenticatedClient>());
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithoutUseAuthenticatedClient_DoesNotRegistersService()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options => { options.UseAuthenticatedClient = false; });
+        var provider = services.BuildServiceProvider();
+
+        var client = provider.GetService<IAuthenticatedClient>();
         Assert.Null(client);
     }
 

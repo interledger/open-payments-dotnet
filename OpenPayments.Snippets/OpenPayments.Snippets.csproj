@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\OpenPayments.Sdk.HttpSignatureUtils\OpenPayments.Sdk.HttpSignatureUtils.csproj" />
     <ProjectReference Include="..\OpenPayments.Sdk\OpenPayments.Sdk.csproj" />
   </ItemGroup>
 

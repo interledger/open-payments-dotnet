@@ -1,6 +1,9 @@
 using System.Diagnostics;
 using NSec.Cryptography;
 using System.Security.Cryptography;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.OpenSsl;
 
 namespace OpenPayments.Sdk.HttpSignatureUtils;
 
@@ -31,13 +34,61 @@ public static class KeyUtils
     {
         byte[] keyBytes = Convert.FromBase64String(base64Key);
 
-        if (keyBytes.Length != 32 && keyBytes.Length != 64)
+        if (keyBytes.Length != 32 && keyBytes.Length != 64 && keyBytes.Length != 48)
         {
+            Console.WriteLine($"Key length was {keyBytes.Length} bytes, expected 32 or 64.");
             throw new ArgumentException("Ed25519 private key must be 32 or 64 bytes after Base64 decode.");
         }
 
         var algorithm = SignatureAlgorithm.Ed25519;
         var seed = keyBytes.AsSpan(0, 32);
+        return Key.Import(algorithm, seed, KeyBlobFormat.RawPrivateKey);
+    }
+
+    /// <summary>
+    /// Loads an Ed25519 private key from a PEM-encoded PKCS#8 string.
+    /// </summary>
+    /// <param name="pem"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static Key LoadPem(string pem)
+    {
+        // Read PEM -> DER object
+        using var sr = new StringReader(pem);
+        var pemObj = new PemReader(sr).ReadPemObject();
+        if (pemObj == null)
+            throw new ArgumentException("Invalid PEM");
+
+        // Parse PKCS#8 PrivateKeyInfo
+        var privInfo = PrivateKeyInfo.GetInstance(Asn1Object.FromByteArray(pemObj.Content));
+
+        // Ensure Ed25519 OID (1.3.101.112)
+        var oid = privInfo.PrivateKeyAlgorithm.Algorithm.Id;
+        if (oid != "1.3.101.112")
+            throw new ArgumentException($"Unexpected algorithm OID: {oid}. Expected Ed25519 (1.3.101.112).");
+
+        // Extract the inner OCTET STRING (seed). For Ed25519 in PKCS#8, this is 32 bytes.
+        var privateKeyOctets = Asn1OctetString.GetInstance(privInfo.ParsePrivateKey());
+        var privateKeyBytes = privateKeyOctets.GetOctets();
+
+        // Some toolchains wrap the seed in another OCTET STRING layer:
+        // If length is not 32, try one more unwrap.
+        if (privateKeyBytes.Length != 32)
+        {
+            try
+            {
+                var inner = Asn1OctetString.GetInstance(Asn1Object.FromByteArray(privateKeyBytes));
+                privateKeyBytes = inner.GetOctets();
+            }
+            catch { /* ignore */ }
+        }
+
+        if (privateKeyBytes.Length != 32)
+            throw new ArgumentException($"Ed25519 seed must be 32 bytes, got {privateKeyBytes.Length}.");
+
+        // Import into NSec as raw private key (seed)
+        var algorithm = SignatureAlgorithm.Ed25519;
+        var seed = privateKeyBytes.AsSpan(0, 32);
         return Key.Import(algorithm, seed, KeyBlobFormat.RawPrivateKey);
     }
 
@@ -71,7 +122,7 @@ public static class KeyUtils
             ExportPolicy = KeyExportPolicies.AllowPlaintextExport
         });
 
-        byte[] publicKeyBytes = privateKey.PublicKey.Export(KeyBlobFormat.RawPublicKey);
+        var publicKeyBytes = privateKey.PublicKey.Export(KeyBlobFormat.RawPublicKey);
 
         return new Jwk
         {
@@ -105,7 +156,7 @@ public static class KeyUtils
             throw new ArgumentException("File was loaded, but key was not a valid Ed25519 private key (must be 32 or 64 bytes).");
         }
 
-        byte[] seed = keyBytes.AsSpan(0, 32).ToArray();
+        var seed = keyBytes.AsSpan(0, 32).ToArray();
 
         try
         {
@@ -132,9 +183,8 @@ public static class KeyUtils
         if (args?.Dir is not null)
         {
             Directory.CreateDirectory(args.Dir);
-            string fileName = args.Filename ?? $"private-key-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.pem";
-
-            string path = Path.Combine(args.Dir, fileName);
+            var fileName = args.Filename ?? $"private-key-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.pem";
+            var path = Path.Combine(args.Dir, fileName);
 
             key.ToPem(path);
         }
