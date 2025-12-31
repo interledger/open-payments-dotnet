@@ -1,3 +1,4 @@
+using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Extensions;
 
@@ -15,4 +16,10 @@ public class OpenPaymentsOptions
     /// Indicates whether the <see cref="UnauthenticatedClient"/> should be registered.
     /// </summary>
     public bool UseUnauthenticatedClient { get; set; }
+    
+    public string? KeyId { get; set; }
+    
+    public Key? PrivateKey { get; set; }
+    
+    public Uri? ClientUrl { get; set; }
 }
