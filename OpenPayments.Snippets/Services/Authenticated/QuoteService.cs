@@ -5,11 +5,11 @@ using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Snippets.Services.Authenticated;
 
-public class QuoteService(IAuthenticatedClient client, IUnauthenticatedClient unauthenticatedClient)
+public class QuoteService(IAuthenticatedClient client)
 {
     public async Task<QuoteResponse> CreateQuoteAsync(string senderWalletAddress, string incomingPaymentUrl)
     {
-        var waDetails = await unauthenticatedClient.GetWalletAddressAsync(senderWalletAddress);
+        var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
         
         var authResponse = await client.RequestGrantAsync(
             new RequestArgs()
@@ -24,8 +24,8 @@ public class QuoteService(IAuthenticatedClient client, IUnauthenticatedClient un
                     [
                         new AccessItem()
                         {
-                            Type = "quote",
-                            Actions = ["create", "read"]
+                            Type = AccessType.Quote,
+                            Actions = [Actions.Create, Actions.Read]
                         }
                     ]
                 }
@@ -33,7 +33,7 @@ public class QuoteService(IAuthenticatedClient client, IUnauthenticatedClient un
         );
 
         var quote = await client.CreateQuoteAsync(
-            new RequestArgs()
+            new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
                 AccessToken = authResponse.AccessToken!.Value,

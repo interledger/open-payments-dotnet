@@ -16,7 +16,7 @@ public class ResourceClientBase : IResourceClientBase
         _client.ClientUrl = clientUrl;
     }
 
-    public async Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(RequestArgs requestArgs, Body body,
+    public async Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs, Body body,
         CancellationToken cancellationToken = default)
     {
         _client.BaseUrl = requestArgs.Url.ToString();
@@ -24,7 +24,7 @@ public class ResourceClientBase : IResourceClientBase
         return await _client.PostIncomingPaymentAsync(body, requestArgs.AccessToken!, cancellationToken);
     }
 
-    public async Task<QuoteResponse> CreateQuoteAsync(RequestArgs requestArgs, QuoteBody body,
+    public async Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
         CancellationToken cancellationToken = default)
     {
         _client.BaseUrl = requestArgs.Url.ToString();
@@ -32,7 +32,7 @@ public class ResourceClientBase : IResourceClientBase
         return await _client.PostQuoteAsync(body, requestArgs.AccessToken!, cancellationToken);
     }
 
-    public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(RequestArgs requestArgs,
+    public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
         OutgoingPaymentBody body, CancellationToken cancellationToken = default)
     {
         _client.BaseUrl = requestArgs.Url.ToString();
@@ -43,12 +43,12 @@ public class ResourceClientBase : IResourceClientBase
 
 public interface IResourceClientBase
 {
-    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(RequestArgs requestArgs, Body body,
+    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs, Body body,
         CancellationToken cancellationToken = default);
 
-    public Task<QuoteResponse> CreateQuoteAsync(RequestArgs requestArgs, QuoteBody body,
+    public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
         CancellationToken cancellationToken = default);
 
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(RequestArgs requestArgs, OutgoingPaymentBody body,
+    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs, OutgoingPaymentBody body,
         CancellationToken cancellationToken = default);
 }

@@ -23,30 +23,34 @@ public static class ServiceCollectionExtensions
     {
         var options = new OpenPaymentsOptions();
         configure(options);
-        
+
         services.AddHttpClient();
 
-        services.AddSingleton<UnauthenticatedClient>();
-        services.AddSingleton<IUnauthenticatedClient>(sp =>
-            sp.GetRequiredService<UnauthenticatedClient>());
-
-        if (options.UseUnauthenticatedClient) return services;
-
-        services.AddSingleton<AuthenticatedClient>(sp =>
+        if (options.UseUnauthenticatedClient)
         {
-            if (string.IsNullOrWhiteSpace(options.KeyId))
-                throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
-            if (options.PrivateKey is null)
-                throw new InvalidOperationException("OpenPaymentsOptions.PrivateKey must be provided.");
-            if (options.ClientUrl is null)
-                throw new InvalidOperationException("OpenPaymentsOptions.ClientUrl must be provided.");
-            
-            var http = sp.GetRequiredService<IHttpClientFactory>().CreateClient("authenticated");
-            return new AuthenticatedClient(http, options.PrivateKey, options.KeyId, options.ClientUrl);
-        });
-        services.AddSingleton<IAuthenticatedClient>(sp =>
-            sp.GetRequiredService<AuthenticatedClient>());
-        
+            services.AddSingleton<UnauthenticatedClient>();
+            services.AddSingleton<IUnauthenticatedClient>(sp =>
+                sp.GetRequiredService<UnauthenticatedClient>());
+        }
+
+        if (options.UseAuthenticatedClient)
+        {
+            services.AddSingleton<AuthenticatedClient>(sp =>
+            {
+                if (string.IsNullOrWhiteSpace(options.KeyId))
+                    throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
+                if (options.PrivateKey is null)
+                    throw new InvalidOperationException("OpenPaymentsOptions.PrivateKey must be provided.");
+                if (options.ClientUrl is null)
+                    throw new InvalidOperationException("OpenPaymentsOptions.ClientUrl must be provided.");
+
+                var http = sp.GetRequiredService<IHttpClientFactory>().CreateClient("authenticated");
+                return new AuthenticatedClient(http, options.PrivateKey, options.KeyId, options.ClientUrl);
+            });
+            services.AddSingleton<IAuthenticatedClient>(sp =>
+                sp.GetRequiredService<AuthenticatedClient>());
+        }
+
         return services;
     }
 }

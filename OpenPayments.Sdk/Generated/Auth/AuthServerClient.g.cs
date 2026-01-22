@@ -25,7 +25,7 @@ namespace OpenPayments.Sdk.Generated.Auth
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AuthServerClient 
+    public sealed partial class AuthServerClient 
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -62,7 +62,7 @@ namespace OpenPayments.Sdk.Generated.Auth
             }
         }
 
-        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _instanceSettings ?? _settings.Value; } }
+        private Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _instanceSettings ?? _settings.Value; } }
 
         static partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
 
@@ -80,7 +80,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response> PostRequestAsync(Body body)
+        public System.Threading.Tasks.Task<Response> PostRequestAsync(Body body)
         {
             return PostRequestAsync(body, System.Threading.CancellationToken.None);
         }
@@ -94,7 +94,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response> PostRequestAsync(Body body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response> PostRequestAsync(Body body, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -206,7 +206,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response2> PostContinueAsync(Body2 body, string id)
+        public System.Threading.Tasks.Task<Response2> PostContinueAsync(Body2 body, string id)
         {
             return PostContinueAsync(body, id, System.Threading.CancellationToken.None);
         }
@@ -220,7 +220,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response2> PostContinueAsync(Body2 body, string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response2> PostContinueAsync(Body2 body, string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -334,7 +334,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>No Content</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteContinueAsync(string id)
+        public System.Threading.Tasks.Task DeleteContinueAsync(string id)
         {
             return DeleteContinueAsync(id, System.Threading.CancellationToken.None);
         }
@@ -348,7 +348,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>No Content</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteContinueAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteContinueAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -442,7 +442,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response3> PostTokenAsync(string id)
+        public System.Threading.Tasks.Task<Response3> PostTokenAsync(string id)
         {
             return PostTokenAsync(id, System.Threading.CancellationToken.None);
         }
@@ -456,7 +456,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response3> PostTokenAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response3> PostTokenAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -577,7 +577,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>No Content</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTokenAsync(string id)
+        public System.Threading.Tasks.Task DeleteTokenAsync(string id)
         {
             return DeleteTokenAsync(id, System.Threading.CancellationToken.None);
         }
@@ -591,7 +591,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </remarks>
         /// <returns>No Content</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTokenAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteTokenAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -677,7 +677,7 @@ namespace OpenPayments.Sdk.Generated.Auth
             }
         }
 
-        protected struct ObjectResponseResult<T>
+        private struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
             {
@@ -712,7 +712,7 @@ namespace OpenPayments.Sdk.Generated.Auth
 
         public bool ReadResponseAsString { get; set; }
 
-        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
+        private async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
         {
             if (response == null || response.Content == null)
             {

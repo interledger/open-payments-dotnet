@@ -12,7 +12,7 @@ var services = new ServiceCollection();
 // let's register OP SDK here
 services.UseOpenPayments(opts =>
 {
-    opts.UseUnauthenticatedClient = false;
+    opts.UseAuthenticatedClient = true;
     opts.KeyId = Environment.GetEnvironmentVariable("CLIENT_ID");
     opts.PrivateKey = KeyUtils.LoadPem(Environment.GetEnvironmentVariable("CLIENT_SECRET")!.Replace("\\n", "\n"));
     opts.ClientUrl = new Uri(Environment.GetEnvironmentVariable("CLIENT_URL")!);
@@ -22,6 +22,7 @@ services.AddTransient<PublicIncomingPaymentService>();
 services.AddTransient<IncomingPaymentService>();
 services.AddTransient<QuoteService>();
 services.AddTransient<OutgoingPaymentService>();
+services.AddTransient<TokenService>();
 
 var provider = services.BuildServiceProvider();
 
@@ -64,6 +65,14 @@ Option<string> quoteUrlOption = new("--quoteUrl", "-q")
     Description = "The URL of the quote defining this payment's amounts.",
     Required = true
 };
+Option<string> accessTokenValue = new("--accessToken", "-t")
+{
+    Description = "The access token to use for authentication.",
+};
+Option<string> tokenAction = new("--action", "-a")
+{
+    Description = "The action to perform on the token: 'rotate' or 'revoke'.",
+};
 
 
 var rootCommand = new RootCommand("OpenPayments CLI");
@@ -71,6 +80,13 @@ var walletAddressCommand = new Command("WalletAddress")
 {
     resourceUrlOption,
     walletAddressKeysOption
+};
+
+var manageTokenCommand = new Command("ManageToken")
+{
+    resourceUrlOption,
+    accessTokenValue,
+    tokenAction
 };
 
 var getIncomingPaymentCommand = new Command("GetIncomingPayment")
@@ -145,6 +161,24 @@ createOutgoingPaymentCommand.SetAction(async result =>
     
     var service = provider.GetRequiredService<OutgoingPaymentService>();
     await service.CreateOutgoingPaymentAsync(sender, quoteUrl, debitAmount);
+});
+
+manageTokenCommand.SetAction(async result =>
+{
+    var tokenUrl = result.GetValue(resourceUrlOption)!;
+    var accessToken = result.GetValue(accessTokenValue)!;
+    var manageAction = result.GetValue(tokenAction);
+    var service = provider.GetRequiredService<TokenService>();
+
+    switch (manageAction)
+    {
+        case "revoke":
+            await service.RevokeTokenAsync(tokenUrl, accessToken);
+            return;
+        case "rotate":
+            await service.RotateTokenAsync(tokenUrl, accessToken);
+            break;
+    }
 });
 
 rootCommand.SetAction(async result =>

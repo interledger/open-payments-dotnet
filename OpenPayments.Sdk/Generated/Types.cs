@@ -12,7 +12,7 @@ namespace OpenPayments.Sdk.Generated
         }
     }
 
-    public class Helpers
+    public static class Helpers
     {
         public static string StatusAsText(int status)
         {

@@ -6,11 +6,12 @@ using Amount = OpenPayments.Sdk.Generated.Auth.Amount;
 
 namespace OpenPayments.Snippets.Services.Authenticated;
 
-public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticatedClient unauthenticatedClient)
+public class OutgoingPaymentService(IAuthenticatedClient client)
 {
-    public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(string senderWalletAddress, string quoteUrl, string debitAmount)
+    public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(string senderWalletAddress, string quoteUrl,
+        string debitAmount)
     {
-        var waDetails = await unauthenticatedClient.GetWalletAddressAsync(senderWalletAddress);
+        var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var grantResponse = await client.RequestGrantAsync(
             new RequestArgs()
@@ -25,17 +26,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticate
                     [
                         new AccessItem()
                         {
-                            Type = "outgoing-payment",
-                            Actions = ["create", "read", "list"],
+                            Type = AccessType.OutgoingPayment,
+                            Actions = [Actions.Create, Actions.Read, Actions.List],
                             Identifier = waDetails.Id.ToString(),
                             Limits = new AccessLimits()
                             {
-                                DebitAmount = new Amount()
-                                {
-                                    Value = debitAmount,
-                                    AssetCode = "EUR",
-                                    AssetScale = 2
-                                },
+                                DebitAmount = new Amount(debitAmount, "EUR", 2)
                             }
                         }
                     ]
@@ -58,17 +54,16 @@ public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticate
         Console.ReadLine();
 
         var tokenResponse = await client.ContinueGrantAsync(
-            new RequestArgs()
+            new AuthRequestArgs()
             {
-                Url = grantResponse.Continue!.Uri,
-                AccessToken = grantResponse.Continue.Access_token.Value,
-            },
-            new GrantContinueBody()
+                Url = grantResponse.Continue.Uri,
+                AccessToken = grantResponse.Continue.AccessToken.Value,
+            }
         );
 
         // Create Outgoing Payment
         var outgoing = await client.CreateOutgoingPaymentAsync(
-            new RequestArgs()
+            new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
                 AccessToken = tokenResponse.AccessToken!.Value
@@ -79,7 +74,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticate
                 QuoteId = new Uri(quoteUrl)
             }
         );
-        
+
         Console.WriteLine("===Outgoing Payment===");
         Console.WriteLine("Id: {0}", outgoing.Id);
         Console.WriteLine("Quote: {0}", outgoing.QuoteId);
@@ -91,12 +86,14 @@ public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticate
     }
 
 
-    public async Task CreateOutgoingPaymentGrantAndCancelAsync()
+    public async Task CreateOutgoingPaymentGrantAndCancelAsync(string senderWalletAddress)
     {
+        var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
+
         var response = await client.RequestGrantAsync(
             new RequestArgs()
             {
-                Url = new Uri("https://auth.interledger-test.dev/f537937b-7016-481b-b655-9f0d1014822c")
+                Url = waDetails.AuthServer
             },
             new GrantCreateBody()
             {
@@ -106,17 +103,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticate
                     [
                         new AccessItem()
                         {
-                            Type = "outgoing-payment",
-                            Actions = ["create", "read", "list"],
-                            Identifier = "https://ilp.interledger-test.dev/cozmin-eur",
+                            Type = AccessType.OutgoingPayment,
+                            Actions = [Actions.Create, Actions.Read, Actions.List],
+                            Identifier = waDetails.Id.ToString(),
                             Limits = new AccessLimits()
                             {
-                                DebitAmount = new Amount()
-                                {
-                                    Value = "100",
-                                    AssetCode = "EUR",
-                                    AssetScale = 2
-                                }
+                                DebitAmount = new Amount("100", "EUR", 2)
                             }
                         }
                     ]
@@ -133,28 +125,11 @@ public class OutgoingPaymentService(IAuthenticatedClient client, IUnauthenticate
         Console.ReadLine();
 
         await client.CancelGrantAsync(
-            new RequestArgs()
+            new AuthRequestArgs()
             {
-                Url = response.Continue!.Uri,
-                AccessToken = response.Continue.Access_token.Value,
+                Url = response.Continue.Uri,
+                AccessToken = response.Continue.AccessToken.Value,
             }
         );
-    }
-
-    public async Task ContinueOutgoingPaymentGrantAsync()
-    {
-        var response = await client.ContinueGrantAsync(
-            new RequestArgs()
-            {
-                Url = new Uri("https://auth.interledger-test.dev/continue/51f225ff-de47-4103-9c57-80ec2c5fa854"),
-                AccessToken = "611060C78F3DFE91649F",
-            },
-            new GrantContinueBody()
-            {
-                InteractRef = "56248e15-2a8c-4b38-9915-8f2e7ae93613"
-            }
-        );
-
-        Console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
     }
 }

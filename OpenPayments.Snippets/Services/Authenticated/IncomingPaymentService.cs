@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Generated.Auth;
 using OpenPayments.Sdk.Generated.Resource;
@@ -6,11 +5,11 @@ using Amount = OpenPayments.Sdk.Generated.Resource.Amount;
 
 namespace OpenPayments.Snippets.Services.Authenticated;
 
-public class IncomingPaymentService(IAuthenticatedClient client, IUnauthenticatedClient unauthenticatedClient)
+public class IncomingPaymentService(IAuthenticatedClient client)
 {
     public async Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(string receiver, string amount)
     {
-        var waDetails = await unauthenticatedClient.GetWalletAddressAsync(receiver);
+        var waDetails = await client.GetWalletAddressAsync(receiver);
         
         var grant = await client.RequestGrantAsync(
             new RequestArgs()
@@ -25,8 +24,8 @@ public class IncomingPaymentService(IAuthenticatedClient client, IUnauthenticate
                     [
                         new AccessItem()
                         {
-                            Type = "incoming-payment",
-                            Actions = ["create", "read", "list", "complete"]
+                            Type = AccessType.IncomingPayment,
+                            Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete]
                         }
                     ]
                 }
@@ -34,7 +33,7 @@ public class IncomingPaymentService(IAuthenticatedClient client, IUnauthenticate
         );
 
         var iPaymentResponse = await client.CreateIncomingPaymentAsync(
-            new RequestArgs()
+            new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
                 AccessToken = grant.AccessToken!.Value

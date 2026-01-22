@@ -17,6 +17,8 @@ public class OpenPaymentsOptions
     /// </summary>
     public bool UseUnauthenticatedClient { get; set; }
     
+    public bool UseAuthenticatedClient { get; set; }
+    
     public string? KeyId { get; set; }
     
     public Key? PrivateKey { get; set; }

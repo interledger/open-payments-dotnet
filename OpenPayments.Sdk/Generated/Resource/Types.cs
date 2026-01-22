@@ -71,4 +71,15 @@ namespace OpenPayments.Sdk.Generated.Resource
     public partial class OutgoingPaymentResponse : OutgoingPaymentWithSpentAmounts
     {
     }
+    
+    public partial class Amount
+    {
+        public Amount() {}
+        public Amount(string value, string assetCode, int? assetScale = 2)
+        {
+            this.Value = value;
+            this.AssetCode = assetCode;
+            this.AssetScale = assetScale ?? 2;
+        }
+    }
 }

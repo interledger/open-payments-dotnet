@@ -3,7 +3,7 @@ using NSec.Cryptography;
 
 namespace OpenPayments.Sdk.Generated.Auth
 {
-    public partial class AuthServerClient
+    public sealed partial class AuthServerClient
     {
         private Key? _privateKey;
         private string? _keyId;
