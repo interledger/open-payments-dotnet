@@ -1,9 +1,8 @@
 using System.Net.Http.Headers;
-using Newtonsoft.Json;
 
 namespace OpenPayments.Sdk.Generated.Auth;
 
-public sealed partial class AuthServerClient
+public partial class AuthServerClient
 {
     /// <param name="tokenUrl">Token Url for rotation.</param>
     /// <param name="accessToken">Access Token for rotation.</param>

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace OpenPayments.Sdk.Generated.Auth;
 
-public sealed partial class AuthServerClient
+public partial class AuthServerClient
 {
     /// <param name="body">Body for grant request.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
