@@ -18,7 +18,4 @@
   <ItemGroup>
     <ProjectReference Include="..\OpenPayments.Sdk.HttpSignatureUtils\OpenPayments.Sdk.HttpSignatureUtils.csproj" />
   </ItemGroup>
-  <!-- <ItemGroup>
-    <ProjectReference Include="../OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj" />
-  </ItemGroup> -->
 </Project> 

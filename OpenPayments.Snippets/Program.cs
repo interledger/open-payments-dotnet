@@ -181,7 +181,7 @@ manageTokenCommand.SetAction(async result =>
     }
 });
 
-rootCommand.SetAction(async result =>
+rootCommand.SetAction(_ =>
 {
     
 });

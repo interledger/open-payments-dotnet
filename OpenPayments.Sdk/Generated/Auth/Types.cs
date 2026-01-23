@@ -37,7 +37,7 @@ namespace OpenPayments.Sdk.Generated.Auth
     {
         [JsonProperty("type")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AccessType Type { get; set; }
 
         [JsonProperty("actions", ItemConverterType = typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -49,13 +49,15 @@ namespace OpenPayments.Sdk.Generated.Auth
 
         [JsonProperty("limits")] public AccessLimits? Limits { get; set; }
     }
-    
+
     public enum AccessType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"incoming-payment")]
         IncomingPayment = 0,
+
         [System.Runtime.Serialization.EnumMember(Value = @"outgoing-payment")]
         OutgoingPayment = 1,
+
         [System.Runtime.Serialization.EnumMember(Value = @"quote")]
         Quote = 2,
     }
@@ -100,12 +102,12 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonProperty("wait", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public int Wait { get; set; }
 
-        private IDictionary<string, object> _additionalProperties;
+        private IDictionary<string, object>? _additionalProperties;
 
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
     }
@@ -120,16 +122,12 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonProperty("error", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public ErrorItem? Error { get; set; }
 
-        private IDictionary<string, object> _additionalProperties;
+        private IDictionary<string, object>? _additionalProperties;
 
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get
-            {
-                return _additionalProperties ??
-                       (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>());
-            }
+            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
     }
@@ -143,28 +141,27 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ErrorItemCode Code { get; set; }
 
-        private IDictionary<string, object> _additionalProperties;
+        private IDictionary<string, object>? _additionalProperties;
 
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get
-            {
-                return _additionalProperties ??
-                       (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>());
-            }
+            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
     }
 
     public partial class Amount
     {
-        public Amount() {}
+        public Amount()
+        {
+        }
+
         public Amount(string value, string assetCode, int? assetScale = 2)
         {
-            this.Value = value;
-            this.AssetCode = assetCode;
-            this.AssetScale = assetScale ?? 2;
+            Value = value;
+            AssetCode = assetCode;
+            AssetScale = assetScale ?? 2;
         }
     }
 

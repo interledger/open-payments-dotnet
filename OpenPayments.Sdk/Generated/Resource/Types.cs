@@ -19,7 +19,7 @@ namespace OpenPayments.Sdk.Generated.Resource
 
     public partial class IncomingPaymentResponse : IncomingPaymentWithMethods
     {
-        /// <inheritdoc cref="IncomingPaymentWithMethods.Metadata"/>
+        /// <inheritdoc cref="IncomingPayment.Metadata"/>
         [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public new object? Metadata { get; set; }
     }
