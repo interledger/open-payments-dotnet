@@ -5,12 +5,25 @@ using NSec.Cryptography;
 
 [assembly: InternalsVisibleTo("OpenPayments.Sdk.HttpSignatureUtils.Tests")]
 
+/// <summary>
+/// Signature headers returned by the HttpRequestSigner.
+/// </summary>
+
 public class SignatureHeaders
 {
+    /// <summary>
+    /// Signature header value.
+    /// </summary>
     public string Signature { get; set; } = string.Empty;
+    /// <summary>
+    /// Signature input header value.
+    /// </summary>
     public string SignatureInput { get; set; } = string.Empty;
 }
 
+/// <summary>
+/// Signs an HTTP request using the Ed25519 signature algorithm.
+/// </summary>
 public static class HttpRequestSigner
 {
     private static string BuildSignatureInput(List<string> components, string keyId, long created)
@@ -18,13 +31,13 @@ public static class HttpRequestSigner
         var fields = string.Join(" ", components.Select(h => $"\"{h}\""));
         return $"({fields});created={created};keyid=\"{keyId}\";alg=\"ed25519\"";
     }
-
+    
     private static string ComputeContentDigest(string body)
     {
         var hash = SHA512.HashData(Encoding.UTF8.GetBytes(body));
         return Convert.ToBase64String(hash);
     }
-
+    
     private static async Task<string> TryGetHeaderValueAsync(HttpRequestMessage request, string name)
     {
         name = name.ToLowerInvariant();
@@ -76,6 +89,14 @@ public static class HttpRequestSigner
         return string.Join("\n", lines);
     }
 
+    /// <summary>
+    /// Signs an HTTP request using the Ed25519 signature algorithm.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="privateKey"></param>
+    /// <param name="keyId"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static async Task<SignatureHeaders> SignHttpRequestAsync(HttpRequestMessage request, Key privateKey,
         string keyId)
     {
