@@ -8,3 +8,5 @@ coveragereport/
 **/Generated/ResourceServerClient.cs*
 
 .env
+.idea/
+
