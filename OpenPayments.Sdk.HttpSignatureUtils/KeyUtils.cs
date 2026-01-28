@@ -32,11 +32,10 @@ public static class KeyUtils
     /// </exception>
     public static Key LoadBase64Key(string base64Key)
     {
-        byte[] keyBytes = Convert.FromBase64String(base64Key);
+        var keyBytes = Convert.FromBase64String(base64Key);
 
-        if (keyBytes.Length != 32 && keyBytes.Length != 64 && keyBytes.Length != 48)
+        if (keyBytes.Length != 32 && keyBytes.Length != 64)
         {
-            Console.WriteLine($"Key length was {keyBytes.Length} bytes, expected 32 or 64.");
             throw new ArgumentException("Ed25519 private key must be 32 or 64 bytes after Base64 decode.");
         }
 
