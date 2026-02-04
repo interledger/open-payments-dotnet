@@ -39,12 +39,6 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                 Interact = new InteractRequest()
                 {
                     Start = [Start.Redirect],
-                    // Finish = new Finish()
-                    // {
-                    //     Method = FinishMethod.Redirect,
-                    //     Uri = new Uri("https://localhost"),
-                    //     Nonce = Guid.NewGuid().ToString(),
-                    // }
                 }
             }
         );
@@ -120,7 +114,6 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
             }
         );
 
-        // Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
         Console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
         Console.ReadLine();
 

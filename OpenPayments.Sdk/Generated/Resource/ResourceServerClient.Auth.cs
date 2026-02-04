@@ -23,7 +23,10 @@ public partial class ResourceServerClient
     partial void PrepareRequest(HttpClient client, HttpRequestMessage request,
         string url)
     {
-        if (_privateKey == null || _keyId == null) return;
+        if (_privateKey == null || _keyId == null)
+        {
+            throw new InvalidOperationException("Signing key not set");
+        }
 
         var headers = HttpRequestSigner.SignHttpRequestAsync(request, _privateKey, _keyId).Result;
         request.Headers.TryAddWithoutValidation("Signature", headers.Signature);

@@ -29,13 +29,11 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// The fixed amount that would be paid into the receiving wallet address given a successful outgoing payment.
         /// </summary>
-        [JsonProperty("receiveAmount")]
         public Amount? ReceiveAmount { get; set; }
 
         /// <summary>
         /// The fixed amount that would be sent from the sending wallet address given a successful outgoing payment.
         /// </summary>
-        [JsonProperty("debitAmount")]
         public Amount? DebitAmount { get; set; }
     }
 
