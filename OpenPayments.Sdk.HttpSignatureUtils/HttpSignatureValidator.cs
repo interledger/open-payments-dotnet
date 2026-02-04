@@ -1,6 +1,5 @@
 using System.Text;
 using NSec.Cryptography;
-
 using OpenPayments.Sdk.HttpSignatureUtils;
 
 public class HttpSignatureValidator : IHttpSignatureValidator
@@ -38,11 +37,12 @@ public class HttpSignatureValidator : IHttpSignatureValidator
             return false;
 
         var challenge = await _builder.BuildBaseAsync(components, request, sigInput);
-        if (challenge is null)
+        if (challenge is null) 
             return false;
 
         var signatureBytes = Convert.FromBase64String(sig.Replace("sig1=", "").Replace(":", ""));
-        var publicKey = PublicKey.Import(SignatureAlgorithm.Ed25519, Base64UrlDecode(clientKey.X), KeyBlobFormat.RawPublicKey);
+        var publicKey = PublicKey.Import(SignatureAlgorithm.Ed25519, Base64UrlDecode(clientKey.X),
+            KeyBlobFormat.RawPublicKey);
 
         return SignatureAlgorithm.Ed25519.Verify(publicKey, Encoding.UTF8.GetBytes(challenge), signatureBytes);
     }

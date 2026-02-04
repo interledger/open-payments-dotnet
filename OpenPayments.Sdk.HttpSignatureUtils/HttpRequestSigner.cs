@@ -8,7 +8,6 @@ using NSec.Cryptography;
 /// <summary>
 /// Signature headers returned by the HttpRequestSigner.
 /// </summary>
-
 public class SignatureHeaders
 {
     /// <summary>

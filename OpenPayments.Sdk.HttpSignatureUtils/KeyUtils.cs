@@ -32,11 +32,10 @@ public static class KeyUtils
     /// </exception>
     public static Key LoadBase64Key(string base64Key)
     {
-        byte[] keyBytes = Convert.FromBase64String(base64Key);
+        var keyBytes = Convert.FromBase64String(base64Key);
 
-        if (keyBytes.Length != 32 && keyBytes.Length != 64 && keyBytes.Length != 48)
+        if (keyBytes.Length != 32 && keyBytes.Length != 64)
         {
-            Console.WriteLine($"Key length was {keyBytes.Length} bytes, expected 32 or 64.");
             throw new ArgumentException("Ed25519 private key must be 32 or 64 bytes after Base64 decode.");
         }
 
@@ -60,19 +59,19 @@ public static class KeyUtils
             throw new ArgumentException("Invalid PEM");
 
         // Parse PKCS#8 PrivateKeyInfo
-        var privInfo = PrivateKeyInfo.GetInstance(Asn1Object.FromByteArray(pemObj.Content));
+        var pkInfo = PrivateKeyInfo.GetInstance(Asn1Object.FromByteArray(pemObj.Content));
 
         // Ensure Ed25519 OID (1.3.101.112)
-        var oid = privInfo.PrivateKeyAlgorithm.Algorithm.Id;
+        var oid = pkInfo.PrivateKeyAlgorithm.Algorithm.Id;
         if (oid != "1.3.101.112")
             throw new ArgumentException($"Unexpected algorithm OID: {oid}. Expected Ed25519 (1.3.101.112).");
 
         // Extract the inner OCTET STRING (seed). For Ed25519 in PKCS#8, this is 32 bytes.
-        var privateKeyOctets = Asn1OctetString.GetInstance(privInfo.ParsePrivateKey());
+        var privateKeyOctets = Asn1OctetString.GetInstance(pkInfo.ParsePrivateKey());
         var privateKeyBytes = privateKeyOctets.GetOctets();
 
         // Some toolchains wrap the seed in another OCTET STRING layer:
-        // If length is not 32, try one more unwrap.
+        // If lenght is not 32, try one more unwrap.
         if (privateKeyBytes.Length != 32)
         {
             try
@@ -86,7 +85,7 @@ public static class KeyUtils
         if (privateKeyBytes.Length != 32)
             throw new ArgumentException($"Ed25519 seed must be 32 bytes, got {privateKeyBytes.Length}.");
 
-        // Import into NSec as raw private key (seed)
+        // Import into NSec as a raw private key (seed)
         var algorithm = SignatureAlgorithm.Ed25519;
         var seed = privateKeyBytes.AsSpan(0, 32);
         return Key.Import(algorithm, seed, KeyBlobFormat.RawPrivateKey);

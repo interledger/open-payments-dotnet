@@ -1,7 +1,8 @@
 using OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <summary>
-/// 
+/// Provides extension methods for adding signature-based authentication
+/// to HTTP client requests.
 /// </summary>
 public static class HttpClientSignatureExtensions
 {

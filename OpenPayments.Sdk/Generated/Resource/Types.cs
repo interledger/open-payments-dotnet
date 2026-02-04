@@ -24,6 +24,19 @@ namespace OpenPayments.Sdk.Generated.Resource
         public new object? Metadata { get; set; }
     }
 
+    public partial class ListIncomingPaymentQuery
+    {
+        public required string WalletAddress { get; set; }
+        public string? Cursor { get; set; }
+        public int? First { get; set; }
+        public int? Last { get; set; }
+    }
+    
+    public partial class ListIncomingPaymentsResponse : Response
+    {
+        
+    }
+
     public partial class QuoteBody : Body3
     {
         /// <summary>

@@ -93,21 +93,24 @@ var getIncomingPaymentCommand = new Command("GetIncomingPayment")
 {
     resourceUrlOption
 };
-
 var createIncomingPaymentCommand = new Command("CreateIncomingPayment")
 {
     receiverWalletAddressOption,
     amountOption
 };
+var listIncomingPaymentsCommand = new Command("ListIncomingPayments")
+{
+    receiverWalletAddressOption
+};
 var createQuoteCommand = new Command("CreateQuote")
 {
-    senderWalletAddressOption,  
+    senderWalletAddressOption,
     incomingPaymentIdOption
 };
 var createOutgoingPaymentCommand = new Command("CreateOutgoingPayment")
 {
-    senderWalletAddressOption,  
-    quoteUrlOption,  
+    senderWalletAddressOption,
+    quoteUrlOption,
     amountOption
 };
 
@@ -139,7 +142,7 @@ createIncomingPaymentCommand.SetAction(async result =>
 {
     var receiver = result.GetValue(receiverWalletAddressOption)!;
     var amount = result.GetValue(amountOption)!;
-    
+
     var service = provider.GetRequiredService<IncomingPaymentService>();
     await service.CreateIncomingPaymentAsync(receiver, amount);
 });
@@ -148,7 +151,7 @@ createQuoteCommand.SetAction(async result =>
 {
     var incomingPaymentUrl = result.GetValue(incomingPaymentIdOption)!;
     var sender = result.GetValue(senderWalletAddressOption)!;
-    
+
     var service = provider.GetRequiredService<QuoteService>();
     await service.CreateQuoteAsync(sender, incomingPaymentUrl);
 });
@@ -158,7 +161,7 @@ createOutgoingPaymentCommand.SetAction(async result =>
     var sender = result.GetValue(senderWalletAddressOption)!;
     var quoteUrl = result.GetValue(quoteUrlOption)!;
     var debitAmount = result.GetValue(amountOption)!;
-    
+
     var service = provider.GetRequiredService<OutgoingPaymentService>();
     await service.CreateOutgoingPaymentAsync(sender, quoteUrl, debitAmount);
 });
@@ -181,6 +184,14 @@ manageTokenCommand.SetAction(async result =>
     }
 });
 
+listIncomingPaymentsCommand.SetAction(async result =>
+{
+    var receiver = result.GetValue(receiverWalletAddressOption)!;
+    var service = provider.GetRequiredService<IncomingPaymentService>();
+    
+    await service.ListIncomingPaymentsAsync(receiver);
+});
+
 rootCommand.SetAction(_ =>
 {
     
@@ -192,9 +203,9 @@ rootCommand.Add(getIncomingPaymentCommand);
 
 // Authenticated
 rootCommand.Add(createIncomingPaymentCommand);
+rootCommand.Add(listIncomingPaymentsCommand);
 rootCommand.Add(createQuoteCommand);
 rootCommand.Add(createOutgoingPaymentCommand);
-
 
 var config = new CommandLineConfiguration(rootCommand);
 return await config.InvokeAsync(args);

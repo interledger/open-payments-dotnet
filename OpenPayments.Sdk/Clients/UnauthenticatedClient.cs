@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using OpenPayments.Sdk.Generated.Wallet;
 using OpenPayments.Sdk.Generated.Resource;
@@ -34,10 +35,8 @@ internal class UnauthenticatedClient(HttpClient http) : WalletAddressClientBase(
         if (string.IsNullOrWhiteSpace(incomingPaymentUrl))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(incomingPaymentUrl));
 
-        using var request = new HttpRequestMessage(HttpMethod.Get, incomingPaymentUrl)
-        {
-            Headers = { Accept = { new("application/json") } }
-        };
+        using var request = new HttpRequestMessage(HttpMethod.Get, incomingPaymentUrl);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         using var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();

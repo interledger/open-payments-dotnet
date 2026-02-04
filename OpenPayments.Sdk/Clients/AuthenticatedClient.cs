@@ -17,6 +17,7 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
     private readonly IAuthClientBase _authClient = new AuthClientBase(http, privateKey, keyId, clientUrl);
     private readonly IResourceClientBase _resClient = new ResourceClientBase(http, privateKey, keyId, clientUrl);
 
+    /// <inheritdoc/>
     public Task<AuthResponse> RequestGrantAsync(RequestArgs requestArgs,
         GrantCreateBody body,
         CancellationToken cancellationToken = default)
@@ -24,6 +25,7 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
         return _authClient.RequestGrantAsync(requestArgs, body, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public Task<AuthResponse> ContinueGrantAsync(AuthRequestArgs requestArgs,
         GrantContinueBody? body,
         CancellationToken cancellationToken = default)
@@ -32,37 +34,71 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
         return _authClient.ContinueGrantAsync(requestArgs, body, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public Task CancelGrantAsync(AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default)
     {
         return _authClient.CancelGrantAsync(requestArgs, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public Task<RotateTokenResponse> RotateTokenAsync(AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default)
     {
         return _authClient.RotateTokenAsync(requestArgs, cancellationToken);
     }
-    
+
+    /// <inheritdoc/>
     public Task RevokeTokenAsync(AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default)
     {
         return _authClient.RevokeTokenAsync(requestArgs, cancellationToken);
     }
 
-    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs, IncomingPaymentBody body,
+    /// <inheritdoc/>
+    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs,
+        IncomingPaymentBody body,
         CancellationToken cancellationToken = default)
     {
         return _resClient.CreateIncomingPaymentAsync(requestArgs, body, cancellationToken);
     }
 
+    /// <inheritdoc/>
+    public Task<IncomingPaymentResponse> GetIncomingPaymentAsync(AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default)
+    {
+        return _resClient.GetIncomingPaymentAsync(requestArgs, cancellationToken);
+    }
+
+    /// <inheritdoc cref="UnauthenticatedClient.GetIncomingPaymentAsync"/>
+    public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(RequestArgs requestArgs, CancellationToken cancellationToken = default)
+    {
+        return base.GetIncomingPaymentAsync(requestArgs.Url.ToString(), cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query, CancellationToken cancellationToken = default)
+    {
+        return _resClient.ListIncomingPaymentsAsync(requestArgs, query, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    {
+        return _resClient.CompleteIncomingPaymentAsync(requestArgs, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
         CancellationToken cancellationToken = default)
     {
-        return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken); 
+        return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken);
     }
 
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs, OutgoingPaymentBody body,
+    /// <inheritdoc/>
+    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
+        OutgoingPaymentBody body,
         CancellationToken cancellationToken = default)
     {
         return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
@@ -78,4 +114,3 @@ public class AuthRequestArgs : RequestArgs
 {
     public required string AccessToken { get; set; }
 }
-
