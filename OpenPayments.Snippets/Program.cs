@@ -107,6 +107,11 @@ var createQuoteCommand = new Command("CreateQuote")
     senderWalletAddressOption,
     incomingPaymentIdOption
 };
+var getQuoteCommand = new Command("GetQuote")
+{
+    senderWalletAddressOption,
+    quoteUrlOption
+};
 var createOutgoingPaymentCommand = new Command("CreateOutgoingPayment")
 {
     senderWalletAddressOption,
@@ -156,6 +161,15 @@ createQuoteCommand.SetAction(async result =>
     await service.CreateQuoteAsync(sender, incomingPaymentUrl);
 });
 
+getQuoteCommand.SetAction(async result =>
+{
+    var quoteUrl = result.GetValue(quoteUrlOption)!;
+    var sender = result.GetValue(senderWalletAddressOption)!;
+
+    var service = provider.GetRequiredService<QuoteService>();
+    await service.GetQuoteAsync(sender, quoteUrl);
+});
+
 createOutgoingPaymentCommand.SetAction(async result =>
 {
     var sender = result.GetValue(senderWalletAddressOption)!;
@@ -188,13 +202,15 @@ listIncomingPaymentsCommand.SetAction(async result =>
 {
     var receiver = result.GetValue(receiverWalletAddressOption)!;
     var service = provider.GetRequiredService<IncomingPaymentService>();
-    
+
     await service.ListIncomingPaymentsAsync(receiver);
 });
 
-rootCommand.SetAction(_ =>
+rootCommand.SetAction(async _ =>
 {
-    
+    var service = provider.GetRequiredService<QuoteService>();
+    await service.GetQuoteAsync("https://ilp.interledger-test.dev/cozmin-eur",
+        "https://ilp.interledger-test.dev/f537937b-7016-481b-b655-9f0d1014822c/quotes/817b0bf1-12a9-43a8-a6e0-38cb3b05f6c0");
 });
 
 // Unauthenticated
@@ -204,7 +220,10 @@ rootCommand.Add(getIncomingPaymentCommand);
 // Authenticated
 rootCommand.Add(createIncomingPaymentCommand);
 rootCommand.Add(listIncomingPaymentsCommand);
+//
 rootCommand.Add(createQuoteCommand);
+rootCommand.Add(getQuoteCommand);
+//
 rootCommand.Add(createOutgoingPaymentCommand);
 
 var config = new CommandLineConfiguration(rootCommand);

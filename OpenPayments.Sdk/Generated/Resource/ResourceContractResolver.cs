@@ -16,7 +16,11 @@ public sealed class ResourceContractResolver : DefaultContractResolver
         if (prop.PropertyName != null && prop.PropertyName.Equals("metadata", StringComparison.OrdinalIgnoreCase))
         {
             prop.Required = Required.Default;
-            prop.NullValueHandling = NullValueHandling.Ignore;
+        }
+        
+        if (prop.PropertyName != null && prop.PropertyName.Equals("details", StringComparison.OrdinalIgnoreCase))
+        {
+            prop.Required = Required.Default;
         }
         
         return prop;

@@ -9,7 +9,7 @@ as-models: auth-server-generate
 
 resource-server-generate:
 	npx swagger-cli bundle open-payments-specifications/openapi/resource-server.yaml -o OpenPayments.Sdk/tmp/resource-bundled.json -t json && \
-	nswag openapi2csclient /input:OpenPayments.Sdk/tmp/resource-bundled.json /output:OpenPayments.Sdk/Generated/Resource/ResourceServerClient.g.cs /namespace:OpenPayments.Sdk.Generated.Resource /classname:ResourceServerClient /injectHttpClient:true && \
+	nswag openapi2csclient /input:OpenPayments.Sdk/tmp/resource-bundled.json /output:OpenPayments.Sdk/Generated/Resource/ResourceServerClient.g.cs /namespace:OpenPayments.Sdk.Generated.Resource /classname:ResourceServerClient /injectHttpClient:true /GenerateOptionalPropertiesAsNullable:true /GenerateNullableReferenceTypes:true && \
 	rm -rf OpenPayments.Sdk/tmp/resource-bundled.json
 
 rs-models: resource-server-generate

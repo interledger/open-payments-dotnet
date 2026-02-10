@@ -97,6 +97,12 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
     }
 
     /// <inheritdoc/>
+    public Task<QuoteResponse> GetQuoteAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    {
+        return _resClient.GetQuoteAsync(requestArgs, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
         OutgoingPaymentBody body,
         CancellationToken cancellationToken = default)
