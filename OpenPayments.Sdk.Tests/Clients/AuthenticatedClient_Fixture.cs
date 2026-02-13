@@ -1,5 +1,4 @@
 using System.Net;
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using Moq;
 using Moq.Protected;
@@ -58,7 +57,6 @@ public class AuthenticatedClientFixture
             [
                 new IncomingAccess()
                 {
-                    Type = AccessType.IncomingPayment,
                     Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
                 }
             ]
@@ -94,6 +92,26 @@ public class AuthenticatedClientFixture
     };
 
     public IncomingPaymentResponse CreateIncomingPaymentResponse = new()
+    {
+        Id = new Uri("https://example.com/incoming/1234"),
+        WalletAddress = new Uri("https://example.com/wallet/1234"),
+        IncomingAmount = new Amount("100", "EUR", 2),
+        ReceivedAmount = new Amount("0", "EUR", 2),
+        Completed = false,
+        CreatedAt = DateTime.UtcNow,
+        ExpiresAt = DateTime.UtcNow.AddDays(1),
+        Methods =
+        [
+            new IlpPaymentMethod()
+            {
+                Type = IlpPaymentMethodType.Ilp,
+                IlpAddress = "example.com/incoming/1234",
+                SharedSecret = "secret1234"
+            }
+        ]
+    };
+    
+    public IncomingPaymentResponse CreateIncomingPaymentResponseWithMetadata = new()
     {
         Id = new Uri("https://example.com/incoming/1234"),
         WalletAddress = new Uri("https://example.com/wallet/1234"),

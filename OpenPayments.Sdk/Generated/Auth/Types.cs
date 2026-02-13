@@ -52,6 +52,10 @@ namespace OpenPayments.Sdk.Generated.Auth
         [System.ComponentModel.DataAnnotations.Required]
         // [JsonProperty("actions")] public string[]? Actions { get; set; }
         public ICollection<Actions> Actions { get; set; } = new Collection<Actions>();
+        
+        [JsonProperty("identifier")] public Uri? Identifier { get; set; }
+        
+        [JsonProperty("limits")] public OutgoingAccessLimits? Limits { get; set; }
     }
 
     public partial class QuoteAccess : AccessItem
@@ -69,7 +73,7 @@ namespace OpenPayments.Sdk.Generated.Auth
             Type = AccessType.IncomingPayment;
         }
 
-        [JsonProperty("identifier")] public Uri? Identifier { get; set; }
+        [JsonProperty("identifier")] public new Uri? Identifier { get; set; }
     }
 
     public partial class OutgoingAccess : AccessItem
@@ -79,9 +83,9 @@ namespace OpenPayments.Sdk.Generated.Auth
             Type = AccessType.OutgoingPayment;
         }
 
-        [JsonProperty("identifier")] public required Uri Identifier { get; set; }
+        [JsonProperty("identifier")] public new required Uri Identifier { get; set; }
 
-        [JsonProperty("limits")] public OutgoingAccessLimits? Limits { get; set; }
+        [JsonProperty("limits")] public new OutgoingAccessLimits? Limits { get; set; }
     }
 
     public enum AccessType
