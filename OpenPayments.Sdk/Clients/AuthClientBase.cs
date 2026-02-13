@@ -1,4 +1,3 @@
-using System.Globalization;
 using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 
@@ -25,9 +24,7 @@ public class AuthClientBase : IAuthClientBase
         body.Client = _client.ClientUrl;
 
         return await _client
-            .CreateGrantAsync(
-                body
-                , cancellationToken)
+            .CreateGrantAsync(body, cancellationToken)
             .ConfigureAwait(false);
     }
 

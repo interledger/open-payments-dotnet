@@ -31,63 +31,98 @@ namespace OpenPayments.Sdk.Generated.Resource
         public int? First { get; set; }
         public int? Last { get; set; }
     }
-    
+
     public partial class ListIncomingPaymentsResponse : Response
     {
-        
     }
 
     public partial class QuoteBody : Body3
+    {
+    }
+
+    public partial class QuoteBodyWithDebitAmount : QuoteBody
+    {
+        /// <summary>
+        /// The fixed amount that would be sent from the sending wallet address given a successful outgoing payment.
+        /// </summary>
+        [JsonProperty("debitAmount")]
+        public required Amount DebitAmount { get; set; }
+    }
+
+    public partial class QuoteBodyWithReceiveAmount : QuoteBody
     {
         /// <summary>
         /// The fixed amount that would be paid into the receiving wallet address given a successful outgoing payment.
         /// </summary>
         [JsonProperty("receiveAmount")]
-        public Amount? ReceiveAmount { get; set; }
-
-        /// <summary>
-        /// The fixed amount that would be sent from the sending wallet address given a successful outgoing payment.
-        /// </summary>
-        [JsonProperty("debitAmount")]
-        public Amount? DebitAmount { get; set; }
+        public required Amount ReceiveAmount { get; set; }
     }
 
     public partial class QuoteResponse : Quote
     {
     }
 
-    public partial class OutgoingPaymentBody : Body2
+    public abstract class OutgoingPaymentBody
+    {
+        [JsonProperty("walletAddress", Required = Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public Uri WalletAddress { get; set; } = default!;
+
+        /// <inheritdoc cref="Body2.Metadata"/>
+        [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        public object? Metadata { get; set; }
+    }
+
+    public partial class OutgoingPaymentBodyFromQuote : OutgoingPaymentBody
     {
         /// <summary>
-        /// The URL of the quote defining this payment's amounts.
+        /// The URL of the Quote defining this payment's amounts.
         /// </summary>
         [JsonProperty("quoteId", Required = Required.AllowNull)]
-        public new Uri? QuoteId { get; set; }
+        public required Uri QuoteId { get; set; }
+    }
 
+    public partial class OutgoingPaymentBodyFromIncomingPayment : OutgoingPaymentBody
+    {
         /// <summary>
         /// The URL of the incoming payment this outgoing payment will fulfill.
         /// </summary>
         [JsonProperty("incomingPayment")]
-        public Uri? IncomingPayment { get; set; }
+        public required Uri IncomingPayment { get; set; }
 
         /// <summary>
         /// The fixed amount that would be sent from the sending wallet address given a successful outgoing payment.
         /// </summary>
         [JsonProperty("debitAmount")]
-        public Amount? DebitAmount { get; set; }
-
-        /// <inheritdoc cref="Body2.Metadata"/>
-        [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public new object? Metadata { get; set; }
+        public required Amount DebitAmount { get; set; }
     }
 
-    public partial class OutgoingPaymentResponse : OutgoingPaymentWithSpentAmounts
+    public partial class OutgoingPaymentResponse : OutgoingPayment
     {
     }
-    
+
+    public partial class OutgoingPaymentWithSpentAmountsResponse : OutgoingPaymentWithSpentAmounts
+    {
+    }
+
+    public partial class ListOutgoingPaymentQuery
+    {
+        public required string WalletAddress { get; set; }
+        public string? Cursor { get; set; }
+        public int? First { get; set; }
+        public int? Last { get; set; }
+    }
+
+    public partial class ListOutgoingPaymentsResponse : Response2
+    {
+    }
+
     public partial class Amount
     {
-        public Amount() {}
+        public Amount()
+        {
+        }
+
         public Amount(string value, string assetCode, int? assetScale = 2)
         {
             Value = value;
@@ -102,7 +137,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [System.ComponentModel.DataAnnotations.Required]
         public ResourceError Error { get; set; } = new ResourceError();
 
-        private IDictionary<string, object> _additionalProperties;
+        private IDictionary<string, object>? _additionalProperties;
 
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
@@ -111,7 +146,7 @@ namespace OpenPayments.Sdk.Generated.Resource
             set { _additionalProperties = value; }
         }
     }
-    
+
     public partial class ResourceError
     {
         [JsonProperty("code", Required = Required.Always)]
@@ -128,7 +163,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [JsonProperty("details", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public object Details { get; set; } = null!;
 
-        private IDictionary<string, object> _additionalProperties;
+        private IDictionary<string, object>? _additionalProperties;
 
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
@@ -136,6 +171,5 @@ namespace OpenPayments.Sdk.Generated.Resource
             get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
-
     }
 }

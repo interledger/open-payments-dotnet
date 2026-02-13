@@ -76,7 +76,8 @@ public partial class AuthServerClient
                             objectResponse.Text, headers, null);
                     }
 
-                    throw new ApiException<ErrorResponse>(Helpers.StatusAsText(status), status, objectResponse.Text,
+                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
+                        objectResponse.Text,
                         headers, objectResponse.Object, null);
                 }
                 default:
@@ -147,7 +148,6 @@ public partial class AuthServerClient
             {
                 case 200:
                 {
-                    
                     var objectResponse =
                         await ReadObjectResponseAsync<AuthResponse>(response, headers, cancellationToken)
                             .ConfigureAwait(false);
@@ -170,7 +170,8 @@ public partial class AuthServerClient
                             objectResponse.Text, headers, null);
                     }
 
-                    throw new ApiException<ErrorResponse>(Helpers.StatusAsText(status), status, objectResponse.Text,
+                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
+                        objectResponse.Text,
                         headers, objectResponse.Object, null);
                 }
                 default:
@@ -248,7 +249,8 @@ public partial class AuthServerClient
                             objectResponse.Text, headers, null);
                     }
 
-                    throw new ApiException<ErrorResponse>(Helpers.StatusAsText(status), status, objectResponse.Text,
+                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
+                        objectResponse.Text,
                         headers, objectResponse.Object, null);
                 }
                 default:

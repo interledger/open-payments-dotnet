@@ -14,19 +14,6 @@ namespace OpenPayments.Sdk.Generated
 
     public static class Helpers
     {
-        public static string StatusAsText(int status)
-        {
-            return status switch
-            {
-                400 => "Bad Request",
-                401 => "Unauthorized",
-                403 => "Forbidden",
-                404 => "Not Found",
-                500 => "Internal Server Error",
-                _ => "Unknown Status Code"
-            };
-        }
-        
         public static Dictionary<string, IEnumerable<string>> ExtractHeaders(HttpResponseMessage response)
         {
             var headers = new Dictionary<string, IEnumerable<string>>();

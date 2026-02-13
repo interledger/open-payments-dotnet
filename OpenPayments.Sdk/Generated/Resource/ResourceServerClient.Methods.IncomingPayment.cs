@@ -239,21 +239,18 @@ public partial class ResourceServerClient
         urlBuilder.Append('?');
         urlBuilder.Append(Uri.EscapeDataString("wallet-address")).Append('=').Append(
             Uri.EscapeDataString(ConvertToString(walletAddress, System.Globalization.CultureInfo.InvariantCulture)));
-
         if (cursor != null)
         {
             urlBuilder.Append('&').Append(Uri.EscapeDataString("cursor")).Append('=')
                 .Append(
                     Uri.EscapeDataString(ConvertToString(cursor, System.Globalization.CultureInfo.InvariantCulture)));
         }
-
         if (first != null)
         {
             urlBuilder.Append('&').Append(Uri.EscapeDataString("first")).Append('=')
                 .Append(Uri.EscapeDataString(ConvertToString(first,
                     System.Globalization.CultureInfo.InvariantCulture)));
         }
-
         if (last != null)
         {
             urlBuilder.Append('&').Append(Uri.EscapeDataString("last")).Append('=')

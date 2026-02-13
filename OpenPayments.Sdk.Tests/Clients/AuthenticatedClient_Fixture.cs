@@ -37,9 +37,8 @@ public class AuthenticatedClientFixture
         {
             Access =
             [
-                new AccessItem()
+                new IncomingAccess()
                 {
-                    Type = AccessType.IncomingPayment,
                     Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete]
                 }
             ]
@@ -53,11 +52,11 @@ public class AuthenticatedClientFixture
 
     public AuthResponse ApprovedGrantResponse => new()
     {
-        AccessToken = new AccessToken()
+        AccessToken = new AccessTokenResponse()
         {
             Access =
             [
-                new AccessItem()
+                new IncomingAccess()
                 {
                     Type = AccessType.IncomingPayment,
                     Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
@@ -66,7 +65,7 @@ public class AuthenticatedClientFixture
         },
         Continue = new AuthContinue()
         {
-            AccessToken = new Access_token2()
+            AccessToken = new ContinueAccessToken()
             {
                 Value = "D8616A2FBC790B1CE132",
             },
@@ -76,13 +75,12 @@ public class AuthenticatedClientFixture
 
     public RotateTokenResponse TokenResponse = new()
     {
-        AccessToken = new AccessToken()
+        AccessToken = new AccessTokenResponse()
         {
             Access =
             [
-                new AccessItem()
+                new IncomingAccess()
                 {
-                    Type = AccessType.IncomingPayment,
                     Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
                 }
             ]
@@ -104,15 +102,18 @@ public class AuthenticatedClientFixture
         Completed = false,
         CreatedAt = DateTime.UtcNow,
         ExpiresAt = DateTime.UtcNow.AddDays(1),
-        Methods = [new IlpPaymentMethod()
-        {
-            Type = IlpPaymentMethodType.Ilp,
-            IlpAddress = "example.com/incoming/1234",
-            SharedSecret = "secret1234"
-        }],
+        Methods =
+        [
+            new IlpPaymentMethod()
+            {
+                Type = IlpPaymentMethodType.Ilp,
+                IlpAddress = "example.com/incoming/1234",
+                SharedSecret = "secret1234"
+            }
+        ],
         Metadata = new JObject
         {
-             ["description"] = "Free Money"
+            ["description"] = "Free Money"
         },
     };
 
@@ -120,6 +121,22 @@ public class AuthenticatedClientFixture
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
         Receiver = new Uri("https://example.com/incoming/1234"),
+        Method = PaymentMethod.Ilp,
+    };
+    
+    public QuoteBodyWithDebitAmount CreateQuoteBodyWithDebitAmount = new()
+    {
+        WalletAddress = new Uri("https://example.com/wallet/1234"),
+        Receiver = new Uri("https://example.com/incoming/1234"),
+        DebitAmount = new Amount("100", "EUR"),
+        Method = PaymentMethod.Ilp,
+    };
+    
+    public QuoteBodyWithReceiveAmount CreateQuoteBodyWithReceiveAmount = new()
+    {
+        WalletAddress = new Uri("https://example.com/wallet/1234"),
+        Receiver = new Uri("https://example.com/incoming/1234"),
+        ReceiveAmount = new Amount("100", "EUR"),
         Method = PaymentMethod.Ilp,
     };
 
@@ -135,7 +152,7 @@ public class AuthenticatedClientFixture
         Method = PaymentMethod.Ilp,
     };
 
-    public OutgoingPaymentBody CreateOutgoingPaymentBody = new()
+    public OutgoingPaymentBodyFromQuote CreateOutgoingPaymentBodyFromQuote = new()
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
         QuoteId = new Uri("https://example.com/quote/1234"),
@@ -144,8 +161,19 @@ public class AuthenticatedClientFixture
             ["description"] = "Free Money"
         }
     };
+    
+    public OutgoingPaymentBodyFromIncomingPayment CreateOutgoingPaymentBodyFromIncomingPayment = new()
+    {
+        WalletAddress = new Uri("https://example.com/wallet/1234"),
+        IncomingPayment = new Uri("https://example.com/incoming/1234"),
+        DebitAmount = new Amount("100", "EUR"),
+        Metadata = new JObject
+        {
+            ["description"] = "Free Money"
+        }
+    };
 
-    public OutgoingPaymentResponse CreateOutgoingPaymentResponse = new()
+    public OutgoingPaymentWithSpentAmountsResponse CreateOutgoingPaymentResponse = new()
     {
         Id = new Uri("https://example.com/outgoing/1234"),
         WalletAddress = new Uri("https://example.com/wallet/1234"),
@@ -162,6 +190,60 @@ public class AuthenticatedClientFixture
         CreatedAt = DateTime.UtcNow,
         GrantSpentReceiveAmount = new Amount("0", "EUR"),
         GrantSpentDebitAmount = new Amount("0", "EUR")
+    };
+
+    public OutgoingPaymentResponse GetOutgoingPaymentResponse = new()
+    {
+        Id = new Uri("https://example.com/outgoing/1234"),
+        WalletAddress = new Uri("https://example.com/wallet/1234"),
+        QuoteId = new Uri("https://example.com/quote/1234"),
+        ReceiveAmount = new Amount("100", "EUR"),
+        DebitAmount = new Amount("200", "EUR"),
+        SentAmount = new Amount("0", "EUR"),
+        Receiver = new Uri("https://example.com/incoming/1234"),
+        Failed = false,
+        Metadata = new JObject()
+        {
+            ["description"] = "Free Money"
+        },
+        CreatedAt = DateTime.UtcNow
+    };
+
+    public ListOutgoingPaymentQuery ListOutgoingPaymentQuery = new()
+    {
+        WalletAddress = "https://example.com/wallet/1234",
+        Cursor = "1234",
+        First = 10,
+        Last = 10
+    };
+
+    public ListOutgoingPaymentsResponse ListOutgoingPaymentsResponse = new()
+    {
+        Pagination = new PageInfo
+        {
+            StartCursor = "1234",
+            EndCursor = "1234",
+            HasNextPage = false,
+            HasPreviousPage = false
+        },
+        Result = [
+            new OutgoingPaymentResponse()
+            {
+                Id = new Uri("https://example.com/outgoing/1234"),
+                WalletAddress = new Uri("https://example.com/wallet/1234"),
+                QuoteId = new Uri("https://example.com/quote/1234"),
+                ReceiveAmount = new Amount("100", "EUR"),
+                DebitAmount = new Amount("200", "EUR"),
+                SentAmount = new Amount("0", "EUR"),
+                Receiver = new Uri("https://example.com/incoming/1234"),
+                Failed = false,
+                Metadata = new JObject()
+                {
+                    ["description"] = "Free Money"
+                },
+                CreatedAt = DateTime.UtcNow
+            }
+        ]
     };
 
     public HttpClient CreateHttpClientMock(object? responseObject = null, HttpStatusCode? code = null)

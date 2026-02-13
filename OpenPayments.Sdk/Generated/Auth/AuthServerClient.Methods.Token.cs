@@ -15,7 +15,8 @@ public partial class AuthServerClient
     /// </remarks>
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
-    public async Task<RotateTokenResponse> RotateTokenAsync(Uri tokenUrl, string accessToken, CancellationToken cancellationToken)
+    public async Task<RotateTokenResponse> RotateTokenAsync(Uri tokenUrl, string accessToken,
+        CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(tokenUrl.ToString());
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
@@ -75,7 +76,7 @@ public partial class AuthServerClient
                             objectResponse.Text, headers, null);
                     }
 
-                    throw new ApiException<ErrorResponse>(Helpers.StatusAsText(status), status,
+                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
                         objectResponse.Text,
                         headers, objectResponse.Object, null);
                 }
@@ -121,7 +122,7 @@ public partial class AuthServerClient
 
         var url = urlBuilder.ToString();
         request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
- 
+
         PrepareRequest(client, request, url);
 
         var response = await client
@@ -151,12 +152,13 @@ public partial class AuthServerClient
                             objectResponse.Text, headers, null);
                     }
 
-                    throw new ApiException<ErrorResponse>(Helpers.StatusAsText(status), status,
+                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
                         objectResponse.Text, headers, objectResponse.Object, null);
                 }
                 default:
                 {
-                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
+                    var responseData =
+                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
                     throw new ApiException(
                         "The HTTP status code of the response was not expected (" + status + ").", status,
                         responseData, headers, null);

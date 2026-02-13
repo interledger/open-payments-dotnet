@@ -8,10 +8,13 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonProperty("access_token")] public AccessToken? AccessToken { get; set; }
 
         [JsonProperty("client")] public Uri? Client { get; set; }
+    }
 
-        [JsonProperty("interact")] public InteractRequest? Interact { get; set; }
+    public partial class GrantCreateBodyWithInteract : GrantCreateBody
+    {
+        [JsonProperty("access_token")] public new required AccessToken AccessToken { get; set; }
 
-        // TODO: Add subject
+        [JsonProperty("interact")] public required InteractRequest Interact { get; set; }
     }
 
     public partial class GrantContinueBody
@@ -22,12 +25,17 @@ namespace OpenPayments.Sdk.Generated.Auth
     public partial class AccessToken
     {
         [JsonProperty("access")] public required Collection<AccessItem> Access { get; set; }
+    }
 
+    public partial class AccessTokenResponse
+    {
         [JsonProperty("value")] public string Value { get; set; } = null!;
 
         [JsonProperty("manage")] public string Manage { get; set; } = null!;
 
         [JsonProperty("expires_in")] public int? ExpiresIn { get; set; }
+
+        [JsonProperty("access")] public required Collection<AccessItem> Access { get; set; }
     }
 
     /// <summary>
@@ -44,10 +52,36 @@ namespace OpenPayments.Sdk.Generated.Auth
         [System.ComponentModel.DataAnnotations.Required]
         // [JsonProperty("actions")] public string[]? Actions { get; set; }
         public ICollection<Actions> Actions { get; set; } = new Collection<Actions>();
+    }
 
-        [JsonProperty("identifier")] public string? Identifier { get; set; }
+    public partial class QuoteAccess : AccessItem
+    {
+        public QuoteAccess()
+        {
+            Type = AccessType.Quote;
+        }
+    }
 
-        [JsonProperty("limits")] public AccessLimits? Limits { get; set; }
+    public partial class IncomingAccess : AccessItem
+    {
+        public IncomingAccess()
+        {
+            Type = AccessType.IncomingPayment;
+        }
+
+        [JsonProperty("identifier")] public Uri? Identifier { get; set; }
+    }
+
+    public partial class OutgoingAccess : AccessItem
+    {
+        public OutgoingAccess()
+        {
+            Type = AccessType.OutgoingPayment;
+        }
+
+        [JsonProperty("identifier")] public required Uri Identifier { get; set; }
+
+        [JsonProperty("limits")] public OutgoingAccessLimits? Limits { get; set; }
     }
 
     public enum AccessType
@@ -62,22 +96,28 @@ namespace OpenPayments.Sdk.Generated.Auth
         Quote = 2,
     }
 
-    public partial class AccessLimits
+    public partial class OutgoingAccessLimits
     {
+        [JsonProperty("receiver")] public string? Receiver { get; set; }
+
+        [JsonProperty("interval")] public string? Interval { get; set; }
+
         [JsonProperty("debitAmount")] public Amount? DebitAmount { get; set; }
 
         [JsonProperty("receiveAmount")] public Amount? ReceiveAmount { get; set; }
-
-        [JsonProperty("interval")] public string? Interval { get; set; }
     }
 
     public partial class AuthResponse
     {
-        [JsonProperty("access_token")] public AccessToken? AccessToken { get; set; }
+        [JsonProperty("access_token")] public AccessTokenResponse? AccessToken { get; set; }
 
         [JsonProperty("interact")] public InteractResponse? Interact { get; set; }
 
         [JsonProperty("continue")] public AuthContinue Continue { get; set; } = null!;
+    }
+
+    public partial class ContinueAccessToken : Access_token2
+    {
     }
 
     public partial class AuthContinue
@@ -87,7 +127,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// </summary>
         [JsonProperty("access_token", Required = Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        public Access_token2 AccessToken { get; set; } = new Access_token2();
+        public ContinueAccessToken AccessToken { get; set; } = new();
 
         /// <summary>
         /// The URI at which the client instance can make continuation requests.
@@ -100,7 +140,7 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// The amount of time in integer seconds the client instance MUST wait after receiving this request continuation response and calling the continuation URI.
         /// </summary>
         [JsonProperty("wait", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public int Wait { get; set; }
+        public int? Wait { get; set; }
 
         private IDictionary<string, object>? _additionalProperties;
 
@@ -114,13 +154,13 @@ namespace OpenPayments.Sdk.Generated.Auth
 
     public partial class RotateTokenResponse
     {
-        [JsonProperty("access_token")] public required AccessToken AccessToken { get; set; }
+        [JsonProperty("access_token")] public required AccessTokenResponse AccessToken { get; set; }
     }
 
     public partial class ErrorResponse
     {
         [JsonProperty("error", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public ErrorItem? Error { get; set; }
+        public ErrorItem Error { get; set; } = null!;
 
         private IDictionary<string, object>? _additionalProperties;
 

@@ -526,7 +526,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <remarks>
         /// List all outgoing payments on the wallet address
         /// </remarks>
-        /// <param name="wallet_address">URL of a wallet address hosted by a Rafiki instance.</param>
+        /// <param name="walletAddress">URL of a wallet address hosted by a Rafiki instance.</param>
         /// <param name="cursor">The cursor key to list from.</param>
         /// <param name="first">The number of items to return after the cursor.</param>
         /// <param name="last">The number of items to return before the cursor.</param>
@@ -534,9 +534,9 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature)
+        public virtual System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string walletAddress, string? cursor, int? first, int? last, string signature_Input, string signature)
         {
-            return ListOutgoingPaymentsAsync(wallet_address, cursor, first, last, signature_Input, signature, System.Threading.CancellationToken.None);
+            return ListOutgoingPaymentsAsync(walletAddress, cursor, first, last, signature_Input, signature, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -546,7 +546,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <remarks>
         /// List all outgoing payments on the wallet address
         /// </remarks>
-        /// <param name="wallet_address">URL of a wallet address hosted by a Rafiki instance.</param>
+        /// <param name="walletAddress">URL of a wallet address hosted by a Rafiki instance.</param>
         /// <param name="cursor">The cursor key to list from.</param>
         /// <param name="first">The number of items to return after the cursor.</param>
         /// <param name="last">The number of items to return before the cursor.</param>
@@ -554,10 +554,10 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string walletAddress, string? cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
         {
-            if (wallet_address == null)
-                throw new System.ArgumentNullException("wallet_address");
+            if (walletAddress == null)
+                throw new System.ArgumentNullException("walletAddress");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -581,7 +581,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     // Operation Path: "outgoing-payments"
                     urlBuilder_.Append("outgoing-payments");
                     urlBuilder_.Append('?');
-                    urlBuilder_.Append(System.Uri.EscapeDataString("wallet-address")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(wallet_address, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    urlBuilder_.Append(System.Uri.EscapeDataString("wallet-address")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(walletAddress, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     if (cursor != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("cursor")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(cursor, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
