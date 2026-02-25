@@ -142,7 +142,6 @@ createIncomingPaymentCommand.SetAction(async result =>
 {
     var receiver = result.GetValue(receiverWalletAddressOption)!;
     var amount = result.GetValue(amountOption)!;
-
     var service = provider.GetRequiredService<IncomingPaymentService>();
     await service.CreateIncomingPaymentAsync(receiver, amount);
 });
@@ -151,7 +150,6 @@ createQuoteCommand.SetAction(async result =>
 {
     var incomingPaymentUrl = result.GetValue(incomingPaymentIdOption)!;
     var sender = result.GetValue(senderWalletAddressOption)!;
-
     var service = provider.GetRequiredService<QuoteService>();
     await service.CreateQuoteAsync(sender, incomingPaymentUrl);
 });
@@ -161,7 +159,6 @@ createOutgoingPaymentCommand.SetAction(async result =>
     var sender = result.GetValue(senderWalletAddressOption)!;
     var quoteUrl = result.GetValue(quoteUrlOption)!;
     var debitAmount = result.GetValue(amountOption)!;
-
     var service = provider.GetRequiredService<OutgoingPaymentService>();
     await service.CreateOutgoingPaymentAsync(sender, quoteUrl, debitAmount);
 });
@@ -188,13 +185,13 @@ listIncomingPaymentsCommand.SetAction(async result =>
 {
     var receiver = result.GetValue(receiverWalletAddressOption)!;
     var service = provider.GetRequiredService<IncomingPaymentService>();
-    
+
     await service.ListIncomingPaymentsAsync(receiver);
 });
 
 rootCommand.SetAction(_ =>
 {
-    
+
 });
 
 // Unauthenticated

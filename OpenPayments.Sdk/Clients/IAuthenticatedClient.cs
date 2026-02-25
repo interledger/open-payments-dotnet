@@ -38,9 +38,9 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <returns></returns>
     public Task CancelGrantAsync(AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="requestArgs">Auth Token URL Address (e.g. <c>https://ilp.com/token/1234</c>) and access token.</param>
     /// <param name="cancellationToken"></param>
@@ -48,7 +48,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     public Task<RotateTokenResponse> RotateTokenAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="requestArgs">Auth Token URL Address (e.g. <c>https://ilp.com/token/1234</c>) and access token.</param>
     /// <param name="cancellationToken"></param>
@@ -56,7 +56,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     public Task RevokeTokenAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="requestArgs">Resource Server URL Address (e.g. <c>https://res.ilp.com/incoming/</c>) and access token.</param>
     /// <param name="body"></param>
@@ -65,7 +65,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs,
         IncomingPaymentBody body, CancellationToken cancellationToken = default);
 
-    
+
     /// <summary>
     /// Get an Incoming Payment
     /// </summary>
@@ -81,7 +81,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(RequestArgs requestArgs, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// List Incoming Payments
     /// </summary>
@@ -90,7 +90,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="cancellationToken"></param>
     /// <returns>ListIncomingPaymentsResponse</returns>
     public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(AuthRequestArgs requestArgs, ListIncomingPaymentQuery query, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Complete Incoming Payment
     /// </summary>
@@ -100,7 +100,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="requestArgs">Resource Server URL Address (e.g. <c>https://res.ilp.com/quote</c>) and access token.</param>
     /// <param name="body"></param>
@@ -110,7 +110,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="requestArgs">Resource Server URL Address (e.g. <c>https://res.ilp.com/outgoing</c>) and access token.</param>
     /// <param name="body"></param>

@@ -31,10 +31,10 @@ namespace OpenPayments.Sdk.Generated.Resource
         public int? First { get; set; }
         public int? Last { get; set; }
     }
-    
+
     public partial class ListIncomingPaymentsResponse : Response
     {
-        
+
     }
 
     public partial class QuoteBody : Body3
@@ -84,7 +84,7 @@ namespace OpenPayments.Sdk.Generated.Resource
     public partial class OutgoingPaymentResponse : OutgoingPaymentWithSpentAmounts
     {
     }
-    
+
     public partial class Amount
     {
         public Amount() {}

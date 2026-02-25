@@ -11,7 +11,6 @@ public class IncomingPaymentService(IAuthenticatedClient client)
     public async Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(string receiver, string amount)
     {
         var waDetails = await client.GetWalletAddressAsync(receiver);
-
         var grant = await client.RequestGrantAsync(
             new RequestArgs()
             {
@@ -95,7 +94,7 @@ public class IncomingPaymentService(IAuthenticatedClient client)
     public async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(string walletAddress)
     {
         var waDetails = await client.GetWalletAddressAsync("https://ilp.interledger-test.dev/cozmin");
-        
+
         var grant = await client.RequestGrantAsync(
             new RequestArgs()
             {

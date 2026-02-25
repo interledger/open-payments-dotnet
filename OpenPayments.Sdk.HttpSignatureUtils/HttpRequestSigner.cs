@@ -30,13 +30,13 @@ public static class HttpRequestSigner
         var fields = string.Join(" ", components.Select(h => $"\"{h}\""));
         return $"({fields});created={created};keyid=\"{keyId}\";alg=\"ed25519\"";
     }
-    
+
     private static string ComputeContentDigest(string body)
     {
         var hash = SHA512.HashData(Encoding.UTF8.GetBytes(body));
         return Convert.ToBase64String(hash);
     }
-    
+
     private static async Task<string> TryGetHeaderValueAsync(HttpRequestMessage request, string name)
     {
         name = name.ToLowerInvariant();
