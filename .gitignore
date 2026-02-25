@@ -6,3 +6,9 @@ coveragereport/
 **/Generated/AuthServerClient.cs*
 **/Generated/WalletAddressClient.cs*
 **/Generated/ResourceServerClient.cs*
+
+.env
+.idea/
+OpenPayments.sln.DotSettings.user
+
+
