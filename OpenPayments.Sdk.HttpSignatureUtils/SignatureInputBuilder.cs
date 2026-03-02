@@ -1,8 +1,10 @@
 using System.Security.Cryptography;
 using System.Text;
 
+/// <inheritdoc cref="ISignatureInputBuilder"/>
 public class SignatureInputBuilder : ISignatureInputBuilder
 {
+    /// <inheritdoc cref="ISignatureInputBuilder"/>
     public async Task<string?> BuildBaseAsync(
         List<string> components,
         HttpRequestMessage request,

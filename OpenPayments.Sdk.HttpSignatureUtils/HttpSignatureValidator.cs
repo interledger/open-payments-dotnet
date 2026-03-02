@@ -2,12 +2,14 @@ using System.Text;
 using NSec.Cryptography;
 using OpenPayments.Sdk.HttpSignatureUtils;
 
+/// <inheritdoc cref="IHttpSignatureValidator"/>
 public class HttpSignatureValidator : IHttpSignatureValidator
 {
     private readonly ISignatureInputParser _parser;
     private readonly ISignatureInputValidator _validator;
     private readonly ISignatureInputBuilder _builder;
 
+    /// <inheritdoc cref="HttpSignatureValidator"/>
     public HttpSignatureValidator(
         ISignatureInputParser parser,
         ISignatureInputValidator validator,
@@ -19,12 +21,14 @@ public class HttpSignatureValidator : IHttpSignatureValidator
         _builder = builder;
     }
 
+    /// <inheritdoc cref="HttpSignatureValidator"/>
     public bool AreSignatureHeadersPresent(HttpRequestMessage request)
     {
         return TryGetHeader(request, "signature") is not null
                && TryGetHeader(request, "signature-input") is not null;
     }
 
+    /// <inheritdoc cref="HttpSignatureValidator"/>
     public async Task<bool> ValidateSignatureAsync(HttpRequestMessage request, Jwk clientKey)
     {
         var sig = TryGetHeader(request, "signature")!;

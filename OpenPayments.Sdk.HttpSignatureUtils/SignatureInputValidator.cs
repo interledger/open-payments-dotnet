@@ -1,18 +1,20 @@
 using OpenPayments.Sdk.HttpSignatureUtils;
 
+/// <inheritdoc cref="ISignatureInputValidator"/>
 public class SignatureInputValidator : ISignatureInputValidator
 {
+    /// <inheritdoc cref="ISignatureInputValidator"/>
     public bool Validate(List<string> components, HttpRequestMessage request)
     {
         if (components.Any(c => !c.Equals(c, StringComparison.CurrentCultureIgnoreCase)))
             return false;
 
-        bool hasMethod = components.Contains("@method");
-        bool hasTargetUri = components.Contains("@target-uri");
-        bool hasAuth =
+        var hasMethod = components.Contains("@method");
+        var hasTargetUri = components.Contains("@target-uri");
+        var hasAuth =
             !request.Headers.Contains("Authorization") || components.Contains("authorization");
 
-        bool hasDigest =
+        var hasDigest =
             !components.Contains("content-digest")
             || request.Content != null
             && request.Content.Headers.Contains("Content-Digest")
