@@ -4,7 +4,10 @@ namespace OpenPayments.Sdk.Generated.Wallet
 {
     public partial class WalletAddressClient
     {
-        public async Task<WalletAddress> GetWalletAddressAsync(string walletAddress, CancellationToken cancellationToken)
+        public async Task<WalletAddress> GetWalletAddressAsync(
+            string walletAddress,
+            CancellationToken cancellationToken
+        )
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -13,7 +16,11 @@ namespace OpenPayments.Sdk.Generated.Wallet
                 using (var request_ = new HttpRequestMessage())
                 {
                     request_.Method = new HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Accept.Add(
+                        System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse(
+                            "application/json"
+                        )
+                    );
 
                     var urlBuilder_ = new System.Text.StringBuilder(walletAddress);
 
@@ -24,7 +31,13 @@ namespace OpenPayments.Sdk.Generated.Wallet
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_
+                        .SendAsync(
+                            request_,
+                            HttpCompletionOption.ResponseHeadersRead,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
@@ -42,29 +55,74 @@ namespace OpenPayments.Sdk.Generated.Wallet
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<WalletAddress>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<WalletAddress>(
+                                    response_,
+                                    headers_,
+                                    cancellationToken
+                                )
+                                .ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new ApiException(
+                                    "Response was null which was not expected.",
+                                    status_,
+                                    objectResponse_.Text,
+                                    headers_,
+                                    null
+                                );
                             }
+
                             return objectResponse_.Object;
                         }
-                        else
-                        if (status_ == 302)
+                        else if (status_ == 302)
                         {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("If the `Accept` header is `text/html` in the request, the server may choose to redirect to an HTML page for the given wallet address.", status_, responseText_, headers_, null);
+                            string responseText_ =
+                                (response_.Content == null)
+                                    ? string.Empty
+                                    : await response_
+                                        .Content.ReadAsStringAsync()
+                                        .ConfigureAwait(false);
+                            throw new ApiException(
+                                "If the `Accept` header is `text/html` in the request, the server may choose to redirect to an HTML page for the given wallet address.",
+                                status_,
+                                responseText_,
+                                headers_,
+                                null
+                            );
+                        }
+                        else if (status_ == 404)
+                        {
+                            string responseText_ =
+                                (response_.Content == null)
+                                    ? string.Empty
+                                    : await response_
+                                        .Content.ReadAsStringAsync()
+                                        .ConfigureAwait(false);
+                            throw new ApiException(
+                                "Wallet Address Not Found",
+                                status_,
+                                responseText_,
+                                headers_,
+                                null
+                            );
                         }
                         else
-                        if (status_ == 404)
                         {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Wallet Address Not Found", status_, responseText_, headers_, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            var responseData_ =
+                                response_.Content == null
+                                    ? null
+                                    : await response_
+                                        .Content.ReadAsStringAsync()
+                                        .ConfigureAwait(false);
+                            throw new ApiException(
+                                "The HTTP status code of the response was not expected ("
+                                + status_
+                                + ").",
+                                status_,
+                                responseData_,
+                                headers_,
+                                null
+                            );
                         }
                     }
                     finally
@@ -81,7 +139,10 @@ namespace OpenPayments.Sdk.Generated.Wallet
             }
         }
 
-        public async Task<JsonWebKeySet> GetWalletAddressKeysAsync(string walletAddress, CancellationToken cancellationToken)
+        public async Task<JsonWebKeySet> GetWalletAddressKeysAsync(
+            string walletAddress,
+            CancellationToken cancellationToken
+        )
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -90,7 +151,11 @@ namespace OpenPayments.Sdk.Generated.Wallet
                 using (var request_ = new HttpRequestMessage())
                 {
                     request_.Method = new HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Accept.Add(
+                        System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse(
+                            "application/json"
+                        )
+                    );
 
                     var urlBuilder_ = new StringBuilder(walletAddress);
                     // Operation Path: "jwks.json"
@@ -103,7 +168,13 @@ namespace OpenPayments.Sdk.Generated.Wallet
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_
+                        .SendAsync(
+                            request_,
+                            HttpCompletionOption.ResponseHeadersRead,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
@@ -121,23 +192,58 @@ namespace OpenPayments.Sdk.Generated.Wallet
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<JsonWebKeySet>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<JsonWebKeySet>(
+                                    response_,
+                                    headers_,
+                                    cancellationToken
+                                )
+                                .ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new ApiException(
+                                    "Response was null which was not expected.",
+                                    status_,
+                                    objectResponse_.Text,
+                                    headers_,
+                                    null
+                                );
                             }
+
                             return objectResponse_.Object;
                         }
-                        else
-                        if (status_ == 404)
+                        else if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("JWKS Document Not Found", status_, responseText_, headers_, null);
+                            string responseText_ =
+                                (response_.Content == null)
+                                    ? string.Empty
+                                    : await response_
+                                        .Content.ReadAsStringAsync()
+                                        .ConfigureAwait(false);
+                            throw new ApiException(
+                                "JWKS Document Not Found",
+                                status_,
+                                responseText_,
+                                headers_,
+                                null
+                            );
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            var responseData_ =
+                                response_.Content == null
+                                    ? null
+                                    : await response_
+                                        .Content.ReadAsStringAsync()
+                                        .ConfigureAwait(false);
+                            throw new ApiException(
+                                "The HTTP status code of the response was not expected ("
+                                + status_
+                                + ").",
+                                status_,
+                                responseData_,
+                                headers_,
+                                null
+                            );
                         }
                     }
                     finally
@@ -153,6 +259,5 @@ namespace OpenPayments.Sdk.Generated.Wallet
                     client_.Dispose();
             }
         }
-
     }
 }

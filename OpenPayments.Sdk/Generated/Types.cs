@@ -23,11 +23,13 @@ namespace OpenPayments.Sdk.Generated
                 403 => "Forbidden",
                 404 => "Not Found",
                 500 => "Internal Server Error",
-                _ => "Unknown Status Code"
+                _ => "Unknown Status Code",
             };
         }
-        
-        public static Dictionary<string, IEnumerable<string>> ExtractHeaders(HttpResponseMessage response)
+
+        public static Dictionary<string, IEnumerable<string>> ExtractHeaders(
+            HttpResponseMessage response
+        )
         {
             var headers = new Dictionary<string, IEnumerable<string>>();
             foreach (var item in response.Headers)
@@ -38,6 +40,4 @@ namespace OpenPayments.Sdk.Generated
             return headers;
         }
     }
-    
 }
-

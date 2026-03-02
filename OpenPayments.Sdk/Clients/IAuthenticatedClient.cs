@@ -15,9 +15,11 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs">Grant URL (e.g. <c>https://ilp.com/grant</c>) and access token.</param>
     /// <param name="body">Request body</param>
     /// <param name="cancellationToken">Optional cancellation token.</param>
-    public Task<AuthResponse> RequestGrantAsync(RequestArgs requestArgs,
+    public Task<AuthResponse> RequestGrantAsync(
+        RequestArgs requestArgs,
         GrantCreateBody body,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Continue Grant
@@ -26,9 +28,11 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="body"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<AuthResponse> ContinueGrantAsync(AuthRequestArgs requestArgs,
+    public Task<AuthResponse> ContinueGrantAsync(
+        AuthRequestArgs requestArgs,
         GrantContinueBody? body = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Cancel Grant
@@ -36,8 +40,10 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs">Cancel Grant URL (e.g. <c>https://ilp.com/grant/1234</c>) and access token.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task CancelGrantAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default);
+    public Task CancelGrantAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     ///
@@ -45,7 +51,10 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs">Auth Token URL Address (e.g. <c>https://ilp.com/token/1234</c>) and access token.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<RotateTokenResponse> RotateTokenAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
+    public Task<RotateTokenResponse> RotateTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     ///
@@ -53,7 +62,10 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs">Auth Token URL Address (e.g. <c>https://ilp.com/token/1234</c>) and access token.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task RevokeTokenAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
+    public Task RevokeTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     ///
@@ -62,9 +74,11 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="body"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs,
-        IncomingPaymentBody body, CancellationToken cancellationToken = default);
-
+    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        IncomingPaymentBody body,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Get an Incoming Payment
@@ -72,7 +86,10 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>IncomingPaymentResponse</returns>
-    public Task<IncomingPaymentResponse> GetIncomingPaymentAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
+    public Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Get a Public Incoming Payment
@@ -80,7 +97,10 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(RequestArgs requestArgs, CancellationToken cancellationToken = default);
+    public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(
+        RequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// List Incoming Payments
@@ -89,7 +109,11 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="query"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>ListIncomingPaymentsResponse</returns>
-    public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(AuthRequestArgs requestArgs, ListIncomingPaymentQuery query, CancellationToken cancellationToken = default);
+    public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Complete Incoming Payment
@@ -97,7 +121,10 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>ListIncomingPaymentsResponse</returns>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default);
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     ///
@@ -106,8 +133,11 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="body"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
-        CancellationToken cancellationToken = default);
+    public Task<QuoteResponse> CreateQuoteAsync(
+        AuthRequestArgs requestArgs,
+        QuoteBody body,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     ///
@@ -116,6 +146,9 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="body"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs, OutgoingPaymentBody body,
-        CancellationToken cancellationToken = default);
+    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        OutgoingPaymentBody body,
+        CancellationToken cancellationToken = default
+    );
 }

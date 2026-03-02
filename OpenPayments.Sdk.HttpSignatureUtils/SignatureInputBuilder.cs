@@ -3,7 +3,11 @@ using System.Text;
 
 public class SignatureInputBuilder : ISignatureInputBuilder
 {
-    public async Task<string?> BuildBaseAsync(List<string> components, HttpRequestMessage request, string sigInput)
+    public async Task<string?> BuildBaseAsync(
+        List<string> components,
+        HttpRequestMessage request,
+        string sigInput
+    )
     {
         var sb = new StringBuilder();
 

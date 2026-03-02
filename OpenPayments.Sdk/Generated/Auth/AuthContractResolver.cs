@@ -9,7 +9,7 @@ public sealed class AuthContractResolver : DefaultContractResolver
         MemberSerialization memberSerialization)
     {
         var prop = base.CreateProperty(member, memberSerialization);
-        
+
         // Neutralize Required.Always
         prop.Required = Required.Default;
         // Also avoid throwing on missing/null

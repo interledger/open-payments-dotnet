@@ -14,7 +14,9 @@ services.UseOpenPayments(opts =>
 {
     opts.UseAuthenticatedClient = true;
     opts.KeyId = Environment.GetEnvironmentVariable("CLIENT_ID");
-    opts.PrivateKey = KeyUtils.LoadPem(Environment.GetEnvironmentVariable("CLIENT_SECRET")!.Replace("\\n", "\n"));
+    opts.PrivateKey = KeyUtils.LoadPem(
+        Environment.GetEnvironmentVariable("CLIENT_SECRET")!.Replace("\\n", "\n")
+    );
     opts.ClientUrl = new Uri(Environment.GetEnvironmentVariable("CLIENT_URL")!);
 });
 services.AddTransient<WalletAddressService>();
@@ -29,41 +31,41 @@ var provider = services.BuildServiceProvider();
 Option<string> resourceUrlOption = new("--resource", "-r")
 {
     Description = "The URL of the resource",
-    Required = true
+    Required = true,
 };
 
 Option<bool> walletAddressKeysOption = new("--keys", "-k")
 {
-    Description = "If specified, returns only the wallet address keys (JWKS)."
+    Description = "If specified, returns only the wallet address keys (JWKS).",
 };
 
 Option<string> senderWalletAddressOption = new("--sender", "-s")
 {
-    Description = "The wallet address of the sender."
+    Description = "The wallet address of the sender.",
 };
 
 Option<string> receiverWalletAddressOption = new("--receiver", "-r")
 {
     Description = "The wallet address of the receiver.",
-    Required = true
+    Required = true,
 };
 
 Option<string> amountOption = new("--amount", "-a")
 {
     Description = "The amount to send. Eg: 1000 (10 Euro)",
-    Required = true
+    Required = true,
 };
 
 Option<string> incomingPaymentIdOption = new("--incomingPaymentId", "-i")
 {
     Description = "The incoming payment ID.",
-    Required = true
+    Required = true,
 };
 
 Option<string> quoteUrlOption = new("--quoteUrl", "-q")
 {
     Description = "The URL of the quote defining this payment's amounts.",
-    Required = true
+    Required = true,
 };
 Option<string> accessTokenValue = new("--accessToken", "-t")
 {
@@ -74,44 +76,40 @@ Option<string> tokenAction = new("--action", "-a")
     Description = "The action to perform on the token: 'rotate' or 'revoke'.",
 };
 
-
 var rootCommand = new RootCommand("OpenPayments CLI");
 var walletAddressCommand = new Command("WalletAddress")
 {
     resourceUrlOption,
-    walletAddressKeysOption
+    walletAddressKeysOption,
 };
 
 var manageTokenCommand = new Command("ManageToken")
 {
     resourceUrlOption,
     accessTokenValue,
-    tokenAction
+    tokenAction,
 };
 
-var getIncomingPaymentCommand = new Command("GetIncomingPayment")
-{
-    resourceUrlOption
-};
+var getIncomingPaymentCommand = new Command("GetIncomingPayment") { resourceUrlOption };
 var createIncomingPaymentCommand = new Command("CreateIncomingPayment")
 {
     receiverWalletAddressOption,
-    amountOption
+    amountOption,
 };
 var listIncomingPaymentsCommand = new Command("ListIncomingPayments")
 {
-    receiverWalletAddressOption
+    receiverWalletAddressOption,
 };
 var createQuoteCommand = new Command("CreateQuote")
 {
     senderWalletAddressOption,
-    incomingPaymentIdOption
+    incomingPaymentIdOption,
 };
 var createOutgoingPaymentCommand = new Command("CreateOutgoingPayment")
 {
     senderWalletAddressOption,
     quoteUrlOption,
-    amountOption
+    amountOption,
 };
 
 getIncomingPaymentCommand.SetAction(async result =>
@@ -189,10 +187,7 @@ listIncomingPaymentsCommand.SetAction(async result =>
     await service.ListIncomingPaymentsAsync(receiver);
 });
 
-rootCommand.SetAction(_ =>
-{
-
-});
+rootCommand.SetAction(_ => { });
 
 // Unauthenticated
 rootCommand.Add(walletAddressCommand);

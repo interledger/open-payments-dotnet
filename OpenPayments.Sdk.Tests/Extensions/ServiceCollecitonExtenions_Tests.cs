@@ -50,18 +50,15 @@ public class ServiceCollectionExtensions_Tests
         Assert.NotNull(client);
         Assert.IsType<AuthenticatedClient>(client);
     }
-    
+
     [Fact]
     public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsException()
     {
         var services = new ServiceCollection();
 
-        services.UseOpenPayments(options =>
-        {
-            options.UseAuthenticatedClient = true;
-        });
+        services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; });
         var provider = services.BuildServiceProvider();
-        
+
         Assert.Throws<InvalidOperationException>(() => provider.GetService<IAuthenticatedClient>());
     }
 

@@ -8,16 +8,16 @@ namespace OpenPayments.Snippets.Services.Authenticated;
 
 public class OutgoingPaymentService(IAuthenticatedClient client)
 {
-    public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(string senderWalletAddress, string quoteUrl,
-        string debitAmount)
+    public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(
+        string senderWalletAddress,
+        string quoteUrl,
+        string debitAmount
+    )
     {
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var grantResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -31,15 +31,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                             Identifier = waDetails.Id.ToString(),
                             Limits = new AccessLimits()
                             {
-                                DebitAmount = new Amount(debitAmount, "EUR", 2)
-                            }
-                        }
-                    ]
+                                DebitAmount = new Amount(debitAmount, "EUR", 2),
+                            },
+                        },
+                    ],
                 },
-                Interact = new InteractRequest()
-                {
-                    Start = [Start.Redirect],
-                }
+                Interact = new InteractRequest() { Start = [Start.Redirect] },
             }
         );
 
@@ -60,13 +57,9 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
             new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
-                AccessToken = tokenResponse.AccessToken!.Value
+                AccessToken = tokenResponse.AccessToken!.Value,
             },
-            new OutgoingPaymentBody()
-            {
-                WalletAddress = waDetails.Id,
-                QuoteId = new Uri(quoteUrl)
-            }
+            new OutgoingPaymentBody() { WalletAddress = waDetails.Id, QuoteId = new Uri(quoteUrl) }
         );
 
         Console.WriteLine("===Outgoing Payment===");
@@ -79,16 +72,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         return outgoing;
     }
 
-
     public async Task CreateOutgoingPaymentGrantAndCancelAsync(string senderWalletAddress)
     {
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var response = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -102,15 +91,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                             Identifier = waDetails.Id.ToString(),
                             Limits = new AccessLimits()
                             {
-                                DebitAmount = new Amount("100", "EUR", 2)
-                            }
-                        }
-                    ]
+                                DebitAmount = new Amount("100", "EUR", 2),
+                            },
+                        },
+                    ],
                 },
-                Interact = new InteractRequest()
-                {
-                    Start = [Start.Redirect]
-                }
+                Interact = new InteractRequest() { Start = [Start.Redirect] },
             }
         );
 

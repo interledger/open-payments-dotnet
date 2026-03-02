@@ -7,15 +7,15 @@ namespace OpenPayments.Snippets.Services.Authenticated;
 
 public class QuoteService(IAuthenticatedClient client)
 {
-    public async Task<QuoteResponse> CreateQuoteAsync(string senderWalletAddress, string incomingPaymentUrl)
+    public async Task<QuoteResponse> CreateQuoteAsync(
+        string senderWalletAddress,
+        string incomingPaymentUrl
+    )
     {
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
-        
+
         var authResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -25,10 +25,10 @@ public class QuoteService(IAuthenticatedClient client)
                         new AccessItem()
                         {
                             Type = AccessType.Quote,
-                            Actions = [Actions.Create, Actions.Read]
-                        }
-                    ]
-                }
+                            Actions = [Actions.Create, Actions.Read],
+                        },
+                    ],
+                },
             }
         );
 
@@ -37,14 +37,15 @@ public class QuoteService(IAuthenticatedClient client)
             {
                 Url = waDetails.ResourceServer,
                 AccessToken = authResponse.AccessToken!.Value,
-            }, new QuoteBody()
+            },
+            new QuoteBody()
             {
                 WalletAddress = waDetails.Id,
                 Receiver = new Uri(incomingPaymentUrl),
                 Method = PaymentMethod.Ilp,
             }
         );
-        
+
         Console.WriteLine("===Quote===");
         Console.WriteLine("Id: {0}", quote.Id);
         Console.WriteLine("IncomingPaymentUrl: {0}", quote.Receiver);

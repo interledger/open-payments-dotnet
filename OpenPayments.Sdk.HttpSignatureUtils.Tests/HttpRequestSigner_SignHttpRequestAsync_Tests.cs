@@ -28,10 +28,7 @@ public class HttpRequestSignerTests
         var key = KeyUtils.GenerateKey();
         var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com/auth")
         {
-            Headers =
-            {
-                { "Authorization", "Bearer abc123" }
-            }
+            Headers = { { "Authorization", "Bearer abc123" } },
         };
 
         var headers = await HttpRequestSigner.SignHttpRequestAsync(request, key, "auth-key");
@@ -47,7 +44,7 @@ public class HttpRequestSignerTests
         var contentJson = "{\"amount\":100}";
         var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
         {
-            Content = new StringContent(contentJson, Encoding.UTF8, "application/json")
+            Content = new StringContent(contentJson, Encoding.UTF8, "application/json"),
         };
 
         var headers = await HttpRequestSigner.SignHttpRequestAsync(request, key, "body-key");
@@ -67,7 +64,8 @@ public class HttpRequestSignerTests
         var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com");
 
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            await HttpRequestSigner.SignHttpRequestAsync(request, null!, "key-id"));
+            await HttpRequestSigner.SignHttpRequestAsync(request, null!, "key-id")
+        );
     }
 
     [Fact]
@@ -77,6 +75,7 @@ public class HttpRequestSignerTests
         var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com");
 
         await Assert.ThrowsAsync<ArgumentException>(async () =>
-            await HttpRequestSigner.SignHttpRequestAsync(request, key, ""));
+            await HttpRequestSigner.SignHttpRequestAsync(request, key, "")
+        );
     }
 }
