@@ -66,8 +66,8 @@ internal class UnauthenticatedClient(HttpClient http)
         var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
 
         return model
-               ?? throw new InvalidOperationException(
-                   "Server returned empty or invalid IncomingPayment JSON."
-               );
+            ?? throw new InvalidOperationException(
+                "Server returned empty or invalid IncomingPayment JSON."
+            );
     }
 }

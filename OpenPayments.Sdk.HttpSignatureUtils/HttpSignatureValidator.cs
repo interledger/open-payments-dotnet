@@ -25,7 +25,7 @@ public class HttpSignatureValidator : IHttpSignatureValidator
     public bool AreSignatureHeadersPresent(HttpRequestMessage request)
     {
         return TryGetHeader(request, "signature") is not null
-               && TryGetHeader(request, "signature-input") is not null;
+            && TryGetHeader(request, "signature-input") is not null;
     }
 
     /// <inheritdoc cref="HttpSignatureValidator"/>

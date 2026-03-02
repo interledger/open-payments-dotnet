@@ -117,7 +117,7 @@ namespace OpenPayments.Sdk.Generated.Auth
             get
             {
                 return _additionalProperties
-                       ?? (_additionalProperties = new Dictionary<string, object>());
+                    ?? (_additionalProperties = new Dictionary<string, object>());
             }
             set { _additionalProperties = value; }
         }
@@ -145,7 +145,7 @@ namespace OpenPayments.Sdk.Generated.Auth
             get
             {
                 return _additionalProperties
-                       ?? (_additionalProperties = new Dictionary<string, object>());
+                    ?? (_additionalProperties = new Dictionary<string, object>());
             }
             set { _additionalProperties = value; }
         }
@@ -176,7 +176,7 @@ namespace OpenPayments.Sdk.Generated.Auth
             get
             {
                 return _additionalProperties
-                       ?? (_additionalProperties = new Dictionary<string, object>());
+                    ?? (_additionalProperties = new Dictionary<string, object>());
             }
             set { _additionalProperties = value; }
         }
