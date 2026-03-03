@@ -1,30 +1,34 @@
 using System.Text;
 using NSec.Cryptography;
-
 using OpenPayments.Sdk.HttpSignatureUtils;
 
+/// <inheritdoc cref="IHttpSignatureValidator"/>
 public class HttpSignatureValidator : IHttpSignatureValidator
 {
     private readonly ISignatureInputParser _parser;
     private readonly ISignatureInputValidator _validator;
     private readonly ISignatureInputBuilder _builder;
 
+    /// <inheritdoc cref="HttpSignatureValidator"/>
     public HttpSignatureValidator(
         ISignatureInputParser parser,
         ISignatureInputValidator validator,
-        ISignatureInputBuilder builder)
+        ISignatureInputBuilder builder
+    )
     {
         _parser = parser;
         _validator = validator;
         _builder = builder;
     }
 
+    /// <inheritdoc cref="HttpSignatureValidator"/>
     public bool AreSignatureHeadersPresent(HttpRequestMessage request)
     {
-        return TryGetHeader(request, "signature") is not null &&
-               TryGetHeader(request, "signature-input") is not null;
+        return TryGetHeader(request, "signature") is not null
+            && TryGetHeader(request, "signature-input") is not null;
     }
 
+    /// <inheritdoc cref="HttpSignatureValidator"/>
     public async Task<bool> ValidateSignatureAsync(HttpRequestMessage request, Jwk clientKey)
     {
         var sig = TryGetHeader(request, "signature")!;
@@ -42,9 +46,17 @@ public class HttpSignatureValidator : IHttpSignatureValidator
             return false;
 
         var signatureBytes = Convert.FromBase64String(sig.Replace("sig1=", "").Replace(":", ""));
-        var publicKey = PublicKey.Import(SignatureAlgorithm.Ed25519, Base64UrlDecode(clientKey.X), KeyBlobFormat.RawPublicKey);
+        var publicKey = PublicKey.Import(
+            SignatureAlgorithm.Ed25519,
+            Base64UrlDecode(clientKey.X),
+            KeyBlobFormat.RawPublicKey
+        );
 
-        return SignatureAlgorithm.Ed25519.Verify(publicKey, Encoding.UTF8.GetBytes(challenge), signatureBytes);
+        return SignatureAlgorithm.Ed25519.Verify(
+            publicKey,
+            Encoding.UTF8.GetBytes(challenge),
+            signatureBytes
+        );
     }
 
     private static string? TryGetHeader(HttpRequestMessage request, string name)
@@ -59,6 +71,8 @@ public class HttpSignatureValidator : IHttpSignatureValidator
     private static byte[] Base64UrlDecode(string input)
     {
         string padded = input.Replace('-', '+').Replace('_', '/');
-        return Convert.FromBase64String(padded.PadRight(padded.Length + (4 - padded.Length % 4) % 4, '='));
+        return Convert.FromBase64String(
+            padded.PadRight(padded.Length + (4 - padded.Length % 4) % 4, '=')
+        );
     }
 }

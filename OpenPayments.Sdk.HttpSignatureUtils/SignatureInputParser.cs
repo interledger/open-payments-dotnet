@@ -1,5 +1,7 @@
+/// <inheritdoc cref="ISignatureInputParser"/>
 public class SignatureInputParser : ISignatureInputParser
 {
+    /// <inheritdoc cref="ISignatureInputParser"/>
     public List<string>? GetComponents(string sigInput)
     {
         var inputPart = sigInput.Split("sig1=")[1].Split(';')[0];

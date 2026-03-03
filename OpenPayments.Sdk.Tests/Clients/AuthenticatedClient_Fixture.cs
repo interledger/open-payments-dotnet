@@ -20,59 +20,49 @@ public class AuthenticatedClientFixture
     public string KeyId => "1234";
     public Uri ClientUrl => new(BaseUrl);
 
-    public RequestArgs RequestGrantArgs => new()
-    {
-        Url = new Uri("https://example.com/auth")
-    };
+    public RequestArgs RequestGrantArgs => new() { Url = new Uri("https://example.com/auth") };
 
-    public AuthRequestArgs GrantWithTokenArgs => new()
-    {
-        Url = new Uri("https://example.com/auth"),
-        AccessToken = "1234"
-    };
+    public AuthRequestArgs GrantWithTokenArgs =>
+        new() { Url = new Uri("https://example.com/auth"), AccessToken = "1234" };
 
-    public GrantCreateBody RequestGrantBody => new()
-    {
-        AccessToken = new AccessToken()
+    public GrantCreateBody RequestGrantBody =>
+        new()
         {
-            Access =
-            [
-                new AccessItem()
-                {
-                    Type = AccessType.IncomingPayment,
-                    Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete]
-                }
-            ]
-        }
-    };
-
-    public GrantContinueBody ContinueGrantBody => new()
-    {
-        InteractRef = "1231323"
-    };
-
-    public AuthResponse ApprovedGrantResponse => new()
-    {
-        AccessToken = new AccessToken()
-        {
-            Access =
-            [
-                new AccessItem()
-                {
-                    Type = AccessType.IncomingPayment,
-                    Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
-                }
-            ]
-        },
-        Continue = new AuthContinue()
-        {
-            AccessToken = new Access_token2()
+            AccessToken = new AccessToken()
             {
-                Value = "D8616A2FBC790B1CE132",
+                Access =
+                [
+                    new AccessItem()
+                    {
+                        Type = AccessType.IncomingPayment,
+                        Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
+                    },
+                ],
             },
-            Uri = new Uri(BaseUrl + "/continue/12345")
-        }
-    };
+        };
+
+    public GrantContinueBody ContinueGrantBody => new() { InteractRef = "1231323" };
+
+    public AuthResponse ApprovedGrantResponse =>
+        new()
+        {
+            AccessToken = new AccessToken()
+            {
+                Access =
+                [
+                    new AccessItem()
+                    {
+                        Type = AccessType.IncomingPayment,
+                        Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
+                    },
+                ],
+            },
+            Continue = new AuthContinue()
+            {
+                AccessToken = new Access_token2() { Value = "D8616A2FBC790B1CE132" },
+                Uri = new Uri(BaseUrl + "/continue/12345"),
+            },
+        };
 
     public RotateTokenResponse TokenResponse = new()
     {
@@ -84,15 +74,15 @@ public class AuthenticatedClientFixture
                 {
                     Type = AccessType.IncomingPayment,
                     Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete],
-                }
-            ]
-        }
+                },
+            ],
+        },
     };
 
     public IncomingPaymentBody CreateIncomingPaymentBody = new()
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
-        IncomingAmount = new Amount("1000", "EUR", 2)
+        IncomingAmount = new Amount("1000", "EUR", 2),
     };
 
     public IncomingPaymentResponse CreateIncomingPaymentResponse = new()
@@ -104,16 +94,16 @@ public class AuthenticatedClientFixture
         Completed = false,
         CreatedAt = DateTime.UtcNow,
         ExpiresAt = DateTime.UtcNow.AddDays(1),
-        Methods = [new IlpPaymentMethod()
-        {
-            Type = IlpPaymentMethodType.Ilp,
-            IlpAddress = "example.com/incoming/1234",
-            SharedSecret = "secret1234"
-        }],
-        Metadata = new JObject
-        {
-             ["description"] = "Free Money"
-        },
+        Methods =
+        [
+            new IlpPaymentMethod()
+            {
+                Type = IlpPaymentMethodType.Ilp,
+                IlpAddress = "example.com/incoming/1234",
+                SharedSecret = "secret1234",
+            },
+        ],
+        Metadata = new JObject { ["description"] = "Free Money" },
     };
 
     public QuoteBody CreateQuoteBody = new()
@@ -139,10 +129,7 @@ public class AuthenticatedClientFixture
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
         QuoteId = new Uri("https://example.com/quote/1234"),
-        Metadata = new JObject
-        {
-            ["description"] = "Free Money"
-        }
+        Metadata = new JObject { ["description"] = "Free Money" },
     };
 
     public OutgoingPaymentResponse CreateOutgoingPaymentResponse = new()
@@ -155,37 +142,43 @@ public class AuthenticatedClientFixture
         SentAmount = new Amount("0", "EUR"),
         Receiver = new Uri("https://example.com/incoming/1234"),
         Failed = false,
-        Metadata = new JObject()
-        {
-            ["description"] = "Free Money"
-        },
+        Metadata = new JObject() { ["description"] = "Free Money" },
         CreatedAt = DateTime.UtcNow,
         GrantSpentReceiveAmount = new Amount("0", "EUR"),
-        GrantSpentDebitAmount = new Amount("0", "EUR")
+        GrantSpentDebitAmount = new Amount("0", "EUR"),
     };
 
-    public HttpClient CreateHttpClientMock(object? responseObject = null, HttpStatusCode? code = null)
+    public HttpClient CreateHttpClientMock(
+        object? responseObject = null,
+        HttpStatusCode? code = null
+    )
     {
-        var statusCode = code ?? (responseObject == null ? HttpStatusCode.NoContent : HttpStatusCode.OK);
+        var statusCode =
+            code ?? (responseObject == null ? HttpStatusCode.NoContent : HttpStatusCode.OK);
 
         var handler = new Mock<HttpMessageHandler>();
         handler
             .Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync",
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = statusCode,
-                Content = responseObject == null
-                    ? new StringContent("", Encoding.UTF8)
-                    : new StringContent(JsonConvert.SerializeObject(responseObject), Encoding.UTF8,
-                        "application/json")
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = statusCode,
+                    Content =
+                        responseObject == null
+                            ? new StringContent("", Encoding.UTF8)
+                            : new StringContent(
+                                JsonConvert.SerializeObject(responseObject),
+                                Encoding.UTF8,
+                                "application/json"
+                            ),
+                }
+            );
 
-        return new HttpClient(handler.Object)
-        {
-            BaseAddress = new Uri(BaseUrl)
-        };
+        return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
     }
 }

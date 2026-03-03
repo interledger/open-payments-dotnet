@@ -1,13 +1,14 @@
 using System.Diagnostics;
-using NSec.Cryptography;
 using System.Security.Cryptography;
+using NSec.Cryptography;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.OpenSsl;
 
 namespace OpenPayments.Sdk.HttpSignatureUtils;
 
-public sealed class GenerateKeyArgs {
+public sealed class GenerateKeyArgs
+{
     public string? Dir { get; set; }
     public string? Filename { get; set; }
 }
@@ -36,7 +37,9 @@ public static class KeyUtils
 
         if (keyBytes.Length != 32 && keyBytes.Length != 64)
         {
-            throw new ArgumentException("Ed25519 private key must be 32 or 64 bytes after Base64 decode.");
+            throw new ArgumentException(
+                "Ed25519 private key must be 32 or 64 bytes after Base64 decode."
+            );
         }
 
         var algorithm = SignatureAlgorithm.Ed25519;
@@ -59,19 +62,21 @@ public static class KeyUtils
             throw new ArgumentException("Invalid PEM");
 
         // Parse PKCS#8 PrivateKeyInfo
-        var privInfo = PrivateKeyInfo.GetInstance(Asn1Object.FromByteArray(pemObj.Content));
+        var pkInfo = PrivateKeyInfo.GetInstance(Asn1Object.FromByteArray(pemObj.Content));
 
         // Ensure Ed25519 OID (1.3.101.112)
-        var oid = privInfo.PrivateKeyAlgorithm.Algorithm.Id;
+        var oid = pkInfo.PrivateKeyAlgorithm.Algorithm.Id;
         if (oid != "1.3.101.112")
-            throw new ArgumentException($"Unexpected algorithm OID: {oid}. Expected Ed25519 (1.3.101.112).");
+            throw new ArgumentException(
+                $"Unexpected algorithm OID: {oid}. Expected Ed25519 (1.3.101.112)."
+            );
 
         // Extract the inner OCTET STRING (seed). For Ed25519 in PKCS#8, this is 32 bytes.
-        var privateKeyOctets = Asn1OctetString.GetInstance(privInfo.ParsePrivateKey());
+        var privateKeyOctets = Asn1OctetString.GetInstance(pkInfo.ParsePrivateKey());
         var privateKeyBytes = privateKeyOctets.GetOctets();
 
         // Some toolchains wrap the seed in another OCTET STRING layer:
-        // If length is not 32, try one more unwrap.
+        // If lenght is not 32, try one more unwrap.
         if (privateKeyBytes.Length != 32)
         {
             try
@@ -79,13 +84,18 @@ public static class KeyUtils
                 var inner = Asn1OctetString.GetInstance(Asn1Object.FromByteArray(privateKeyBytes));
                 privateKeyBytes = inner.GetOctets();
             }
-            catch { /* ignore */ }
+            catch
+            {
+                /* ignore */
+            }
         }
 
         if (privateKeyBytes.Length != 32)
-            throw new ArgumentException($"Ed25519 seed must be 32 bytes, got {privateKeyBytes.Length}.");
+            throw new ArgumentException(
+                $"Ed25519 seed must be 32 bytes, got {privateKeyBytes.Length}."
+            );
 
-        // Import into NSec as raw private key (seed)
+        // Import into NSec as a raw private key (seed)
         var algorithm = SignatureAlgorithm.Ed25519;
         var seed = privateKeyBytes.AsSpan(0, 32);
         return Key.Import(algorithm, seed, KeyBlobFormat.RawPrivateKey);
@@ -116,18 +126,14 @@ public static class KeyUtils
 
         var algorithm = SignatureAlgorithm.Ed25519;
 
-        privateKey ??= new Key(algorithm, new KeyCreationParameters
-        {
-            ExportPolicy = KeyExportPolicies.AllowPlaintextExport
-        });
+        privateKey ??= new Key(
+            algorithm,
+            new KeyCreationParameters { ExportPolicy = KeyExportPolicies.AllowPlaintextExport }
+        );
 
         var publicKeyBytes = privateKey.PublicKey.Export(KeyBlobFormat.RawPublicKey);
 
-        return new Jwk
-        {
-            Kid = keyId,
-            X = Convert.ToBase64String(publicKeyBytes)
-        };
+        return new Jwk { Kid = keyId, X = Convert.ToBase64String(publicKeyBytes) };
     }
 
     /// <summary>
@@ -152,7 +158,9 @@ public static class KeyUtils
 
         if (keyBytes.Length != 32 && keyBytes.Length != 64)
         {
-            throw new ArgumentException("File was loaded, but key was not a valid Ed25519 private key (must be 32 or 64 bytes).");
+            throw new ArgumentException(
+                "File was loaded, but key was not a valid Ed25519 private key (must be 32 or 64 bytes)."
+            );
         }
 
         var seed = keyBytes.AsSpan(0, 32).ToArray();
@@ -174,15 +182,17 @@ public static class KeyUtils
     /// <returns>The generated <see cref="Ed25519"/> <see cref="AsymmetricAlgorithm"/> as a <see cref="AsymmetricAlgorithm"/>.</returns>
     public static Key GenerateKey(GenerateKeyArgs? args = null)
     {
-        var key = new Key(SignatureAlgorithm.Ed25519, new KeyCreationParameters
-        {
-            ExportPolicy = KeyExportPolicies.AllowPlaintextExport
-        });
+        var key = new Key(
+            SignatureAlgorithm.Ed25519,
+            new KeyCreationParameters { ExportPolicy = KeyExportPolicies.AllowPlaintextExport }
+        );
 
         if (args?.Dir is not null)
         {
             Directory.CreateDirectory(args.Dir);
-            var fileName = args.Filename ?? $"private-key-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.pem";
+            var fileName =
+                args.Filename
+                ?? $"private-key-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.pem";
             var path = Path.Combine(args.Dir, fileName);
 
             key.ToPem(path);
@@ -198,7 +208,10 @@ public static class KeyUtils
     /// <param name="keyFilePath">Optional path to an existing Ed25519 private key file (raw 32- or 64-byte).</param>
     /// <param name="generateKeyArgs">Optional parameters for saving the generated key to a directory and file name.</param>
     /// <returns>The loaded or newly generated <see cref="Key"/>.</returns>
-    public static Key LoadOrGenerateKey(string? keyFilePath = null, GenerateKeyArgs? generateKeyArgs = null)
+    public static Key LoadOrGenerateKey(
+        string? keyFilePath = null,
+        GenerateKeyArgs? generateKeyArgs = null
+    )
     {
         if (!string.IsNullOrWhiteSpace(keyFilePath))
         {
@@ -214,4 +227,4 @@ public static class KeyUtils
 
         return GenerateKey(generateKeyArgs);
     }
-} 
+}

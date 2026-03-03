@@ -11,59 +11,138 @@ namespace OpenPayments.Sdk.Clients;
 /// <param name="privateKey">Private key used to sign requests.</param>
 /// <param name="keyId">Key ID used to sign requests.</param>
 /// <param name="clientUrl">Client Wallet URL Address (e.g. <c>https://wallet.example</c>).</param>
-internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, string keyId, Uri clientUrl)
-    : UnauthenticatedClient(http), IAuthenticatedClient
+internal sealed class AuthenticatedClient(
+    HttpClient http,
+    Key privateKey,
+    string keyId,
+    Uri clientUrl
+) : UnauthenticatedClient(http), IAuthenticatedClient
 {
-    private readonly IAuthClientBase _authClient = new AuthClientBase(http, privateKey, keyId, clientUrl);
-    private readonly IResourceClientBase _resClient = new ResourceClientBase(http, privateKey, keyId, clientUrl);
+    private readonly IAuthClientBase _authClient = new AuthClientBase(
+        http,
+        privateKey,
+        keyId,
+        clientUrl
+    );
 
-    public Task<AuthResponse> RequestGrantAsync(RequestArgs requestArgs,
+    private readonly IResourceClientBase _resClient = new ResourceClientBase(
+        http,
+        privateKey,
+        keyId,
+        clientUrl
+    );
+
+    /// <inheritdoc/>
+    public Task<AuthResponse> RequestGrantAsync(
+        RequestArgs requestArgs,
         GrantCreateBody body,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         return _authClient.RequestGrantAsync(requestArgs, body, cancellationToken);
     }
 
-    public Task<AuthResponse> ContinueGrantAsync(AuthRequestArgs requestArgs,
+    /// <inheritdoc/>
+    public Task<AuthResponse> ContinueGrantAsync(
+        AuthRequestArgs requestArgs,
         GrantContinueBody? body,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         body ??= new GrantContinueBody();
         return _authClient.ContinueGrantAsync(requestArgs, body, cancellationToken);
     }
 
-    public Task CancelGrantAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public Task CancelGrantAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
     {
         return _authClient.CancelGrantAsync(requestArgs, cancellationToken);
     }
 
-    public Task<RotateTokenResponse> RotateTokenAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public Task<RotateTokenResponse> RotateTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
     {
         return _authClient.RotateTokenAsync(requestArgs, cancellationToken);
     }
-    
-    public Task RevokeTokenAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default)
+
+    /// <inheritdoc/>
+    public Task RevokeTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
     {
         return _authClient.RevokeTokenAsync(requestArgs, cancellationToken);
     }
 
-    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(AuthRequestArgs requestArgs, IncomingPaymentBody body,
-        CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        IncomingPaymentBody body,
+        CancellationToken cancellationToken = default
+    )
     {
         return _resClient.CreateIncomingPaymentAsync(requestArgs, body, cancellationToken);
     }
 
-    public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
-        CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
     {
-        return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken); 
+        return _resClient.GetIncomingPaymentAsync(requestArgs, cancellationToken);
     }
 
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs, OutgoingPaymentBody body,
-        CancellationToken cancellationToken = default)
+    /// <inheritdoc cref="UnauthenticatedClient.GetIncomingPaymentAsync"/>
+    public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(
+        RequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return base.GetIncomingPaymentAsync(requestArgs.Url.ToString(), cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.ListIncomingPaymentsAsync(requestArgs, query, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.CompleteIncomingPaymentAsync(requestArgs, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<QuoteResponse> CreateQuoteAsync(
+        AuthRequestArgs requestArgs,
+        QuoteBody body,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        OutgoingPaymentBody body,
+        CancellationToken cancellationToken = default
+    )
     {
         return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
     }
@@ -78,4 +157,3 @@ public class AuthRequestArgs : RequestArgs
 {
     public required string AccessToken { get; set; }
 }
-

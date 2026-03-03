@@ -40,7 +40,10 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AccessType Type { get; set; }
 
-        [JsonProperty("actions", ItemConverterType = typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [JsonProperty(
+            "actions",
+            ItemConverterType = typeof(Newtonsoft.Json.Converters.StringEnumConverter)
+        )]
         [System.ComponentModel.DataAnnotations.Required]
         // [JsonProperty("actions")] public string[]? Actions { get; set; }
         public ICollection<Actions> Actions { get; set; } = new Collection<Actions>();
@@ -99,7 +102,11 @@ namespace OpenPayments.Sdk.Generated.Auth
         /// <summary>
         /// The amount of time in integer seconds the client instance MUST wait after receiving this request continuation response and calling the continuation URI.
         /// </summary>
-        [JsonProperty("wait", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "wait",
+            Required = Required.DisallowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public int Wait { get; set; }
 
         private IDictionary<string, object>? _additionalProperties;
@@ -107,7 +114,11 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            get
+            {
+                return _additionalProperties
+                    ?? (_additionalProperties = new Dictionary<string, object>());
+            }
             set { _additionalProperties = value; }
         }
     }
@@ -119,7 +130,11 @@ namespace OpenPayments.Sdk.Generated.Auth
 
     public partial class ErrorResponse
     {
-        [JsonProperty("error", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "error",
+            Required = Required.DisallowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public ErrorItem? Error { get; set; }
 
         private IDictionary<string, object>? _additionalProperties;
@@ -127,17 +142,29 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            get
+            {
+                return _additionalProperties
+                    ?? (_additionalProperties = new Dictionary<string, object>());
+            }
             set { _additionalProperties = value; }
         }
     }
 
     public partial class ErrorItem
     {
-        [JsonProperty("description", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "description",
+            Required = Required.DisallowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public string? Description { get; set; }
 
-        [JsonProperty("code", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "code",
+            Required = Required.DisallowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ErrorItemCode Code { get; set; }
 
@@ -146,7 +173,11 @@ namespace OpenPayments.Sdk.Generated.Auth
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            get
+            {
+                return _additionalProperties
+                    ?? (_additionalProperties = new Dictionary<string, object>());
+            }
             set { _additionalProperties = value; }
         }
     }

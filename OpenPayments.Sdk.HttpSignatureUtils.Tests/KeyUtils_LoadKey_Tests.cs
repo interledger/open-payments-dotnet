@@ -50,7 +50,8 @@ public class KeyUtils_LoadKey_Tests
     public void LoadKey_FileNotFound_Throws()
     {
         var ex = Assert.Throws<FileNotFoundException>(() =>
-            KeyUtils.LoadKey("non-existent-file.key"));
+            KeyUtils.LoadKey("non-existent-file.key")
+        );
 
         Assert.Contains("Could not load file", ex.Message);
     }
@@ -61,8 +62,7 @@ public class KeyUtils_LoadKey_Tests
         byte[] invalid = new byte[10];
         string path = createTemporaryKeyFile(invalid);
 
-        var ex = Assert.Throws<ArgumentException>(() =>
-            KeyUtils.LoadKey(path));
+        var ex = Assert.Throws<ArgumentException>(() => KeyUtils.LoadKey(path));
 
         Assert.Contains("not a valid Ed25519 private key", ex.Message);
 

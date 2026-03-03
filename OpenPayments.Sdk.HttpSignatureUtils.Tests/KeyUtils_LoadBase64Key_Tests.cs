@@ -34,8 +34,7 @@ public class KeyUtils_LoadBase64Key_Tests
     [Fact]
     public void LoadBase64Key_InvalidBase64_ThrowsFormatException()
     {
-        var ex = Assert.Throws<FormatException>(() =>
-            KeyUtils.LoadBase64Key("not-a-valid-base64"));
+        var ex = Assert.Throws<FormatException>(() => KeyUtils.LoadBase64Key("not-a-valid-base64"));
 
         Assert.IsType<FormatException>(ex);
     }
@@ -46,9 +45,7 @@ public class KeyUtils_LoadBase64Key_Tests
         byte[] invalidBytes = new byte[10];
         string base64 = Convert.ToBase64String(invalidBytes);
 
-        var ex = Assert.Throws<ArgumentException>(() =>
-            KeyUtils.LoadBase64Key(base64)
-        );
+        var ex = Assert.Throws<ArgumentException>(() => KeyUtils.LoadBase64Key(base64));
 
         Assert.Equal("Ed25519 private key must be 32 or 64 bytes after Base64 decode.", ex.Message);
     }
