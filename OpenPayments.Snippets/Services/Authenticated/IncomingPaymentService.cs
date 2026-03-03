@@ -61,6 +61,8 @@ public class IncomingPaymentService(IAuthenticatedClient client)
         Console.WriteLine("Id: {0}", iPaymentResponse.Id);
         Console.WriteLine("Amount: {0}", iPaymentResponse.ReceivedAmount.Value);
         Console.WriteLine("ExpiresAt: {0}", iPaymentResponse.ExpiresAt);
+
+        return iPaymentResponse;
     }
 
     public async Task GetIncomingPaymentAsync(
