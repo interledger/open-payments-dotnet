@@ -18,10 +18,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var grantResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBodyWithInteract()
             {
                 AccessToken = new AccessToken()
@@ -34,10 +31,10 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                             Identifier = waDetails.Id,
                             Limits = new OutgoingAccessLimits()
                             {
-                                DebitAmount = new Amount(debitAmount, "EUR", 2)
-                            }
-                        }
-                    ]
+                                DebitAmount = new Amount(debitAmount, "EUR", 2),
+                            },
+                        },
+                    ],
                 },
                 Interact = new InteractRequest()
                 {
@@ -48,11 +45,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                     //     Uri = new Uri("https://localhost"),
                     //     Nonce = Guid.NewGuid().ToString(),
                     // }
-                }
+                },
             }
         );
 
-        if (grantResponse.Interact == null) throw new Exception("No redirect url returned");
+        if (grantResponse.Interact == null)
+            throw new Exception("No redirect url returned");
 
         Console.WriteLine("Visit the link below, then press enter to continue:");
         Console.WriteLine($"{grantResponse.Interact.Redirect}");
@@ -73,13 +71,13 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
             {
                 WalletAddress = waDetails.Id,
                 IncomingPayment = new Uri(incomingPaymentUrl),
-                DebitAmount = new Sdk.Generated.Resource.Amount(debitAmount, "EUR")
+                DebitAmount = new Sdk.Generated.Resource.Amount(debitAmount, "EUR"),
             };
         else if (quoteUrl != null)
             body = new OutgoingPaymentBodyFromQuote()
             {
                 WalletAddress = waDetails.Id,
-                QuoteId = new Uri(quoteUrl)
+                QuoteId = new Uri(quoteUrl),
             };
         else
             throw new Exception("No quote or incoming payment url provided");
@@ -87,15 +85,18 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         var args = new AuthRequestArgs()
         {
             Url = waDetails.ResourceServer,
-            AccessToken = tokenResponse.AccessToken!.Value
+            AccessToken = tokenResponse.AccessToken!.Value,
         };
 
         // Create Outgoing Payment
         var outgoing = body switch
         {
-            OutgoingPaymentBodyFromIncomingPayment b => await client.CreateOutgoingPaymentAsync(args, b),
+            OutgoingPaymentBodyFromIncomingPayment b => await client.CreateOutgoingPaymentAsync(
+                args,
+                b
+            ),
             OutgoingPaymentBodyFromQuote b => await client.CreateOutgoingPaymentAsync(args, b),
-            _ => throw new Exception("Invalid body type")
+            _ => throw new Exception("Invalid body type"),
         };
 
         Console.WriteLine("===Outgoing Payment===");
@@ -106,15 +107,11 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         Console.WriteLine("Debit Amount: {0}", outgoing.DebitAmount.Value);
     }
 
-    public async Task GetOutgoingPaymentAsync(string senderWalletAddress,
-        string outgoingPaymentUrl)
+    public async Task GetOutgoingPaymentAsync(string senderWalletAddress, string outgoingPaymentUrl)
     {
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
         var grantResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBodyWithInteract()
             {
                 AccessToken = new AccessToken()
@@ -125,18 +122,16 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                         {
                             // Type = AccessType.OutgoingPayment,
                             Actions = [Actions.Read, Actions.List],
-                            Identifier = waDetails.Id
-                        }
-                    ]
+                            Identifier = waDetails.Id,
+                        },
+                    ],
                 },
-                Interact = new InteractRequest()
-                {
-                    Start = [Start.Redirect]
-                }
+                Interact = new InteractRequest() { Start = [Start.Redirect] },
             }
         );
 
-        if (grantResponse.Interact == null) throw new Exception("No redirect url returned");
+        if (grantResponse.Interact == null)
+            throw new Exception("No redirect url returned");
 
         Console.WriteLine("Visit the link below, then press enter to continue:");
         Console.WriteLine($"{grantResponse.Interact!.Redirect}");
@@ -154,7 +149,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
             new AuthRequestArgs()
             {
                 Url = new Uri(outgoingPaymentUrl),
-                AccessToken = tokenResponse.AccessToken!.Value
+                AccessToken = tokenResponse.AccessToken!.Value,
             }
         );
 
@@ -171,10 +166,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var grantResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBodyWithInteract()
             {
                 AccessToken = new AccessToken()
@@ -185,14 +177,11 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                         {
                             Type = AccessType.OutgoingPayment,
                             Actions = [Actions.Read, Actions.List],
-                            Identifier = waDetails.Id
-                        }
-                    ]
+                            Identifier = waDetails.Id,
+                        },
+                    ],
                 },
-                Interact = new InteractRequest()
-                {
-                    Start = [Start.Redirect]
-                }
+                Interact = new InteractRequest() { Start = [Start.Redirect] },
             }
         );
         Console.WriteLine("Visit the link below, then press enter to continue:");
@@ -211,12 +200,9 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
             new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
-                AccessToken = tokenResponse.AccessToken!.Value
+                AccessToken = tokenResponse.AccessToken!.Value,
             },
-            new ListOutgoingPaymentQuery()
-            {
-                WalletAddress = waDetails.Id.ToString()
-            }
+            new ListOutgoingPaymentQuery() { WalletAddress = waDetails.Id.ToString() }
         );
 
         foreach (var oPayment in list.Result!)
@@ -236,10 +222,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var response = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBodyWithInteract()
             {
                 AccessToken = new AccessToken()
@@ -253,15 +236,12 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                             Identifier = waDetails.Id,
                             Limits = new OutgoingAccessLimits()
                             {
-                                DebitAmount = new Amount("100", "EUR", 2)
-                            }
-                        }
-                    ]
+                                DebitAmount = new Amount("100", "EUR", 2),
+                            },
+                        },
+                    ],
                 },
-                Interact = new InteractRequest()
-                {
-                    Start = [Start.Redirect]
-                }
+                Interact = new InteractRequest() { Start = [Start.Redirect] },
             }
         );
 

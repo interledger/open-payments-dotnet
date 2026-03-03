@@ -7,20 +7,32 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// The date and time when payments into the incoming payment must no longer be accepted.
         /// </summary>
-        [JsonProperty("expiresAt", Required = Required.AllowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "expiresAt",
+            Required = Required.AllowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new DateTimeOffset? ExpiresAt { get; set; }
 
         /// <summary>
         /// Additional metadata associated with the incoming payment. (Optional)
         /// </summary>
-        [JsonProperty("metadata", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "metadata",
+            Required = Required.DisallowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new object? Metadata { get; set; }
     }
 
     public partial class IncomingPaymentResponse : IncomingPaymentWithMethods
     {
         /// <inheritdoc cref="IncomingPayment.Metadata"/>
-        [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "metadata",
+            Required = Required.Default,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new object? Metadata { get; set; }
     }
 

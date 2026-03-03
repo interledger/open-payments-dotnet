@@ -17,7 +17,10 @@ internal abstract class WalletAddressClientBase
     private string GetWalletAddressUrl(string walletAddressOrPaymentPointer, string suffix = "")
     {
         if (string.IsNullOrWhiteSpace(walletAddressOrPaymentPointer))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(walletAddressOrPaymentPointer));
+            throw new ArgumentException(
+                "Value cannot be null or whitespace.",
+                nameof(walletAddressOrPaymentPointer)
+            );
 
         var url = NormalizeWalletAddress(walletAddressOrPaymentPointer);
         StringBuilder builder = new(NormalizeWalletAddress(walletAddressOrPaymentPointer));
@@ -30,8 +33,10 @@ internal abstract class WalletAddressClientBase
         return builder.ToString();
     }
 
-    protected async Task<WalletAddress> GetWalletAddressInternalAsync(string walletAddressOrPaymentPointer,
-        CancellationToken cancellationToken = default)
+    protected async Task<WalletAddress> GetWalletAddressInternalAsync(
+        string walletAddressOrPaymentPointer,
+        CancellationToken cancellationToken = default
+    )
     {
         string walletAddress = GetWalletAddressUrl(walletAddressOrPaymentPointer);
         return await _client
@@ -39,8 +44,10 @@ internal abstract class WalletAddressClientBase
             .ConfigureAwait(false);
     }
 
-    protected async Task<JsonWebKeySet> GetWalletAddressKeysInternalAsync(string walletAddressOrPaymentPointer,
-        CancellationToken cancellationToken = default)
+    protected async Task<JsonWebKeySet> GetWalletAddressKeysInternalAsync(
+        string walletAddressOrPaymentPointer,
+        CancellationToken cancellationToken = default
+    )
     {
         string walletAddress = GetWalletAddressUrl(walletAddressOrPaymentPointer);
         return await _client
@@ -59,7 +66,9 @@ internal abstract class WalletAddressClientBase
             return $"https://{withoutDollar}";
         }
 
-        throw new ArgumentException("Input must be an absolute URL or a payment pointer string starting with '$'.",
-            nameof(input));
+        throw new ArgumentException(
+            "Input must be an absolute URL or a payment pointer string starting with '$'.",
+            nameof(input)
+        );
     }
 }

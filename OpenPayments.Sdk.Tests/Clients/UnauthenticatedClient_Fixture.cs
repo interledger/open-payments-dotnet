@@ -27,7 +27,7 @@ public class UnauthenticatedClientFixture
             AssetScale = 2,
             AssetCode = "EUR",
             AuthServer = new Uri(BaseUrl + "/auth"),
-            ResourceServer = new Uri(BaseUrl + "/ilp")
+            ResourceServer = new Uri(BaseUrl + "/ilp"),
         };
 
         IncomingPayment = new PublicIncomingPayment
@@ -36,9 +36,9 @@ public class UnauthenticatedClientFixture
             {
                 AssetCode = "EUR",
                 AssetScale = 2,
-                Value = "100"
+                Value = "100",
             },
-            AuthServer = new Uri(BaseUrl + "/auth")
+            AuthServer = new Uri(BaseUrl + "/auth"),
         };
 
         WalletAddressKeys = new JsonWebKeySet()
@@ -51,9 +51,9 @@ public class UnauthenticatedClientFixture
                     Crv = JsonWebKeyCrv.Ed25519,
                     Kid = "test-kid",
                     Alg = JsonWebKeyAlg.EdDSA,
-                    X = "public-key"
-                }
-            }
+                    X = "public-key",
+                },
+            },
         };
     }
 
@@ -62,19 +62,23 @@ public class UnauthenticatedClientFixture
         var handler = new Mock<HttpMessageHandler>();
         handler
             .Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync",
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonConvert.SerializeObject(responseObject), Encoding.UTF8,
-                    "application/json")
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(
+                        JsonConvert.SerializeObject(responseObject),
+                        Encoding.UTF8,
+                        "application/json"
+                    ),
+                }
+            );
 
-        return new HttpClient(handler.Object)
-        {
-            BaseAddress = new Uri(BaseUrl)
-        };
+        return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
     }
 }

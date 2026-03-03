@@ -15,15 +15,22 @@ public partial class AuthServerClient
     /// </remarks>
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
-    public async Task<RotateTokenResponse> RotateTokenAsync(Uri tokenUrl, string accessToken,
-        CancellationToken cancellationToken)
+    public async Task<RotateTokenResponse> RotateTokenAsync(
+        Uri tokenUrl,
+        string accessToken,
+        CancellationToken cancellationToken
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(tokenUrl.ToString());
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         var client = _httpClient;
         using var request = new HttpRequestMessage();
-        request.Content = new StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+        request.Content = new StringContent(
+            string.Empty,
+            System.Text.Encoding.UTF8,
+            "application/json"
+        );
         request.Method = new HttpMethod("POST");
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -51,13 +58,21 @@ public partial class AuthServerClient
             {
                 case 200:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<RotateTokenResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<RotateTokenResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
                     return objectResponse.Object;
@@ -67,26 +82,43 @@ public partial class AuthServerClient
                 case 404:
                 case 500:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<ErrorResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
-                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
                         objectResponse.Text,
-                        headers, objectResponse.Object, null);
+                        headers,
+                        objectResponse.Object,
+                        null
+                    );
                 }
                 default:
                 {
-                    var responseData =
-                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
+                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
+                        .ConfigureAwait(false);
                     throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").", status,
-                        responseData, headers, null);
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
                 }
             }
         }
@@ -107,7 +139,11 @@ public partial class AuthServerClient
     /// </remarks>
     /// <returns>No Content</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
-    public async Task RevokeTokenAsync(Uri tokenUrl, string accessToken, CancellationToken cancellationToken)
+    public async Task RevokeTokenAsync(
+        Uri tokenUrl,
+        string accessToken,
+        CancellationToken cancellationToken
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(tokenUrl.ToString(), nameof(tokenUrl));
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
@@ -143,25 +179,43 @@ public partial class AuthServerClient
                 case 401:
                 case 500:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<ErrorResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
-                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
-                        objectResponse.Text, headers, objectResponse.Object, null);
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
+                        objectResponse.Text,
+                        headers,
+                        objectResponse.Object,
+                        null
+                    );
                 }
                 default:
                 {
-                    var responseData =
-                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
+                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
+                        .ConfigureAwait(false);
                     throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").", status,
-                        responseData, headers, null);
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
                 }
             }
         }

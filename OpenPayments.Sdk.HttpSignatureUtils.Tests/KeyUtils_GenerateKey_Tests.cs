@@ -23,11 +23,7 @@ public class KeyUtils_GenerateKey_Tests
         string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
 
-        var args = new GenerateKeyArgs
-        {
-            Dir = tempDir,
-            Filename = "custom-key.pem"
-        };
+        var args = new GenerateKeyArgs { Dir = tempDir, Filename = "custom-key.pem" };
 
         var key = KeyUtils.GenerateKey(args);
 
@@ -46,10 +42,7 @@ public class KeyUtils_GenerateKey_Tests
         string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
 
-        var args = new GenerateKeyArgs
-        {
-            Dir = tempDir
-        };
+        var args = new GenerateKeyArgs { Dir = tempDir };
 
         _ = KeyUtils.GenerateKey(args);
 

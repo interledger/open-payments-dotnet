@@ -14,7 +14,9 @@ services.UseOpenPayments(opts =>
 {
     opts.UseAuthenticatedClient = true;
     opts.KeyId = Environment.GetEnvironmentVariable("CLIENT_ID");
-    opts.PrivateKey = KeyUtils.LoadPem(Environment.GetEnvironmentVariable("CLIENT_SECRET")!.Replace("\\n", "\n"));
+    opts.PrivateKey = KeyUtils.LoadPem(
+        Environment.GetEnvironmentVariable("CLIENT_SECRET")!.Replace("\\n", "\n")
+    );
     opts.ClientUrl = new Uri(Environment.GetEnvironmentVariable("CLIENT_URL")!);
 });
 services.AddTransient<WalletAddressService>();
@@ -30,20 +32,20 @@ var provider = services.BuildServiceProvider();
 Option<string> resourceUrlOption = new("--resource", "-r")
 {
     Description = "The URL of the resource",
-    Required = true
+    Required = true,
 };
 Option<bool> walletAddressKeysOption = new("--keys", "-k")
 {
-    Description = "If specified, returns only the wallet address keys (JWKS)."
+    Description = "If specified, returns only the wallet address keys (JWKS).",
 };
 Option<string> senderWalletAddressOption = new("--sender", "-s")
 {
-    Description = "The wallet address of the sender."
+    Description = "The wallet address of the sender.",
 };
 Option<string> receiverWalletAddressOption = new("--receiver", "-r")
 {
     Description = "The wallet address of the receiver.",
-    Required = true
+    Required = true,
 };
 Option<string> amountOption = new("--amount", "-a")
 {
@@ -83,55 +85,45 @@ var rootCommand = new RootCommand("OpenPayments CLI");
 var walletAddressCommand = new Command("WalletAddress")
 {
     resourceUrlOption,
-    walletAddressKeysOption
+    walletAddressKeysOption,
 };
 var manageTokenCommand = new Command("ManageToken")
 {
     resourceUrlOption,
     accessTokenValue,
-    tokenAction
+    tokenAction,
 };
-var getIncomingPaymentCommand = new Command("GetIncomingPayment")
-{
-    resourceUrlOption
-};
+var getIncomingPaymentCommand = new Command("GetIncomingPayment") { resourceUrlOption };
 var createIncomingPaymentCommand = new Command("CreateIncomingPayment")
 {
     receiverWalletAddressOption,
-    amountOption
+    amountOption,
 };
 var listIncomingPaymentsCommand = new Command("ListIncomingPayments")
 {
-    receiverWalletAddressOption
+    receiverWalletAddressOption,
 };
 var createQuoteCommand = new Command("CreateQuote")
 {
     senderWalletAddressOption,
     incomingPaymentIdOption,
     debitAmountOption,
-    receiveAmountOption
+    receiveAmountOption,
 };
-var getQuoteCommand = new Command("GetQuote")
-{
-    senderWalletAddressOption,
-    quoteUrlOption
-};
+var getQuoteCommand = new Command("GetQuote") { senderWalletAddressOption, quoteUrlOption };
 var createOutgoingPaymentCommand = new Command("CreateOutgoingPayment")
 {
     senderWalletAddressOption,
     quoteUrlOption,
     incomingPaymentIdOption,
-    amountOption
+    amountOption,
 };
 var getOutgoingPaymentCommand = new Command("GetOutgoingPayment")
 {
     senderWalletAddressOption,
-    outgoingUrlOption
+    outgoingUrlOption,
 };
-var listOutgoingPaymentsCommand = new Command("ListOutgoingPayments")
-{
-    senderWalletAddressOption
-};
+var listOutgoingPaymentsCommand = new Command("ListOutgoingPayments") { senderWalletAddressOption };
 
 // Actions
 getIncomingPaymentCommand.SetAction(async result =>
@@ -241,9 +233,11 @@ rootCommand.Add(getIncomingPaymentCommand);
 // Authenticated
 rootCommand.Add(createIncomingPaymentCommand);
 rootCommand.Add(listIncomingPaymentsCommand);
+
 //
 rootCommand.Add(createQuoteCommand);
 rootCommand.Add(getQuoteCommand);
+
 //
 rootCommand.Add(createOutgoingPaymentCommand);
 rootCommand.Add(getOutgoingPaymentCommand);

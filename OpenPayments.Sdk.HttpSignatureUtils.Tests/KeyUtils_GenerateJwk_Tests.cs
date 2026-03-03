@@ -26,10 +26,10 @@ public class KeyUtils_GenerateJwk_Tests
     {
         var algorithm = SignatureAlgorithm.Ed25519;
 
-        var privateKey = new Key(algorithm, new KeyCreationParameters
-        {
-            ExportPolicy = KeyExportPolicies.AllowPlaintextExport
-        });
+        var privateKey = new Key(
+            algorithm,
+            new KeyCreationParameters { ExportPolicy = KeyExportPolicies.AllowPlaintextExport }
+        );
 
         byte[] expectedPublicKey = privateKey.PublicKey.Export(KeyBlobFormat.RawPublicKey);
         string expectedX = Convert.ToBase64String(expectedPublicKey);

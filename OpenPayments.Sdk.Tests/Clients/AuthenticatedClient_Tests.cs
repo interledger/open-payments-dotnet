@@ -16,7 +16,12 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock(_fixture.ApprovedGrantResponse);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -42,7 +47,12 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock(_fixture.ApprovedGrantResponse);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -68,7 +78,12 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock();
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -88,7 +103,12 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock(_fixture.TokenResponse);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -110,7 +130,12 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock();
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -134,9 +159,16 @@ public class AuthenticatedClient_Tests
         [Fact]
         public async Task CreateIncomingPaymentAsync_ReturnsModel()
         {
-            var httpClient =
-                _fixture.CreateHttpClientMock(_fixture.CreateIncomingPaymentResponse, HttpStatusCode.Created);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.CreateIncomingPaymentResponse,
+                HttpStatusCode.Created
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
             var result = await _client.CreateIncomingPaymentAsync(
                 _fixture.GrantWithTokenArgs,
                 _fixture.CreateIncomingPaymentBody
@@ -148,10 +180,16 @@ public class AuthenticatedClient_Tests
         [Fact]
         public async Task CreateIncomingPaymentAsync_ReturnsModelWithMetadata()
         {
-            var httpClient =
-                _fixture.CreateHttpClientMock(_fixture.CreateIncomingPaymentResponseWithMetadata,
-                    HttpStatusCode.Created);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.CreateIncomingPaymentResponseWithMetadata,
+                HttpStatusCode.Created
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
             var result = await _client.CreateIncomingPaymentAsync(
                 _fixture.GrantWithTokenArgs,
                 _fixture.CreateIncomingPaymentBody
@@ -170,9 +208,16 @@ public class AuthenticatedClient_Tests
         public AuthenticatedClient_CreateQuote_Tests(AuthenticatedClientFixture fixture)
         {
             _fixture = fixture;
-            var httpClient =
-                _fixture.CreateHttpClientMock(_fixture.CreateQuoteResponse, HttpStatusCode.Created);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.CreateQuoteResponse,
+                HttpStatusCode.Created
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -218,9 +263,16 @@ public class AuthenticatedClient_Tests
         public AuthenticatedClient_CreateOutgoingPayment_Tests(AuthenticatedClientFixture fixture)
         {
             _fixture = fixture;
-            var httpClient =
-                _fixture.CreateHttpClientMock(_fixture.CreateOutgoingPaymentResponse, HttpStatusCode.Created);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.CreateOutgoingPaymentResponse,
+                HttpStatusCode.Created
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -255,8 +307,16 @@ public class AuthenticatedClient_Tests
         public AuthenticatedClient_GetOutgoingPayment_Tests(AuthenticatedClientFixture fixture)
         {
             _fixture = fixture;
-            var httpClient = _fixture.CreateHttpClientMock(_fixture.GetOutgoingPaymentResponse, HttpStatusCode.OK);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.GetOutgoingPaymentResponse,
+                HttpStatusCode.OK
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
@@ -277,15 +337,25 @@ public class AuthenticatedClient_Tests
         public AuthenticatedClient_ListOutgoingPayments_Tests(AuthenticatedClientFixture fixture)
         {
             _fixture = fixture;
-            var httpClient = _fixture.CreateHttpClientMock(_fixture.ListOutgoingPaymentsResponse, HttpStatusCode.OK);
-            _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.ListOutgoingPaymentsResponse,
+                HttpStatusCode.OK
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
         }
 
         [Fact]
         public async Task ListOutgoingPaymentsAsync_ReturnsModel()
         {
-            var result =
-                await _client.ListOutgoingPaymentsAsync(_fixture.GrantWithTokenArgs, _fixture.ListOutgoingPaymentQuery);
+            var result = await _client.ListOutgoingPaymentsAsync(
+                _fixture.GrantWithTokenArgs,
+                _fixture.ListOutgoingPaymentQuery
+            );
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.ListOutgoingPaymentsResponse);
         }

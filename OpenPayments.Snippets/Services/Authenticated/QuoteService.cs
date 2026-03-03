@@ -8,16 +8,17 @@ namespace OpenPayments.Snippets.Services.Authenticated;
 
 public class QuoteService(IAuthenticatedClient client)
 {
-    public async Task CreateQuoteAsync(string senderWalletAddress, string incomingPaymentUrl,
-        string? debitAmount, string? receiveAmount)
+    public async Task CreateQuoteAsync(
+        string senderWalletAddress,
+        string incomingPaymentUrl,
+        string? debitAmount,
+        string? receiveAmount
+    )
     {
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var authResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -27,10 +28,10 @@ public class QuoteService(IAuthenticatedClient client)
                         new QuoteAccess()
                         {
                             Type = AccessType.Quote,
-                            Actions = [Actions.Create, Actions.Read]
-                        }
-                    ]
-                }
+                            Actions = [Actions.Create, Actions.Read],
+                        },
+                    ],
+                },
             }
         );
 
@@ -38,15 +39,15 @@ public class QuoteService(IAuthenticatedClient client)
         var body = (debitAmount, receiveAmount) switch
         {
             (null, null) => QuoteBase(new QuoteBody()),
-            (not null, null) => QuoteBase(new QuoteBodyWithDebitAmount
-            {
-                DebitAmount = new Amount(debitAmount, "EUR")
-            }),
-            (null, not null) => QuoteBase(new QuoteBodyWithReceiveAmount
-            {
-                ReceiveAmount = new Amount(receiveAmount, "EUR")
-            }),
-            _ => throw new Exception("Invalid arguments. Use either debitAmount or receiveAmount or none of them.")
+            (not null, null) => QuoteBase(
+                new QuoteBodyWithDebitAmount { DebitAmount = new Amount(debitAmount, "EUR") }
+            ),
+            (null, not null) => QuoteBase(
+                new QuoteBodyWithReceiveAmount { ReceiveAmount = new Amount(receiveAmount, "EUR") }
+            ),
+            _ => throw new Exception(
+                "Invalid arguments. Use either debitAmount or receiveAmount or none of them."
+            ),
         };
 
         var quote = await client.CreateQuoteAsync(
@@ -78,10 +79,7 @@ public class QuoteService(IAuthenticatedClient client)
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var authResponse = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -91,10 +89,10 @@ public class QuoteService(IAuthenticatedClient client)
                         new QuoteAccess()
                         {
                             Type = AccessType.Quote,
-                            Actions = [Actions.Create, Actions.Read]
-                        }
-                    ]
-                }
+                            Actions = [Actions.Create, Actions.Read],
+                        },
+                    ],
+                },
             }
         );
 

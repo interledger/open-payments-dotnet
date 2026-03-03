@@ -20,8 +20,7 @@ public partial class ResourceServerClient
         settings.ContractResolver = new ResourceContractResolver();
     }
 
-    partial void PrepareRequest(HttpClient client, HttpRequestMessage request,
-        string url)
+    partial void PrepareRequest(HttpClient client, HttpRequestMessage request, string url)
     {
         if (_privateKey == null || _keyId == null)
         {

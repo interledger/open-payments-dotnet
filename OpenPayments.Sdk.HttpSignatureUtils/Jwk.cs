@@ -9,7 +9,9 @@ namespace OpenPayments.Sdk.HttpSignatureUtils;
 public sealed class Jwk
 {
     [JsonProperty("kty")] public string Kty { get; init; } = "OKP"; // Octet Key Pair
+
     [JsonProperty("crv")] public string Crv { get; init; } = "Ed25519";
+
     [JsonProperty("alg")] public string Alg { get; init; } = "EdDSA";
 
     /// <summary>Base64‐url encoded public key bytes (32 bytes).</summary>
