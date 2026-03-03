@@ -52,9 +52,9 @@ namespace OpenPayments.Sdk.Generated.Auth
         [System.ComponentModel.DataAnnotations.Required]
         // [JsonProperty("actions")] public string[]? Actions { get; set; }
         public ICollection<Actions> Actions { get; set; } = new Collection<Actions>();
-        
+
         [JsonProperty("identifier")] public Uri? Identifier { get; set; }
-        
+
         [JsonProperty("limits")] public OutgoingAccessLimits? Limits { get; set; }
     }
 

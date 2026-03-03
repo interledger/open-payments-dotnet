@@ -144,12 +144,13 @@ public class AuthenticatedClient_Tests
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.CreateIncomingPaymentResponse);
         }
-        
+
         [Fact]
         public async Task CreateIncomingPaymentAsync_ReturnsModelWithMetadata()
         {
             var httpClient =
-                _fixture.CreateHttpClientMock(_fixture.CreateIncomingPaymentResponseWithMetadata, HttpStatusCode.Created);
+                _fixture.CreateHttpClientMock(_fixture.CreateIncomingPaymentResponseWithMetadata,
+                    HttpStatusCode.Created);
             _client = new AuthenticatedClient(httpClient, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
             var result = await _client.CreateIncomingPaymentAsync(
                 _fixture.GrantWithTokenArgs,

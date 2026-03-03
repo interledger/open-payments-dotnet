@@ -7,7 +7,8 @@ using Org.BouncyCastle.OpenSsl;
 
 namespace OpenPayments.Sdk.HttpSignatureUtils;
 
-public sealed class GenerateKeyArgs {
+public sealed class GenerateKeyArgs
+{
     public string? Dir { get; set; }
     public string? Filename { get; set; }
 }
@@ -79,7 +80,10 @@ public static class KeyUtils
                 var inner = Asn1OctetString.GetInstance(Asn1Object.FromByteArray(privateKeyBytes));
                 privateKeyBytes = inner.GetOctets();
             }
-            catch { /* ignore */ }
+            catch
+            {
+                /* ignore */
+            }
         }
 
         if (privateKeyBytes.Length != 32)
@@ -152,7 +156,8 @@ public static class KeyUtils
 
         if (keyBytes.Length != 32 && keyBytes.Length != 64)
         {
-            throw new ArgumentException("File was loaded, but key was not a valid Ed25519 private key (must be 32 or 64 bytes).");
+            throw new ArgumentException(
+                "File was loaded, but key was not a valid Ed25519 private key (must be 32 or 64 bytes).");
         }
 
         var seed = keyBytes.AsSpan(0, 32).ToArray();
@@ -214,4 +219,4 @@ public static class KeyUtils
 
         return GenerateKey(generateKeyArgs);
     }
-} 
+}

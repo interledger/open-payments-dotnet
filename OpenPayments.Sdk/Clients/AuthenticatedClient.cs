@@ -72,7 +72,8 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
     }
 
     /// <inheritdoc cref="UnauthenticatedClient.GetIncomingPaymentAsync"/>
-    public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(RequestArgs requestArgs, CancellationToken cancellationToken = default)
+    public Task<PublicIncomingPayment> GetPublicIncomingPaymentAsync(RequestArgs requestArgs,
+        CancellationToken cancellationToken = default)
     {
         return base.GetIncomingPaymentAsync(requestArgs.Url.ToString(), cancellationToken);
     }
@@ -85,7 +86,8 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
     }
 
     /// <inheritdoc/>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default)
     {
         return _resClient.CompleteIncomingPaymentAsync(requestArgs, cancellationToken);
     }
@@ -96,14 +98,14 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
     {
         return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken);
     }
-    
+
     /// <inheritdoc/>
     public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBodyWithDebitAmount body,
         CancellationToken cancellationToken = default)
     {
         return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken);
     }
-    
+
     /// <inheritdoc/>
     public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBodyWithReceiveAmount body,
         CancellationToken cancellationToken = default)
@@ -124,7 +126,7 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
     {
         return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
     }
-    
+
     /// <inheritdoc/>
     public Task<OutgoingPaymentWithSpentAmountsResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
         OutgoingPaymentBodyFromIncomingPayment body,
@@ -133,12 +135,14 @@ internal sealed class AuthenticatedClient(HttpClient http, Key privateKey, strin
         return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
     }
 
-    public Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    public Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default)
     {
         return _resClient.GetOutgoingPaymentAsync(requestArgs, cancellationToken);
     }
 
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(AuthRequestArgs requestArgs, ListOutgoingPaymentQuery query,
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(AuthRequestArgs requestArgs,
+        ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default)
     {
         return _resClient.ListOutgoingPaymentAsync(requestArgs, query, cancellationToken);

@@ -13,11 +13,14 @@ public sealed class Jwk
     [JsonProperty("alg")] public string Alg { get; init; } = "EdDSA";
 
     /// <summary>Base64‐url encoded public key bytes (32 bytes).</summary>
-    [JsonProperty("x")] public required string X { get; init; }
+    [JsonProperty("x")]
+    public required string X { get; init; }
 
     /// <summary>Base64‐url encoded private key bytes (32 bytes). Optional—omit for public-only keys.</summary>
-    [JsonProperty("d", NullValueHandling = NullValueHandling.Ignore)] public string? D { get; init; }
+    [JsonProperty("d", NullValueHandling = NullValueHandling.Ignore)]
+    public string? D { get; init; }
 
     /// <summary>Key identifier.</summary>
-    [JsonProperty("kid", NullValueHandling = NullValueHandling.Ignore)] public required string Kid { get; init; }
-} 
+    [JsonProperty("kid", NullValueHandling = NullValueHandling.Ignore)]
+    public required string Kid { get; init; }
+}

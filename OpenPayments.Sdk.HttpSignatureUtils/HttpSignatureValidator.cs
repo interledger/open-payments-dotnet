@@ -21,7 +21,7 @@ public class HttpSignatureValidator : IHttpSignatureValidator
     public bool AreSignatureHeadersPresent(HttpRequestMessage request)
     {
         return TryGetHeader(request, "signature") is not null &&
-               TryGetHeader(request, "signature-input") is not null;
+            TryGetHeader(request, "signature-input") is not null;
     }
 
     public async Task<bool> ValidateSignatureAsync(HttpRequestMessage request, Jwk clientKey)
@@ -37,7 +37,7 @@ public class HttpSignatureValidator : IHttpSignatureValidator
             return false;
 
         var challenge = await _builder.BuildBaseAsync(components, request, sigInput);
-        if (challenge is null) 
+        if (challenge is null)
             return false;
 
         var signatureBytes = Convert.FromBase64String(sig.Replace("sig1=", "").Replace(":", ""));

@@ -113,7 +113,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <returns>A task representing the asynchronous operation, containing the created quote details.</returns>
     public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Creates a quote for a payment transaction.
     /// </summary>
@@ -123,7 +123,7 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <returns>A task representing the asynchronous operation, containing the created quote details.</returns>
     public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBodyWithDebitAmount body,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Creates a quote for a payment transaction.
     /// </summary>

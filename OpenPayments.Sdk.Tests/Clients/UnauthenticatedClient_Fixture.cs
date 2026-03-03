@@ -11,7 +11,7 @@ namespace OpenPayments.Sdk.Tests.Clients;
 public class UnauthenticatedClientFixture
 {
     public string BaseUrl => "https://example.com";
-    
+
     public WalletAddress WalletAddress { get; private set; }
 
     public PublicIncomingPayment IncomingPayment { get; private set; }
@@ -43,8 +43,10 @@ public class UnauthenticatedClientFixture
 
         WalletAddressKeys = new JsonWebKeySet()
         {
-            Keys = {
-                new JsonWebKey {
+            Keys =
+            {
+                new JsonWebKey
+                {
                     Kty = JsonWebKeyKty.OKP,
                     Crv = JsonWebKeyCrv.Ed25519,
                     Kid = "test-kid",
@@ -66,7 +68,8 @@ public class UnauthenticatedClientFixture
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonConvert.SerializeObject(responseObject), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonConvert.SerializeObject(responseObject), Encoding.UTF8,
+                    "application/json")
             });
 
         return new HttpClient(handler.Object)

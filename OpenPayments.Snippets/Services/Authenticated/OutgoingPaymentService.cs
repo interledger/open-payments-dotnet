@@ -65,7 +65,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                 AccessToken = grantResponse.Continue.AccessToken.Value,
             }
         );
-        
+
         OutgoingPaymentBody body;
 
         if (incomingPaymentUrl != null)
@@ -135,9 +135,9 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                 }
             }
         );
-        
+
         if (grantResponse.Interact == null) throw new Exception("No redirect url returned");
-        
+
         Console.WriteLine("Visit the link below, then press enter to continue:");
         Console.WriteLine($"{grantResponse.Interact!.Redirect}");
         Console.ReadLine();
@@ -149,7 +149,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
                 AccessToken = grantResponse.Continue.AccessToken.Value,
             }
         );
-        
+
         var outgoing = await client.GetOutgoingPaymentAsync(
             new AuthRequestArgs()
             {

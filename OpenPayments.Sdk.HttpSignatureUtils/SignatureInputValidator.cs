@@ -12,9 +12,9 @@ public class SignatureInputValidator : ISignatureInputValidator
         bool hasAuth = !request.Headers.Contains("Authorization") || components.Contains("authorization");
 
         bool hasDigest = !components.Contains("content-digest") || request.Content != null &&
-              request.Content.Headers.Contains("Content-Digest") &&
-              request.Content.Headers.Contains("Content-Length") &&
-              request.Content.Headers.Contains("Content-Type");
+            request.Content.Headers.Contains("Content-Digest") &&
+            request.Content.Headers.Contains("Content-Length") &&
+            request.Content.Headers.Contains("Content-Type");
 
         return hasMethod && hasTargetUri && hasAuth && hasDigest;
     }

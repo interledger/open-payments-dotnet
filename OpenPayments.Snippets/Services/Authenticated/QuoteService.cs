@@ -63,7 +63,7 @@ public class QuoteService(IAuthenticatedClient client)
         Console.WriteLine("IncomingPaymentUrl: {0}", quote.Receiver);
         Console.WriteLine("Receive Amount: {0}", quote.ReceiveAmount.Value);
         Console.WriteLine("Debit Amount: {0}", quote.DebitAmount.Value);
-        
+
         QuoteBody QuoteBase(QuoteBody b)
         {
             b.WalletAddress = waDetails.Id;

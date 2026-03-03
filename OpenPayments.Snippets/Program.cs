@@ -177,7 +177,7 @@ createQuoteCommand.SetAction(async result =>
     var incomingPaymentUrl = result.GetValue(incomingPaymentIdOption)!;
     var debitAmount = result.GetValue(debitAmountOption);
     var receiveAmount = result.GetValue(receiveAmountOption);
-    
+
     var service = provider.GetRequiredService<QuoteService>();
     await service.CreateQuoteAsync(sender, incomingPaymentUrl, debitAmount, receiveAmount);
 });
@@ -196,7 +196,7 @@ createOutgoingPaymentCommand.SetAction(async result =>
     var iPaymentUrl = result.GetValue(incomingPaymentIdOption);
     var debitAmount = result.GetValue(amountOption)!;
     var service = provider.GetRequiredService<OutgoingPaymentService>();
-    
+
     await service.CreateOutgoingPaymentAsync(sender, debitAmount, quoteUrl, iPaymentUrl);
 });
 getOutgoingPaymentCommand.SetAction(async result =>

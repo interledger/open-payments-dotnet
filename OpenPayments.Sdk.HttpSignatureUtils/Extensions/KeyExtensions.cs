@@ -8,7 +8,8 @@ internal static class KeyExtensions
     public static void ToPem(this Key key, string filePath)
     {
         ArgumentNullException.ThrowIfNull(key);
-        if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("File path is required.", nameof(filePath));
+        if (string.IsNullOrWhiteSpace(filePath))
+            throw new ArgumentException("File path is required.", nameof(filePath));
 
         byte[] seed = key.Export(KeyBlobFormat.RawPrivateKey);
         var bcKey = new Ed25519PrivateKeyParameters(seed, 0);

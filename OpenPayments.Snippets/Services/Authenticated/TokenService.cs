@@ -39,7 +39,7 @@ public class TokenService(IAuthenticatedClient client)
                 }
             }
         );
-        
+
         Console.ReadLine();
 
         var tokenResponse = await client.ContinueGrantAsync(
@@ -49,7 +49,7 @@ public class TokenService(IAuthenticatedClient client)
                 AccessToken = grantResponse.Continue.AccessToken.Value,
             }
         );
-        
+
         Console.ReadLine();
 
         var rotatedToken = await RotateTokenAsync(tokenResponse.AccessToken!.Manage, tokenResponse.AccessToken.Value);

@@ -72,19 +72,22 @@ public class ResourceClientBase : IResourceClientBase
         return _client.PostOutgoingPaymentAsync(body, requestArgs.AccessToken, cancellationToken);
     }
 
-    public Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
-    {
-        _client.BaseUrl = requestArgs.Url.ToString();
-        
-        return _client.GetOutgoingPaymentAsync(requestArgs.AccessToken, cancellationToken);
-    }
-
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(AuthRequestArgs requestArgs, ListOutgoingPaymentQuery query,
+    public Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default)
     {
         _client.BaseUrl = requestArgs.Url.ToString();
-        
-        return _client.ListOutgoingPaymentsAsync(requestArgs.AccessToken, query.WalletAddress, query.Cursor, query.First, query.Last, cancellationToken);
+
+        return _client.GetOutgoingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+    }
+
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(AuthRequestArgs requestArgs,
+        ListOutgoingPaymentQuery query,
+        CancellationToken cancellationToken = default)
+    {
+        _client.BaseUrl = requestArgs.Url.ToString();
+
+        return _client.ListOutgoingPaymentsAsync(requestArgs.AccessToken, query.WalletAddress, query.Cursor,
+            query.First, query.Last, cancellationToken);
     }
 }
 

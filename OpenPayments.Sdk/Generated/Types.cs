@@ -25,6 +25,4 @@ namespace OpenPayments.Sdk.Generated
             return headers;
         }
     }
-    
 }
-

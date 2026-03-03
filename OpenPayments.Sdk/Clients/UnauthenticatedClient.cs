@@ -16,21 +16,24 @@ namespace OpenPayments.Sdk.Clients;
 internal class UnauthenticatedClient(HttpClient http) : WalletAddressClientBase(http), IUnauthenticatedClient
 {
     /// <inheritdoc/>
-    public async Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
+    public async Task<WalletAddress> GetWalletAddressAsync(string walletAddressOrPaymentPointer,
+        CancellationToken cancellationToken = default)
     {
         return await GetWalletAddressInternalAsync(walletAddressOrPaymentPointer, cancellationToken)
             .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task<JsonWebKeySet> GetWalletAddressKeysAsync(string walletAddressOrPaymentPointer, CancellationToken cancellationToken = default)
+    public async Task<JsonWebKeySet> GetWalletAddressKeysAsync(string walletAddressOrPaymentPointer,
+        CancellationToken cancellationToken = default)
     {
         return await GetWalletAddressKeysInternalAsync(walletAddressOrPaymentPointer, cancellationToken)
             .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task<PublicIncomingPayment> GetIncomingPaymentAsync(string incomingPaymentUrl, CancellationToken cancellationToken = default)
+    public async Task<PublicIncomingPayment> GetIncomingPaymentAsync(string incomingPaymentUrl,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(incomingPaymentUrl))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(incomingPaymentUrl));

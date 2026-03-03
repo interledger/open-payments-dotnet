@@ -110,7 +110,7 @@ public class AuthenticatedClientFixture
             }
         ]
     };
-    
+
     public IncomingPaymentResponse CreateIncomingPaymentResponseWithMetadata = new()
     {
         Id = new Uri("https://example.com/incoming/1234"),
@@ -141,7 +141,7 @@ public class AuthenticatedClientFixture
         Receiver = new Uri("https://example.com/incoming/1234"),
         Method = PaymentMethod.Ilp,
     };
-    
+
     public QuoteBodyWithDebitAmount CreateQuoteBodyWithDebitAmount = new()
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
@@ -149,7 +149,7 @@ public class AuthenticatedClientFixture
         DebitAmount = new Amount("100", "EUR"),
         Method = PaymentMethod.Ilp,
     };
-    
+
     public QuoteBodyWithReceiveAmount CreateQuoteBodyWithReceiveAmount = new()
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
@@ -179,7 +179,7 @@ public class AuthenticatedClientFixture
             ["description"] = "Free Money"
         }
     };
-    
+
     public OutgoingPaymentBodyFromIncomingPayment CreateOutgoingPaymentBodyFromIncomingPayment = new()
     {
         WalletAddress = new Uri("https://example.com/wallet/1234"),
@@ -244,7 +244,8 @@ public class AuthenticatedClientFixture
             HasNextPage = false,
             HasPreviousPage = false
         },
-        Result = [
+        Result =
+        [
             new OutgoingPaymentResponse()
             {
                 Id = new Uri("https://example.com/outgoing/1234"),
