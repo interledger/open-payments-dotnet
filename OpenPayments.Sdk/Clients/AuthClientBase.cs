@@ -17,73 +17,83 @@ public class AuthClientBase : IAuthClientBase
         _client.ClientUrl = clientUrl;
     }
 
-    public async Task<AuthResponse> RequestGrantAsync(RequestArgs requestArgs,
+    public async Task<AuthResponse> RequestGrantAsync(
+        RequestArgs requestArgs,
         GrantCreateBody body,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         _client.BaseUrl = requestArgs.Url.ToString();
         body.Client = _client.ClientUrl;
 
-        return await _client
-            .CreateGrantAsync(
-                body
-                , cancellationToken)
-            .ConfigureAwait(false);
+        return await _client.CreateGrantAsync(body, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<AuthResponse> ContinueGrantAsync(AuthRequestArgs requestArgs,
+    public async Task<AuthResponse> ContinueGrantAsync(
+        AuthRequestArgs requestArgs,
         GrantContinueBody body,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         return await _client
-            .ContinueGrantAsync(
-                requestArgs.Url,
-                requestArgs.AccessToken,
-                body,
-                cancellationToken)
+            .ContinueGrantAsync(requestArgs.Url, requestArgs.AccessToken, body, cancellationToken)
             .ConfigureAwait(false);
     }
 
-    public async Task CancelGrantAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken)
+    public async Task CancelGrantAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken
+    )
     {
         await _client
-            .CancelGrantAsync(
-                requestArgs.Url,
-                requestArgs.AccessToken,
-                cancellationToken)
+            .CancelGrantAsync(requestArgs.Url, requestArgs.AccessToken, cancellationToken)
             .ConfigureAwait(false);
     }
 
-    public async Task<RotateTokenResponse>
-        RotateTokenAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken)
+    public async Task<RotateTokenResponse> RotateTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken
+    )
     {
         return await _client
-            .RotateTokenAsync(requestArgs.Url, requestArgs.AccessToken!, cancellationToken).ConfigureAwait(false);
+            .RotateTokenAsync(requestArgs.Url, requestArgs.AccessToken!, cancellationToken)
+            .ConfigureAwait(false);
     }
 
-    public async Task RevokeTokenAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default)
+    public async Task RevokeTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
     {
-        await _client.RevokeTokenAsync(requestArgs.Url, requestArgs.AccessToken!, cancellationToken)
+        await _client
+            .RevokeTokenAsync(requestArgs.Url, requestArgs.AccessToken!, cancellationToken)
             .ConfigureAwait(false);
     }
 }
 
 public interface IAuthClientBase
 {
-    public Task<AuthResponse> RequestGrantAsync(RequestArgs requestArgs,
+    public Task<AuthResponse> RequestGrantAsync(
+        RequestArgs requestArgs,
         GrantCreateBody body,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 
-    public Task<AuthResponse> ContinueGrantAsync(AuthRequestArgs requestArgs,
+    public Task<AuthResponse> ContinueGrantAsync(
+        AuthRequestArgs requestArgs,
         GrantContinueBody body,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 
     public Task CancelGrantAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken);
 
-    public Task<RotateTokenResponse> RotateTokenAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken);
+    public Task<RotateTokenResponse> RotateTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken
+    );
 
-    public Task RevokeTokenAsync(AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default);
+    public Task RevokeTokenAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 }

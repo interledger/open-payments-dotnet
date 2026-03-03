@@ -69,7 +69,9 @@ public class UnauthenticatedClient_Tests
         [InlineData("foobar")]
         public async Task GetWalletAddressKeysAsync_InvalidInput_Throws(string url)
         {
-            await Assert.ThrowsAsync<ArgumentException>(() => _client.GetWalletAddressKeysAsync(url));
+            await Assert.ThrowsAsync<ArgumentException>(() =>
+                _client.GetWalletAddressKeysAsync(url)
+            );
         }
     }
 

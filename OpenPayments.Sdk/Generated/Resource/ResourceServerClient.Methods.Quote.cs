@@ -179,7 +179,8 @@ public partial class ResourceServerClient
                 }
                 default:
                 {
-                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
+                    var responseData =
+                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
                     throw new ApiException("The HTTP status code of the response was not expected (" + status + ").",
                         status, responseData, headers, null);
                 }

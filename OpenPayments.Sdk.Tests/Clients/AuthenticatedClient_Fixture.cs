@@ -104,15 +104,18 @@ public class AuthenticatedClientFixture
         Completed = false,
         CreatedAt = DateTime.UtcNow,
         ExpiresAt = DateTime.UtcNow.AddDays(1),
-        Methods = [new IlpPaymentMethod()
-        {
-            Type = IlpPaymentMethodType.Ilp,
-            IlpAddress = "example.com/incoming/1234",
-            SharedSecret = "secret1234"
-        }],
+        Methods =
+        [
+            new IlpPaymentMethod()
+            {
+                Type = IlpPaymentMethodType.Ilp,
+                IlpAddress = "example.com/incoming/1234",
+                SharedSecret = "secret1234"
+            }
+        ],
         Metadata = new JObject
         {
-             ["description"] = "Free Money"
+            ["description"] = "Free Money"
         },
     };
 

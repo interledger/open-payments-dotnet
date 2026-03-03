@@ -4,8 +4,6 @@
 // </auto-generated>
 //----------------------
 
-#nullable enable
-
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
 #pragma warning disable 472 // Disable "CS0472 The result of the expression is always 'false' since a value of type 'Int32' is never equal to 'null' of type 'Int32?'
@@ -27,7 +25,7 @@ namespace OpenPayments.Sdk.Generated.Resource
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ResourceServerClient 
+    public partial class ResourceServerClient
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -243,7 +241,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response> ListIncomingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature)
+        public virtual System.Threading.Tasks.Task<Response> ListIncomingPaymentsAsync(string wallet_address, string cursor, int? first, int? last, string signature_Input, string signature)
         {
             return ListIncomingPaymentsAsync(wallet_address, cursor, first, last, signature_Input, signature, System.Threading.CancellationToken.None);
         }
@@ -263,7 +261,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response> ListIncomingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response> ListIncomingPaymentsAsync(string wallet_address, string cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
         {
             if (wallet_address == null)
                 throw new System.ArgumentNullException("wallet_address");
@@ -534,7 +532,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature)
+        public virtual System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string cursor, int? first, int? last, string signature_Input, string signature)
         {
             return ListOutgoingPaymentsAsync(wallet_address, cursor, first, last, signature_Input, signature, System.Threading.CancellationToken.None);
         }
@@ -554,7 +552,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
         {
             if (wallet_address == null)
                 throw new System.ArgumentNullException("wallet_address");
@@ -824,7 +822,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="id">Sub-resource identifier</param>
         /// <returns>Incoming Payment Found</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response3> GetIncomingPaymentAsync(string? signature_Input, string? signature, string id)
+        public virtual System.Threading.Tasks.Task<Response3> GetIncomingPaymentAsync(string signature_Input, string signature, string id)
         {
             return GetIncomingPaymentAsync(signature_Input, signature, id, System.Threading.CancellationToken.None);
         }
@@ -841,7 +839,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="id">Sub-resource identifier</param>
         /// <returns>Incoming Payment Found</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response3> GetIncomingPaymentAsync(string? signature_Input, string? signature, string id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response3> GetIncomingPaymentAsync(string signature_Input, string signature, string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1408,7 +1406,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         {
             if (response == null || response.Content == null)
             {
-                return new ObjectResponseResult<T>(default(T)!, string.Empty);
+                return new ObjectResponseResult<T>(default(T), string.Empty);
             }
 
             if (ReadResponseAsString)
@@ -1417,7 +1415,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                 try
                 {
                     var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
-                    return new ObjectResponseResult<T>(typedBody!, responseText);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
                 }
                 catch (Newtonsoft.Json.JsonException exception)
                 {
@@ -1435,7 +1433,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     {
                         var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
                         var typedBody = serializer.Deserialize<T>(jsonTextReader);
-                        return new ObjectResponseResult<T>(typedBody!, string.Empty);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
                     }
                 }
                 catch (Newtonsoft.Json.JsonException exception)
@@ -1446,7 +1444,7 @@ namespace OpenPayments.Sdk.Generated.Resource
             }
         }
 
-        private string ConvertToString(object? value, System.Globalization.CultureInfo cultureInfo)
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value == null)
             {
@@ -1461,7 +1459,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1473,7 +1471,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     return converted == null ? string.Empty : converted;
                 }
             }
-            else if (value is bool) 
+            else if (value is bool)
             {
                 return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
@@ -1510,23 +1508,23 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Value { get; set; } = default!;
+        public string Value { get; set; }
 
         /// <summary>
         /// The assetCode is a code that indicates the underlying asset. An ISO4217 currency code should be used whenever possible. The ISO4217 representation of the US Dollar is USD.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("assetCode", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string AssetCode { get; set; } = default!;
+        public string AssetCode { get; set; }
 
         /// <summary>
         /// The number of decimal places that defines the scale of the smallest divisible unit for the given asset code. It determines how an integer amount is scaled to derive the actual monetary value. For example, USD has an asset scale of 2 with the smallest unit being 0.01. An integer amount of `1000` with an `assetCode` of `USD` and `assetScale` of `2` translates to $10.00.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("assetScale", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Range(0, 255)]
-        public int AssetScale { get; set; } = default!;
+        public int AssetScale { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -1549,14 +1547,14 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri Id { get; set; } = default!;
+        public System.Uri Id { get; set; }
 
         /// <summary>
         /// The URL of the wallet address this payment is being made into.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         /// <summary>
         /// Describes whether the incoming payment has completed receiving fund.
@@ -1567,8 +1565,8 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// The maximum amount that should be paid into the wallet address under this incoming payment.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("incomingAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount? IncomingAmount { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("incomingAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount IncomingAmount { get; set; }
 
         /// <summary>
         /// The total amount that has been paid into the wallet address under this incoming payment.
@@ -1580,23 +1578,23 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// The date and time when payments under this incoming payment will no longer be accepted.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("expiresAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? ExpiresAt { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("expiresAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>
         /// Additional metadata associated with the incoming payment. (Optional)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object? Metadata { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Metadata { get; set; }
 
         /// <summary>
         /// The date and time when the incoming payment was created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset CreatedAt { get; set; } = default!;
+        public System.DateTimeOffset CreatedAt { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -1630,17 +1628,17 @@ namespace OpenPayments.Sdk.Generated.Resource
     public partial class PublicIncomingPayment
     {
 
-        [Newtonsoft.Json.JsonProperty("receivedAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount? ReceivedAmount { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("receivedAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount ReceivedAmount { get; set; }
 
         /// <summary>
         /// The URL of the authorization server endpoint for getting grants and access tokens for this wallet address.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("authServer", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri AuthServer { get; set; } = default!;
+        public System.Uri AuthServer { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -1663,26 +1661,26 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri Id { get; set; } = default!;
+        public System.Uri Id { get; set; }
 
         /// <summary>
         /// The URL of the wallet address from which this payment is sent.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         /// <summary>
         /// The URL of the quote defining this payment's amounts.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("quoteId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Uri? QuoteId { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("quoteId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri QuoteId { get; set; }
 
         /// <summary>
         /// Describes whether the payment failed to send its full amount.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("failed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Failed { get; set; } = false;
+        [Newtonsoft.Json.JsonProperty("failed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Failed { get; set; } = false;
 
         /// <summary>
         /// The URL of the incoming payment that is being paid.
@@ -1690,7 +1688,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [Newtonsoft.Json.JsonProperty("receiver", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(https|http)://(.+)/incoming-payments/(.+)$")]
-        public System.Uri Receiver { get; set; } = default!;
+        public System.Uri Receiver { get; set; }
 
         /// <summary>
         /// The total amount that should be received by the receiver when this outgoing payment has been paid.
@@ -1716,15 +1714,15 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// Additional metadata associated with the outgoing payment. (Optional)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object? Metadata { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Metadata { get; set; }
 
         /// <summary>
         /// The date and time when the outgoing payment was created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset CreatedAt { get; set; } = default!;
+        public System.DateTimeOffset CreatedAt { get; set; }
 
     }
 
@@ -1740,26 +1738,26 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri Id { get; set; } = default!;
+        public System.Uri Id { get; set; }
 
         /// <summary>
         /// The URL of the wallet address from which this payment is sent.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         /// <summary>
         /// The URL of the quote defining this payment's amounts.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("quoteId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Uri? QuoteId { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("quoteId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri QuoteId { get; set; }
 
         /// <summary>
         /// Describes whether the payment failed to send its full amount.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("failed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Failed { get; set; } = false;
+        [Newtonsoft.Json.JsonProperty("failed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Failed { get; set; } = false;
 
         /// <summary>
         /// The URL of the incoming payment that is being paid.
@@ -1767,7 +1765,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [Newtonsoft.Json.JsonProperty("receiver", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(https|http)://(.+)/incoming-payments/(.+)$")]
-        public System.Uri Receiver { get; set; } = default!;
+        public System.Uri Receiver { get; set; }
 
         /// <summary>
         /// The total amount that should be received by the receiver when this outgoing payment has been paid.
@@ -1793,29 +1791,29 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// The total amount successfully deducted from the sender's account using the current outgoing payment grant.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("grantSpentDebitAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount? GrantSpentDebitAmount { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("grantSpentDebitAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount GrantSpentDebitAmount { get; set; }
 
         /// <summary>
         /// The total amount successfully received (by all receivers) using the current outgoing payment grant.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("grantSpentReceiveAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount? GrantSpentReceiveAmount { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("grantSpentReceiveAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount GrantSpentReceiveAmount { get; set; }
 
         /// <summary>
         /// Additional metadata associated with the outgoing payment. (Optional)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object? Metadata { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Metadata { get; set; }
 
         /// <summary>
         /// The date and time when the outgoing payment was created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset CreatedAt { get; set; } = default!;
+        public System.DateTimeOffset CreatedAt { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -1838,14 +1836,14 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri Id { get; set; } = default!;
+        public System.Uri Id { get; set; }
 
         /// <summary>
         /// The URL of the wallet address from which this quote's payment would be sent.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         /// <summary>
         /// The URL of the incoming payment that the quote is created for.
@@ -1853,7 +1851,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [Newtonsoft.Json.JsonProperty("receiver", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(https|http)://(.+)/incoming-payments/(.+)$")]
-        public System.Uri Receiver { get; set; } = default!;
+        public System.Uri Receiver { get; set; }
 
         /// <summary>
         /// The total amount that should be received by the receiver when the corresponding outgoing payment has been paid.
@@ -1863,7 +1861,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         public Amount ReceiveAmount { get; set; } = new Amount();
 
         /// <summary>
-        /// The total amount that should be deducted from the sender's account when the corresponding outgoing payment has been paid. 
+        /// The total amount that should be deducted from the sender's account when the corresponding outgoing payment has been paid.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("debitAmount", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -1872,20 +1870,20 @@ namespace OpenPayments.Sdk.Generated.Resource
         [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public PaymentMethod Method { get; set; } = default!;
+        public PaymentMethod Method { get; set; }
 
         /// <summary>
         /// The date and time when the calculated `debitAmount` is no longer valid.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("expiresAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? ExpiresAt { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("expiresAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ExpiresAt { get; set; }
 
         /// <summary>
         /// The date and time when the quote was created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset CreatedAt { get; set; } = default!;
+        public System.DateTimeOffset CreatedAt { get; set; }
 
     }
 
@@ -1896,28 +1894,28 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// Cursor corresponding to the first element in the result array.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("startCursor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("startCursor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(int.MaxValue, MinimumLength = 1)]
-        public string? StartCursor { get; set; } = default!;
+        public string StartCursor { get; set; }
 
         /// <summary>
         /// Cursor corresponding to the last element in the result array.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("endCursor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("endCursor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(int.MaxValue, MinimumLength = 1)]
-        public string? EndCursor { get; set; } = default!;
+        public string EndCursor { get; set; }
 
         /// <summary>
         /// Describes whether the data set has further entries.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("hasNextPage", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasNextPage { get; set; } = default!;
+        public bool HasNextPage { get; set; }
 
         /// <summary>
         /// Describes whether the data set has previous entries.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("hasPreviousPage", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasPreviousPage { get; set; } = default!;
+        public bool HasPreviousPage { get; set; }
 
     }
 
@@ -1937,7 +1935,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public IlpPaymentMethodType Type { get; set; } = default!;
+        public IlpPaymentMethodType Type { get; set; }
 
         /// <summary>
         /// The ILP address to use when establishing a STREAM connection.
@@ -1946,7 +1944,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(1023)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(g|private|example|peer|self|test[1-3]?|local)([.][a-zA-Z0-9_~-]+)+$")]
-        public string IlpAddress { get; set; } = default!;
+        public string IlpAddress { get; set; }
 
         /// <summary>
         /// The base64 url-encoded shared secret to use when establishing a STREAM connection.
@@ -1954,7 +1952,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-zA-Z0-9-_]+$")]
-        public string SharedSecret { get; set; } = default!;
+        public string SharedSecret { get; set; }
 
     }
 
@@ -1966,7 +1964,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [System.ComponentModel.DataAnnotations.Required]
         public Error Error { get; set; } = new Error();
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -1983,25 +1981,25 @@ namespace OpenPayments.Sdk.Generated.Resource
 
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         /// <summary>
         /// The maximum amount that should be paid into the wallet address under this incoming payment.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("incomingAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount? IncomingAmount { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("incomingAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount IncomingAmount { get; set; }
 
         /// <summary>
         /// The date and time when payments into the incoming payment must no longer be accepted.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("expiresAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? ExpiresAt { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("expiresAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>
         /// Additional metadata associated with the incoming payment. (Optional)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object? Metadata { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Metadata { get; set; }
 
     }
 
@@ -2011,20 +2009,20 @@ namespace OpenPayments.Sdk.Generated.Resource
 
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         /// <summary>
         /// The URL of the quote defining this payment's amounts.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("quoteId", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri QuoteId { get; set; } = default!;
+        public System.Uri QuoteId { get; set; }
 
         /// <summary>
         /// Additional metadata associated with the outgoing payment. (Optional)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object? Metadata { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Metadata { get; set; }
 
     }
 
@@ -2037,17 +2035,17 @@ namespace OpenPayments.Sdk.Generated.Resource
 
         [Newtonsoft.Json.JsonProperty("walletAddress", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Uri WalletAddress { get; set; } = default!;
+        public System.Uri WalletAddress { get; set; }
 
         [Newtonsoft.Json.JsonProperty("receiver", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(https|http)://(.+)/incoming-payments/(.+)$")]
-        public System.Uri Receiver { get; set; } = default!;
+        public System.Uri Receiver { get; set; }
 
         [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public PaymentMethod Method { get; set; } = default!;
+        public PaymentMethod Method { get; set; }
 
     }
 
@@ -2055,13 +2053,13 @@ namespace OpenPayments.Sdk.Generated.Resource
     public partial class Response
     {
 
-        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PageInfo? Pagination { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PageInfo Pagination { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<IncomingPayment>? Result { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<IncomingPayment> Result { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -2076,13 +2074,13 @@ namespace OpenPayments.Sdk.Generated.Resource
     public partial class Response2
     {
 
-        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PageInfo? Pagination { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PageInfo Pagination { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<OutgoingPayment>? Result { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<OutgoingPayment> Result { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -2097,7 +2095,7 @@ namespace OpenPayments.Sdk.Generated.Resource
     public partial class Response3
     {
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -2123,19 +2121,19 @@ namespace OpenPayments.Sdk.Generated.Resource
 
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Code { get; set; } = default!;
+        public string Code { get; set; }
 
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Description { get; set; } = default!;
+        public string Description { get; set; }
 
         /// <summary>
         /// Additional details about the error.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object? Details { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Details { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
         public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
@@ -2153,11 +2151,11 @@ namespace OpenPayments.Sdk.Generated.Resource
     {
         public int StatusCode { get; private set; }
 
-        public string? Response { get; private set; }
+        public string Response { get; private set; }
 
         public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
-        public ApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception? innerException)
+        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
         {
             StatusCode = statusCode;
@@ -2176,7 +2174,7 @@ namespace OpenPayments.Sdk.Generated.Resource
     {
         public TResult Result { get; private set; }
 
-        public ApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception? innerException)
+        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
             : base(message, statusCode, response, headers, innerException)
         {
             Result = result;

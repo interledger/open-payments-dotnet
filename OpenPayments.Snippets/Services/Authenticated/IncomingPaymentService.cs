@@ -8,15 +8,14 @@ namespace OpenPayments.Snippets.Services.Authenticated;
 
 public class IncomingPaymentService(IAuthenticatedClient client)
 {
-    public async Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(string receiver, string amount)
+    public async Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(
+        string receiver,
+        string amount
+    )
     {
         var waDetails = await client.GetWalletAddressAsync(receiver);
-
         var grant = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -26,10 +25,16 @@ public class IncomingPaymentService(IAuthenticatedClient client)
                         new AccessItem()
                         {
                             Type = AccessType.IncomingPayment,
-                            Actions = [Actions.Create, Actions.Read, Actions.List, Actions.Complete]
-                        }
-                    ]
-                }
+                            Actions =
+                            [
+                                Actions.Create,
+                                Actions.Read,
+                                Actions.List,
+                                Actions.Complete,
+                            ],
+                        },
+                    ],
+                },
             }
         );
 
@@ -37,7 +42,7 @@ public class IncomingPaymentService(IAuthenticatedClient client)
             new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
-                AccessToken = grant.AccessToken!.Value
+                AccessToken = grant.AccessToken!.Value,
             },
             new IncomingPaymentBody()
             {
@@ -46,11 +51,10 @@ public class IncomingPaymentService(IAuthenticatedClient client)
                 {
                     AssetCode = waDetails.AssetCode,
                     AssetScale = waDetails.AssetScale,
-                    Value = amount
-                }
+                    Value = amount,
+                },
             }
         );
-
 
         Console.WriteLine("===Incoming Payment===");
         Console.WriteLine("grant: {0}", JsonConvert.SerializeObject(grant, Formatting.None));
@@ -62,21 +66,23 @@ public class IncomingPaymentService(IAuthenticatedClient client)
         return iPaymentResponse;
     }
 
-    public async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(string incomingPaymentUrl, string accessToken,
-        string tokenUrl)
+    public async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        string incomingPaymentUrl,
+        string accessToken,
+        string tokenUrl
+    )
     {
-        var rotatedToken = await client.RotateTokenAsync(new AuthRequestArgs()
-        {
-            Url = new Uri(tokenUrl),
-            AccessToken = accessToken
-        });
+        var rotatedToken = await client.RotateTokenAsync(
+            new AuthRequestArgs() { Url = new Uri(tokenUrl), AccessToken = accessToken }
+        );
 
-
-        var iPaymentResponse = await client.GetIncomingPaymentAsync(new AuthRequestArgs()
-        {
-            Url = new Uri(incomingPaymentUrl),
-            AccessToken = rotatedToken.AccessToken.Value
-        });
+        var iPaymentResponse = await client.GetIncomingPaymentAsync(
+            new AuthRequestArgs()
+            {
+                Url = new Uri(incomingPaymentUrl),
+                AccessToken = rotatedToken.AccessToken.Value,
+            }
+        );
 
         Console.WriteLine("===Incoming Payment===");
         Console.WriteLine("Id: {0}", iPaymentResponse.Id);
@@ -88,19 +94,20 @@ public class IncomingPaymentService(IAuthenticatedClient client)
         return iPaymentResponse;
     }
 
-    public async Task CompleteIncomingPaymentAsync(string incomingPaymentUrl, string accessToken, string tokenUrl)
+    public async Task CompleteIncomingPaymentAsync(
+        string incomingPaymentUrl,
+        string accessToken,
+        string tokenUrl
+    )
     {
     }
 
     public async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(string walletAddress)
     {
-        var waDetails = await client.GetWalletAddressAsync("https://ilp.interledger-test.dev/cozmin");
-        
+        var waDetails = await client.GetWalletAddressAsync(walletAddress);
+
         var grant = await client.RequestGrantAsync(
-            new RequestArgs()
-            {
-                Url = waDetails.AuthServer
-            },
+            new RequestArgs() { Url = waDetails.AuthServer },
             new GrantCreateBody()
             {
                 AccessToken = new AccessToken()
@@ -110,22 +117,20 @@ public class IncomingPaymentService(IAuthenticatedClient client)
                         new AccessItem()
                         {
                             Type = AccessType.IncomingPayment,
-                            Actions = [Actions.List]
-                        }
-                    ]
-                }
+                            Actions = [Actions.List],
+                        },
+                    ],
+                },
             }
         );
 
-        var list = await client.ListIncomingPaymentsAsync(new AuthRequestArgs()
+        var list = await client.ListIncomingPaymentsAsync(
+            new AuthRequestArgs()
             {
                 Url = waDetails.ResourceServer,
-                AccessToken = grant.AccessToken!.Value
+                AccessToken = grant.AccessToken!.Value,
             },
-            new ListIncomingPaymentQuery()
-            {
-                WalletAddress = waDetails.Id.ToString(),
-            }
+            new ListIncomingPaymentQuery() { WalletAddress = waDetails.Id.ToString() }
         );
 
         Console.WriteLine(JsonConvert.SerializeObject(list, Formatting.Indented));
@@ -135,7 +140,12 @@ public class IncomingPaymentService(IAuthenticatedClient client)
             Console.WriteLine("===Incoming Payment===");
             Console.WriteLine("Id: {0}", iPayment.Id);
             Console.WriteLine("Completed: {0}", iPayment.Completed ? "Yes" : "No");
-            Console.WriteLine("Amount: {0}/{1} {2}", iPayment.ReceivedAmount.Value, iPayment.IncomingAmount.Value, iPayment.ReceivedAmount.AssetCode);
+            Console.WriteLine(
+                "Amount: {0}/{1} {2}",
+                iPayment.ReceivedAmount.Value,
+                iPayment.IncomingAmount.Value,
+                iPayment.ReceivedAmount.AssetCode
+            );
             Console.WriteLine("ExpiresAt: {0}", iPayment.ExpiresAt);
         }
 

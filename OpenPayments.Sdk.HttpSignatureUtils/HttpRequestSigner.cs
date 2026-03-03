@@ -14,6 +14,7 @@ public class SignatureHeaders
     /// Signature header value.
     /// </summary>
     public string Signature { get; set; } = string.Empty;
+
     /// <summary>
     /// Signature input header value.
     /// </summary>
@@ -30,14 +31,17 @@ public static class HttpRequestSigner
         var fields = string.Join(" ", components.Select(h => $"\"{h}\""));
         return $"({fields});created={created};keyid=\"{keyId}\";alg=\"ed25519\"";
     }
-    
+
     private static string ComputeContentDigest(string body)
     {
         var hash = SHA512.HashData(Encoding.UTF8.GetBytes(body));
         return Convert.ToBase64String(hash);
     }
-    
-    private static async Task<string> TryGetHeaderValueAsync(HttpRequestMessage request, string name)
+
+    private static async Task<string> TryGetHeaderValueAsync(
+        HttpRequestMessage request,
+        string name
+    )
     {
         name = name.ToLowerInvariant();
 
@@ -46,7 +50,10 @@ public static class HttpRequestSigner
             return string.Join(", ", values);
         }
 
-        if (request.Content != null && request.Content.Headers.TryGetValues(name, out var contentValues))
+        if (
+            request.Content != null
+            && request.Content.Headers.TryGetValues(name, out var contentValues)
+        )
         {
             return string.Join(", ", contentValues);
         }
@@ -60,8 +67,12 @@ public static class HttpRequestSigner
         return "";
     }
 
-    private static async Task<string> BuildSignatureBaseAsync(HttpRequestMessage request, List<string> components,
-        long created, string keyId)
+    private static async Task<string> BuildSignatureBaseAsync(
+        HttpRequestMessage request,
+        List<string> components,
+        long created,
+        string keyId
+    )
     {
         var lines = new List<string>();
 
@@ -83,7 +94,9 @@ public static class HttpRequestSigner
         }
 
         var fieldList = string.Join(" ", components.Select(c => $"\"{c}\""));
-        lines.Add($"\"@signature-params\": ({fieldList});created={created};keyid=\"{keyId}\";alg=\"ed25519\"");
+        lines.Add(
+            $"\"@signature-params\": ({fieldList});created={created};keyid=\"{keyId}\";alg=\"ed25519\""
+        );
 
         return string.Join("\n", lines);
     }
@@ -96,15 +109,22 @@ public static class HttpRequestSigner
     /// <param name="keyId"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public static async Task<SignatureHeaders> SignHttpRequestAsync(HttpRequestMessage request, Key privateKey,
-        string keyId)
+    public static async Task<SignatureHeaders> SignHttpRequestAsync(
+        HttpRequestMessage request,
+        Key privateKey,
+        string keyId
+    )
     {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(privateKey);
-        if (string.IsNullOrWhiteSpace(keyId)) throw new ArgumentException("KeyId cannot be empty.", nameof(keyId));
+        if (string.IsNullOrWhiteSpace(keyId))
+            throw new ArgumentException("KeyId cannot be empty.", nameof(keyId));
 
         var components = new List<string> { "@method", "@target-uri" };
-        var headers = request.Headers.ToDictionary(h => h.Key.ToLowerInvariant(), h => string.Join(", ", h.Value));
+        var headers = request.Headers.ToDictionary(
+            h => h.Key.ToLowerInvariant(),
+            h => string.Join(", ", h.Value)
+        );
 
         if (headers.ContainsKey("authorization"))
         {
@@ -120,17 +140,25 @@ public static class HttpRequestSigner
 
                 var digest = ComputeContentDigest(content);
 
-                request.Content.Headers.TryAddWithoutValidation("Content-Digest", $"sha-512=:{digest}:");
+                request.Content.Headers.TryAddWithoutValidation(
+                    "Content-Digest",
+                    $"sha-512=:{digest}:"
+                );
 
                 if (!request.Content.Headers.Contains("Content-Length"))
                 {
-                    request.Content.Headers.TryAddWithoutValidation("Content-Length",
-                        Encoding.UTF8.GetByteCount(content).ToString());
+                    request.Content.Headers.TryAddWithoutValidation(
+                        "Content-Length",
+                        Encoding.UTF8.GetByteCount(content).ToString()
+                    );
                 }
 
                 if (!request.Content.Headers.Contains("Content-Type"))
                 {
-                    request.Content.Headers.TryAddWithoutValidation("Content-Type", "application/json");
+                    request.Content.Headers.TryAddWithoutValidation(
+                        "Content-Type",
+                        "application/json"
+                    );
                 }
             }
         }
@@ -138,13 +166,16 @@ public static class HttpRequestSigner
         var created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var signatureInput = BuildSignatureInput(components, keyId, created);
         var signatureBase = await BuildSignatureBaseAsync(request, components, created, keyId);
-        var signatureBytes = SignatureAlgorithm.Ed25519.Sign(privateKey, Encoding.UTF8.GetBytes(signatureBase));
+        var signatureBytes = SignatureAlgorithm.Ed25519.Sign(
+            privateKey,
+            Encoding.UTF8.GetBytes(signatureBase)
+        );
         var base64Signature = Convert.ToBase64String(signatureBytes);
 
         return new SignatureHeaders
         {
             Signature = $"sig1=:{base64Signature}:",
-            SignatureInput = $"sig1={signatureInput}"
+            SignatureInput = $"sig1={signatureInput}",
         };
     }
 }

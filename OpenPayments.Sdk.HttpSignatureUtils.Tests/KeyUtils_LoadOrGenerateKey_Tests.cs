@@ -34,11 +34,14 @@ public class KeyUtils_LoadOrGenerateKey_Tests
     {
         string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".key");
 
-        var key = KeyUtils.LoadOrGenerateKey(path, new GenerateKeyArgs
-        {
-            Dir = Path.GetDirectoryName(path),
-            Filename = Path.GetFileName(path)
-        });
+        var key = KeyUtils.LoadOrGenerateKey(
+            path,
+            new GenerateKeyArgs
+            {
+                Dir = Path.GetDirectoryName(path),
+                Filename = Path.GetFileName(path),
+            }
+        );
 
         Assert.NotNull(key);
         Assert.True(File.Exists(path), "Expected fallback key to be saved to disk.");
@@ -51,11 +54,14 @@ public class KeyUtils_LoadOrGenerateKey_Tests
     {
         string path = CreateTempKeyFile(new byte[] { 1, 2, 3, 4 }); // Invalid key
 
-        var key = KeyUtils.LoadOrGenerateKey(path, new GenerateKeyArgs
-        {
-            Dir = Path.GetDirectoryName(path),
-            Filename = Path.GetFileName(path)
-        });
+        var key = KeyUtils.LoadOrGenerateKey(
+            path,
+            new GenerateKeyArgs
+            {
+                Dir = Path.GetDirectoryName(path),
+                Filename = Path.GetFileName(path),
+            }
+        );
 
         Assert.NotNull(key);
         Assert.True(File.Exists(path), "Expected fallback key to be saved to disk.");
@@ -66,10 +72,13 @@ public class KeyUtils_LoadOrGenerateKey_Tests
     [Fact]
     public void LoadOrGenerateKey_NoFilePath_GeneratesKey()
     {
-        var key = KeyUtils.LoadOrGenerateKey(null, new GenerateKeyArgs
-        {
-            Dir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())
-        });
+        var key = KeyUtils.LoadOrGenerateKey(
+            null,
+            new GenerateKeyArgs
+            {
+                Dir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()),
+            }
+        );
 
         Assert.NotNull(key);
     }

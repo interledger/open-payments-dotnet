@@ -29,9 +29,11 @@ public partial class ResourceServerClient
     /// <param name="accessToken">Access Token.</param>
     /// <returns>Incoming Payment Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
-    public async Task<IncomingPaymentResponse> PostIncomingPaymentAsync(Body body,
+    public async Task<IncomingPaymentResponse> PostIncomingPaymentAsync(
+        Body body,
         string accessToken,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         ArgumentNullException.ThrowIfNull(body);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
@@ -47,7 +49,8 @@ public partial class ResourceServerClient
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
         var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder.Append(_baseUrl);
+        if (!string.IsNullOrEmpty(_baseUrl))
+            urlBuilder.Append(_baseUrl);
         urlBuilder.Append("incoming-payments");
 
         PrepareRequest(client, request, urlBuilder);
@@ -72,13 +75,21 @@ public partial class ResourceServerClient
             {
                 case 201:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<IncomingPaymentResponse>(response, headers,
-                            cancellationToken).ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<IncomingPaymentResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
                     return objectResponse.Object;
@@ -86,27 +97,43 @@ public partial class ResourceServerClient
                 case 401:
                 case 403:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<ErrorResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
-                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
                         objectResponse.Text,
                         headers,
-                        objectResponse.Object, null);
+                        objectResponse.Object,
+                        null
+                    );
                 }
                 default:
                 {
                     var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
                         .ConfigureAwait(false);
                     throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").", status,
-                        responseData, headers, null);
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
                 }
             }
         }
@@ -126,8 +153,10 @@ public partial class ResourceServerClient
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Incoming Payment Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
-    public virtual async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(string accessToken,
-        CancellationToken cancellationToken)
+    public virtual async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        string accessToken,
+        CancellationToken cancellationToken
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
@@ -161,13 +190,21 @@ public partial class ResourceServerClient
             {
                 case 200:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<IncomingPaymentResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<IncomingPaymentResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
                     return objectResponse.Object;
@@ -176,26 +213,43 @@ public partial class ResourceServerClient
                 case 403:
                 case 404:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<ErrorResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
-                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
                         objectResponse.Text,
-                        headers, objectResponse.Object, null);
+                        headers,
+                        objectResponse.Object,
+                        null
+                    );
                 }
                 default:
                 {
-                    var responseData =
-                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
+                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
+                        .ConfigureAwait(false);
                     throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").", status,
-                        responseData, headers, null);
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
                 }
             }
         }
@@ -220,7 +274,11 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
-        string accessToken, string walletAddress, string? cursor, int? first, int? last,
+        string accessToken,
+        string walletAddress,
+        string? cursor,
+        int? first,
+        int? last,
         CancellationToken cancellationToken
     )
     {
@@ -234,30 +292,59 @@ public partial class ResourceServerClient
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
         var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder.Append(_baseUrl);
+        if (!string.IsNullOrEmpty(_baseUrl))
+            urlBuilder.Append(_baseUrl);
         urlBuilder.Append("incoming-payments");
         urlBuilder.Append('?');
-        urlBuilder.Append(Uri.EscapeDataString("wallet-address")).Append('=').Append(
-            Uri.EscapeDataString(ConvertToString(walletAddress, System.Globalization.CultureInfo.InvariantCulture)));
+        urlBuilder
+            .Append(Uri.EscapeDataString("wallet-address"))
+            .Append('=')
+            .Append(
+                Uri.EscapeDataString(
+                    ConvertToString(
+                        walletAddress,
+                        System.Globalization.CultureInfo.InvariantCulture
+                    )
+                )
+            );
 
         if (cursor != null)
         {
-            urlBuilder.Append('&').Append(Uri.EscapeDataString("cursor")).Append('=')
+            urlBuilder
+                .Append('&')
+                .Append(Uri.EscapeDataString("cursor"))
+                .Append('=')
                 .Append(
-                    Uri.EscapeDataString(ConvertToString(cursor, System.Globalization.CultureInfo.InvariantCulture)));
+                    Uri.EscapeDataString(
+                        ConvertToString(cursor, System.Globalization.CultureInfo.InvariantCulture)
+                    )
+                );
         }
 
         if (first != null)
         {
-            urlBuilder.Append('&').Append(Uri.EscapeDataString("first")).Append('=')
-                .Append(Uri.EscapeDataString(ConvertToString(first,
-                    System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder
+                .Append('&')
+                .Append(Uri.EscapeDataString("first"))
+                .Append('=')
+                .Append(
+                    Uri.EscapeDataString(
+                        ConvertToString(first, System.Globalization.CultureInfo.InvariantCulture)
+                    )
+                );
         }
 
         if (last != null)
         {
-            urlBuilder.Append('&').Append(Uri.EscapeDataString("last")).Append('=')
-                .Append(Uri.EscapeDataString(ConvertToString(last, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder
+                .Append('&')
+                .Append(Uri.EscapeDataString("last"))
+                .Append('=')
+                .Append(
+                    Uri.EscapeDataString(
+                        ConvertToString(last, System.Globalization.CultureInfo.InvariantCulture)
+                    )
+                );
         }
 
         PrepareRequest(client, request, urlBuilder);
@@ -267,7 +354,8 @@ public partial class ResourceServerClient
 
         PrepareRequest(client, request, url);
 
-        var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+        var response = await client
+            .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
             .ConfigureAwait(false);
 
         try
@@ -282,13 +370,21 @@ public partial class ResourceServerClient
                 case 200:
                 {
                     var objectResponse =
-                        await ReadObjectResponseAsync<ListIncomingPaymentsResponse>(response, headers,
-                                cancellationToken)
+                        await ReadObjectResponseAsync<ListIncomingPaymentsResponse>(
+                                response,
+                                headers,
+                                cancellationToken
+                            )
                             .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status, objectResponse.Text,
-                            headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
                     return objectResponse.Object;
@@ -296,25 +392,43 @@ public partial class ResourceServerClient
                 case 401:
                 case 403:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<ErrorResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status, objectResponse.Text,
-                            headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
-                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
-                        objectResponse.Text, headers,
-                        objectResponse.Object, null);
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
+                        objectResponse.Text,
+                        headers,
+                        objectResponse.Object,
+                        null
+                    );
                 }
                 default:
                 {
-                    var responseData =
-                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
-                    throw new ApiException("The HTTP status code of the response was not expected (" + status + ").",
-                        status, responseData, headers, null);
+                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
+                        .ConfigureAwait(false);
+                    throw new ApiException(
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
                 }
             }
         }
@@ -337,7 +451,9 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
-        string accessToken, CancellationToken cancellationToken)
+        string accessToken,
+        CancellationToken cancellationToken
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
@@ -373,13 +489,21 @@ public partial class ResourceServerClient
             {
                 case 200:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<IncomingPaymentResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<IncomingPaymentResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
                     return objectResponse.Object;
@@ -388,26 +512,43 @@ public partial class ResourceServerClient
                 case 403:
                 case 404:
                 {
-                    var objectResponse =
-                        await ReadObjectResponseAsync<ErrorResponse>(response, headers, cancellationToken)
-                            .ConfigureAwait(false);
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException("Response was null which was not expected.", status,
-                            objectResponse.Text, headers, null);
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
                     }
 
-                    throw new ApiException<ErrorResponse>(objectResponse.Object.Error.Description, status,
-                        objectResponse.Text, headers,
-                        objectResponse.Object, null);
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
+                        objectResponse.Text,
+                        headers,
+                        objectResponse.Object,
+                        null
+                    );
                 }
                 default:
                 {
-                    var responseData =
-                        await ReadAsStringAsync(response.Content, cancellationToken).ConfigureAwait(false);
+                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
+                        .ConfigureAwait(false);
                     throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").", status,
-                        responseData, headers, null);
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
                 }
             }
         }

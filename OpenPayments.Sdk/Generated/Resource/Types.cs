@@ -7,20 +7,32 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// The date and time when payments into the incoming payment must no longer be accepted.
         /// </summary>
-        [JsonProperty("expiresAt", Required = Required.AllowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "expiresAt",
+            Required = Required.AllowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new DateTimeOffset? ExpiresAt { get; set; }
 
         /// <summary>
         /// Additional metadata associated with the incoming payment. (Optional)
         /// </summary>
-        [JsonProperty("metadata", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "metadata",
+            Required = Required.DisallowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new object? Metadata { get; set; }
     }
 
     public partial class IncomingPaymentResponse : IncomingPaymentWithMethods
     {
         /// <inheritdoc cref="IncomingPayment.Metadata"/>
-        [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "metadata",
+            Required = Required.Default,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new object? Metadata { get; set; }
     }
 
@@ -31,10 +43,9 @@ namespace OpenPayments.Sdk.Generated.Resource
         public int? First { get; set; }
         public int? Last { get; set; }
     }
-    
+
     public partial class ListIncomingPaymentsResponse : Response
     {
-        
     }
 
     public partial class QuoteBody : Body3
@@ -77,17 +88,24 @@ namespace OpenPayments.Sdk.Generated.Resource
         public Amount? DebitAmount { get; set; }
 
         /// <inheritdoc cref="Body2.Metadata"/>
-        [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "metadata",
+            Required = Required.Default,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public new object? Metadata { get; set; }
     }
 
     public partial class OutgoingPaymentResponse : OutgoingPaymentWithSpentAmounts
     {
     }
-    
+
     public partial class Amount
     {
-        public Amount() {}
+        public Amount()
+        {
+        }
+
         public Amount(string value, string assetCode, int? assetScale = 2)
         {
             Value = value;
@@ -111,7 +129,7 @@ namespace OpenPayments.Sdk.Generated.Resource
             set { _additionalProperties = value; }
         }
     }
-    
+
     public partial class ResourceError
     {
         [JsonProperty("code", Required = Required.Always)]
@@ -136,6 +154,5 @@ namespace OpenPayments.Sdk.Generated.Resource
             get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
-
     }
 }
