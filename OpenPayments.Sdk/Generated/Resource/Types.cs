@@ -81,7 +81,11 @@ namespace OpenPayments.Sdk.Generated.Resource
         public Uri WalletAddress { get; set; } = default!;
 
         /// <inheritdoc cref="Body2.Metadata"/>
-        [JsonProperty("metadata", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "metadata",
+            Required = Required.Default,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public object? Metadata { get; set; }
     }
 
@@ -113,7 +117,8 @@ namespace OpenPayments.Sdk.Generated.Resource
     {
     }
 
-    public partial class OutgoingPaymentWithSpentAmountsResponse : OutgoingPaymentWithSpentAmounts
+    public partial class OutgoingPaymentWithSpentAmountsResponse
+        : OutgoingPaymentWithSpentAmounts
     {
     }
 
@@ -154,7 +159,11 @@ namespace OpenPayments.Sdk.Generated.Resource
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            get
+            {
+                return _additionalProperties
+                    ?? (_additionalProperties = new Dictionary<string, object>());
+            }
             set { _additionalProperties = value; }
         }
     }
@@ -172,7 +181,11 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <summary>
         /// Additional details about the error.
         /// </summary>
-        [JsonProperty("details", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(
+            "details",
+            Required = Required.Default,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
         public object Details { get; set; } = null!;
 
         private IDictionary<string, object>? _additionalProperties;
@@ -180,7 +193,11 @@ namespace OpenPayments.Sdk.Generated.Resource
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
         {
-            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            get
+            {
+                return _additionalProperties
+                    ?? (_additionalProperties = new Dictionary<string, object>());
+            }
             set { _additionalProperties = value; }
         }
     }

@@ -121,10 +121,8 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>ListIncomingPaymentsResponse</returns>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(
-        AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default
-    );
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a quote for a payment transaction.
