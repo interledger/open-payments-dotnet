@@ -148,7 +148,7 @@ public class AuthenticatedClient_Tests
     [Collection("AuthenticatedClient")]
     public class AuthenticatedClient_CreateIncomingPayment_Tests
     {
-        private AuthenticatedClient _client;
+        private AuthenticatedClient? _client;
         private readonly AuthenticatedClientFixture _fixture;
 
         public AuthenticatedClient_CreateIncomingPayment_Tests(AuthenticatedClientFixture fixture)
