@@ -158,7 +158,6 @@ public partial class AuthServerClient
 
         var url = urlBuilder.ToString();
         request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
-
         PrepareRequest(client, request, url);
 
         var response = await client

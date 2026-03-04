@@ -15,13 +15,14 @@ public sealed class ResourceContractResolver : DefaultContractResolver
         prop.NullValueHandling = NullValueHandling.Ignore;
 
         // Force 'metadata' property to be optional, regardless of what the attributes say
-        if (
-            prop.PropertyName != null
-            && prop.PropertyName.Equals("metadata", StringComparison.OrdinalIgnoreCase)
-        )
+        if (prop.PropertyName != null && prop.PropertyName.Equals("metadata", StringComparison.OrdinalIgnoreCase))
         {
             prop.Required = Required.Default;
-            prop.NullValueHandling = NullValueHandling.Ignore;
+        }
+
+        if (prop.PropertyName != null && prop.PropertyName.Equals("details", StringComparison.OrdinalIgnoreCase))
+        {
+            prop.Required = Required.Default;
         }
 
         return prop;

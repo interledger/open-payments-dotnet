@@ -25,7 +25,7 @@ namespace OpenPayments.Sdk.Generated.Resource
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ResourceServerClient 
+    public partial class ResourceServerClient
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -1459,7 +1459,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1471,7 +1471,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     return converted == null ? string.Empty : converted;
                 }
             }
-            else if (value is bool) 
+            else if (value is bool)
             {
                 return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
@@ -1861,7 +1861,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         public Amount ReceiveAmount { get; set; } = new Amount();
 
         /// <summary>
-        /// The total amount that should be deducted from the sender's account when the corresponding outgoing payment has been paid. 
+        /// The total amount that should be deducted from the sender's account when the corresponding outgoing payment has been paid.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("debitAmount", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]

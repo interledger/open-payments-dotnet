@@ -67,6 +67,24 @@ public static class ServiceCollectionExtensions
             );
         }
 
+        if (options.UseAuthenticatedClient)
+        {
+            services.AddSingleton<AuthenticatedClient>(sp =>
+            {
+                if (string.IsNullOrWhiteSpace(options.KeyId))
+                    throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
+                if (options.PrivateKey is null)
+                    throw new InvalidOperationException("OpenPaymentsOptions.PrivateKey must be provided.");
+                if (options.ClientUrl is null)
+                    throw new InvalidOperationException("OpenPaymentsOptions.ClientUrl must be provided.");
+
+                var http = sp.GetRequiredService<IHttpClientFactory>().CreateClient("authenticated");
+                return new AuthenticatedClient(http, options.PrivateKey, options.KeyId, options.ClientUrl);
+            });
+            services.AddSingleton<IAuthenticatedClient>(sp =>
+                sp.GetRequiredService<AuthenticatedClient>());
+        }
+
         return services;
     }
 }

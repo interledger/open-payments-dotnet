@@ -108,9 +108,51 @@ namespace OpenPayments.Sdk.Generated.Resource
 
         public Amount(string value, string assetCode, int? assetScale = 2)
         {
-            this.Value = value;
-            this.AssetCode = assetCode;
-            this.AssetScale = assetScale ?? 2;
+            Value = value;
+            AssetCode = assetCode;
+            AssetScale = assetScale ?? 2;
+        }
+    }
+
+    public partial class ResourceErrorResponse
+    {
+        [JsonProperty("error", Required = Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public ResourceError Error { get; set; } = new ResourceError();
+
+        private IDictionary<string, object>? _additionalProperties;
+
+        [JsonExtensionData]
+        public IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+    }
+
+    public partial class ResourceError
+    {
+        [JsonProperty("code", Required = Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Code { get; set; } = null!;
+
+        [JsonProperty("description", Required = Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description { get; set; } = null!;
+
+        /// <summary>
+        /// Additional details about the error.
+        /// </summary>
+        [JsonProperty("details", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        public object Details { get; set; } = null!;
+
+        private IDictionary<string, object> _additionalProperties;
+
+        [JsonExtensionData]
+        public IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
         }
     }
 }

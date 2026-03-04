@@ -103,7 +103,12 @@ var listIncomingPaymentsCommand = new Command("ListIncomingPayments")
 var createQuoteCommand = new Command("CreateQuote")
 {
     senderWalletAddressOption,
-    incomingPaymentIdOption,
+    incomingPaymentIdOption
+};
+var getQuoteCommand = new Command("GetQuote")
+{
+    senderWalletAddressOption,
+    quoteUrlOption
 };
 var createOutgoingPaymentCommand = new Command("CreateOutgoingPayment")
 {
@@ -152,6 +157,15 @@ createQuoteCommand.SetAction(async result =>
     await service.CreateQuoteAsync(sender, incomingPaymentUrl);
 });
 
+getQuoteCommand.SetAction(async result =>
+{
+    var quoteUrl = result.GetValue(quoteUrlOption)!;
+    var sender = result.GetValue(senderWalletAddressOption)!;
+
+    var service = provider.GetRequiredService<QuoteService>();
+    await service.GetQuoteAsync(sender, quoteUrl);
+});
+
 createOutgoingPaymentCommand.SetAction(async result =>
 {
     var sender = result.GetValue(senderWalletAddressOption)!;
@@ -196,7 +210,10 @@ rootCommand.Add(getIncomingPaymentCommand);
 // Authenticated
 rootCommand.Add(createIncomingPaymentCommand);
 rootCommand.Add(listIncomingPaymentsCommand);
+//
 rootCommand.Add(createQuoteCommand);
+rootCommand.Add(getQuoteCommand);
+//
 rootCommand.Add(createOutgoingPaymentCommand);
 
 var config = new CommandLineConfiguration(rootCommand);

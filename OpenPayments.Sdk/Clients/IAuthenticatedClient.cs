@@ -121,34 +121,36 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// <param name="requestArgs"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>ListIncomingPaymentsResponse</returns>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(
-        AuthRequestArgs requestArgs,
-        CancellationToken cancellationToken = default
-    );
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
-    ///
+    /// Creates a quote for a payment transaction.
     /// </summary>
-    /// <param name="requestArgs">Resource Server URL Address (e.g. <c>https://res.ilp.com/quote</c>) and access token.</param>
-    /// <param name="body"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public Task<QuoteResponse> CreateQuoteAsync(
-        AuthRequestArgs requestArgs,
-        QuoteBody body,
-        CancellationToken cancellationToken = default
-    );
+    /// <param name="requestArgs">Resource server URL and access token for authorization purposes.</param>
+    /// <param name="body">Details of the quote including sender's wallet address, receiver information, and payment method.</param>
+    /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the created quote details.</returns>
+    public Task<QuoteResponse> CreateQuoteAsync(AuthRequestArgs requestArgs, QuoteBody body,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
-    ///
+    /// Retrieves a quote from the Open Payments API.
     /// </summary>
-    /// <param name="requestArgs">Resource Server URL Address (e.g. <c>https://res.ilp.com/outgoing</c>) and access token.</param>
-    /// <param name="body"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(
-        AuthRequestArgs requestArgs,
+    /// <param name="requestArgs">Authentication parameters, including the access token.</param>
+    /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
+    /// <returns>A <c>QuoteResponse</c> representing the retrieved quote.</returns>
+    public Task<QuoteResponse> GetQuoteAsync(AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates an outgoing payment.
+    /// </summary>
+    /// <param name="requestArgs">Resource server URL address (e.g. <c>https://res.ilp.com/outgoing</c>) and access token.</param>
+    /// <param name="body">The request body containing payment details.</param>
+    /// <param name="cancellationToken">Optional cancellation token to propagate notification that the operation should be canceled.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the response details of the outgoing payment.</returns>
+    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
         OutgoingPaymentBody body,
-        CancellationToken cancellationToken = default
-    );
+        CancellationToken cancellationToken = default);
 }

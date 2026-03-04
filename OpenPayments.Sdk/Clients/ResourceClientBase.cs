@@ -83,6 +83,13 @@ public class ResourceClientBase : IResourceClientBase
         return await _client.PostQuoteAsync(body, requestArgs.AccessToken, cancellationToken);
     }
 
+    public Task<QuoteResponse> GetQuoteAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    {
+        _client.BaseUrl = requestArgs.Url.ToString();
+
+        return _client.GetQuoteAsync(requestArgs.AccessToken, cancellationToken);
+    }
+
     public async Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(
         AuthRequestArgs requestArgs,
         OutgoingPaymentBody body,
@@ -126,6 +133,11 @@ public interface IResourceClientBase
     public Task<QuoteResponse> CreateQuoteAsync(
         AuthRequestArgs requestArgs,
         QuoteBody body,
+        CancellationToken cancellationToken = default
+    );
+
+    public Task<QuoteResponse> GetQuoteAsync(
+        AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default
     );
 

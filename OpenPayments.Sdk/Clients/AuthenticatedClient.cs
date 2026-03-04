@@ -138,11 +138,15 @@ internal sealed class AuthenticatedClient(
     }
 
     /// <inheritdoc/>
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(
-        AuthRequestArgs requestArgs,
+    public Task<QuoteResponse> GetQuoteAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    {
+        return _resClient.GetQuoteAsync(requestArgs, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
         OutgoingPaymentBody body,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
     }
