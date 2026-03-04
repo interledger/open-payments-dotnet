@@ -120,7 +120,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         [System.ComponentModel.DataAnnotations.Required]
         public ResourceError Error { get; set; } = new ResourceError();
 
-        private IDictionary<string, object> _additionalProperties;
+        private IDictionary<string, object>? _additionalProperties;
 
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalProperties
