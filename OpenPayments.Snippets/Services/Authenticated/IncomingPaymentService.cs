@@ -22,9 +22,8 @@ public class IncomingPaymentService(IAuthenticatedClient client)
                 {
                     Access =
                     [
-                        new AccessItem()
+                        new IncomingAccess()
                         {
-                            Type = AccessType.IncomingPayment,
                             Actions =
                             [
                                 Actions.Create,
@@ -60,13 +59,13 @@ public class IncomingPaymentService(IAuthenticatedClient client)
         Console.WriteLine("grant: {0}", JsonConvert.SerializeObject(grant, Formatting.None));
         Console.WriteLine("AccessToken: {0}", grant.AccessToken!.Value);
         Console.WriteLine("Id: {0}", iPaymentResponse.Id);
-        Console.WriteLine("Amount: {0}", iPaymentResponse.IncomingAmount.Value);
+        Console.WriteLine("Amount: {0}", iPaymentResponse.ReceivedAmount.Value);
         Console.WriteLine("ExpiresAt: {0}", iPaymentResponse.ExpiresAt);
 
         return iPaymentResponse;
     }
 
-    public async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+    public async Task GetIncomingPaymentAsync(
         string incomingPaymentUrl,
         string accessToken,
         string tokenUrl
@@ -86,23 +85,20 @@ public class IncomingPaymentService(IAuthenticatedClient client)
 
         Console.WriteLine("===Incoming Payment===");
         Console.WriteLine("Id: {0}", iPaymentResponse.Id);
-        Console.WriteLine("Amount: {0}", iPaymentResponse.IncomingAmount.Value);
+        Console.WriteLine("Amount: {0}", iPaymentResponse.ReceivedAmount.Value);
         Console.WriteLine("ExpiresAt: {0}", iPaymentResponse.ExpiresAt);
         Console.WriteLine("Access Token Manage: {0}", rotatedToken.AccessToken.Manage);
         Console.WriteLine("Access Token Value: {0}", rotatedToken.AccessToken.Value);
-
-        return iPaymentResponse;
     }
 
-    public async Task CompleteIncomingPaymentAsync(
-        string incomingPaymentUrl,
-        string accessToken,
-        string tokenUrl
-    )
+    public async Task CompleteIncomingPaymentAsync(string incomingPaymentUrl, string accessToken)
     {
+        await client.CompleteIncomingPaymentsAsync(
+            new AuthRequestArgs() { Url = new Uri(incomingPaymentUrl), AccessToken = accessToken }
+        );
     }
 
-    public async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(string walletAddress)
+    public async Task ListIncomingPaymentsAsync(string walletAddress)
     {
         var waDetails = await client.GetWalletAddressAsync(walletAddress);
 
@@ -114,7 +110,7 @@ public class IncomingPaymentService(IAuthenticatedClient client)
                 {
                     Access =
                     [
-                        new AccessItem()
+                        new IncomingAccess()
                         {
                             Type = AccessType.IncomingPayment,
                             Actions = [Actions.List],
@@ -135,7 +131,7 @@ public class IncomingPaymentService(IAuthenticatedClient client)
 
         Console.WriteLine(JsonConvert.SerializeObject(list, Formatting.Indented));
 
-        foreach (var iPayment in list.Result)
+        foreach (var iPayment in list.Result!)
         {
             Console.WriteLine("===Incoming Payment===");
             Console.WriteLine("Id: {0}", iPayment.Id);
@@ -143,12 +139,10 @@ public class IncomingPaymentService(IAuthenticatedClient client)
             Console.WriteLine(
                 "Amount: {0}/{1} {2}",
                 iPayment.ReceivedAmount.Value,
-                iPayment.IncomingAmount.Value,
+                iPayment.IncomingAmount!.Value,
                 iPayment.ReceivedAmount.AssetCode
             );
             Console.WriteLine("ExpiresAt: {0}", iPayment.ExpiresAt);
         }
-
-        return list;
     }
 }

@@ -12,31 +12,28 @@ public class TokenService(IAuthenticatedClient client)
 
         var grantResponse = await client.RequestGrantAsync(
             new RequestArgs() { Url = waDetails.AuthServer },
-            new GrantCreateBody()
+            new GrantCreateBodyWithInteract()
             {
                 AccessToken = new AccessToken()
                 {
                     Access =
                     [
-                        new AccessItem()
+                        new OutgoingAccess()
                         {
                             Type = AccessType.OutgoingPayment,
                             Actions = [Actions.Create, Actions.Read, Actions.List],
-                            Identifier = waDetails.Id.ToString(),
-                            Limits = new AccessLimits()
+                            Identifier = waDetails.Id,
+                            Limits = new OutgoingAccessLimits()
                             {
                                 DebitAmount = new Amount("10000", "EUR"),
                             },
                         },
                     ],
-                    ExpiresIn = 600,
                 },
                 Interact = new InteractRequest() { Start = [Start.Redirect] },
             }
         );
 
-        // Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
-        Console.WriteLine(JsonConvert.SerializeObject(grantResponse, Formatting.Indented));
         Console.ReadLine();
 
         var tokenResponse = await client.ContinueGrantAsync(
@@ -47,7 +44,6 @@ public class TokenService(IAuthenticatedClient client)
             }
         );
 
-        Console.WriteLine(JsonConvert.SerializeObject(tokenResponse, Formatting.Indented));
         Console.ReadLine();
 
         var rotatedToken = await RotateTokenAsync(
