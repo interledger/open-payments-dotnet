@@ -6,6 +6,7 @@ coveragereport/
 **/Generated/AuthServerClient.cs*
 **/Generated/WalletAddressClient.cs*
 **/Generated/ResourceServerClient.cs*
+nupkg/
 
 .env
 .idea/
