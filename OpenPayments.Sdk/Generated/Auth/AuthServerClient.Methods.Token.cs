@@ -100,7 +100,7 @@ public partial class AuthServerClient
                     }
 
                     throw new ApiException<ErrorResponse>(
-                        Helpers.StatusAsText(status),
+                        objectResponse.Object.Error.Description,
                         status,
                         objectResponse.Text,
                         headers,
@@ -196,7 +196,7 @@ public partial class AuthServerClient
                     }
 
                     throw new ApiException<ErrorResponse>(
-                        Helpers.StatusAsText(status),
+                        objectResponse.Object.Error.Description,
                         status,
                         objectResponse.Text,
                         headers,

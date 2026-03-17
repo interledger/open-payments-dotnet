@@ -148,12 +148,17 @@ public class AuthenticatedClient_Tests
     [Collection("AuthenticatedClient")]
     public class AuthenticatedClient_CreateIncomingPayment_Tests
     {
-        private readonly AuthenticatedClient _client;
+        private AuthenticatedClient? _client;
         private readonly AuthenticatedClientFixture _fixture;
 
         public AuthenticatedClient_CreateIncomingPayment_Tests(AuthenticatedClientFixture fixture)
         {
             _fixture = fixture;
+        }
+
+        [Fact]
+        public async Task CreateIncomingPaymentAsync_ReturnsModel()
+        {
             var httpClient = _fixture.CreateHttpClientMock(
                 _fixture.CreateIncomingPaymentResponse,
                 HttpStatusCode.Created
@@ -164,17 +169,33 @@ public class AuthenticatedClient_Tests
                 _fixture.KeyId,
                 _fixture.ClientUrl
             );
-        }
-
-        [Fact]
-        public async Task CreateIncomingPaymentAsync_ReturnsModel()
-        {
             var result = await _client.CreateIncomingPaymentAsync(
                 _fixture.GrantWithTokenArgs,
                 _fixture.CreateIncomingPaymentBody
             );
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.CreateIncomingPaymentResponse);
+        }
+
+        [Fact]
+        public async Task CreateIncomingPaymentAsync_ReturnsModelWithMetadata()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.CreateIncomingPaymentResponseWithMetadata,
+                HttpStatusCode.Created
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
+            var result = await _client.CreateIncomingPaymentAsync(
+                _fixture.GrantWithTokenArgs,
+                _fixture.CreateIncomingPaymentBody
+            );
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.CreateIncomingPaymentResponseWithMetadata);
         }
     }
 
@@ -209,6 +230,28 @@ public class AuthenticatedClient_Tests
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.CreateQuoteResponse);
         }
+
+        [Fact]
+        public async Task CreateQuoteWithDebitAmountAsync_ReturnsModel()
+        {
+            var result = await _client.CreateQuoteAsync(
+                _fixture.GrantWithTokenArgs,
+                _fixture.CreateQuoteBodyWithDebitAmount
+            );
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.CreateQuoteResponse);
+        }
+
+        [Fact]
+        public async Task CreateQuoteWithReceiveAmountAsync_ReturnsModel()
+        {
+            var result = await _client.CreateQuoteAsync(
+                _fixture.GrantWithTokenArgs,
+                _fixture.CreateQuoteBodyWithReceiveAmount
+            );
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.CreateQuoteResponse);
+        }
     }
 
     [Collection("AuthenticatedClient")]
@@ -233,14 +276,88 @@ public class AuthenticatedClient_Tests
         }
 
         [Fact]
-        public async Task CreateOutgoingPaymentAsync_ReturnsModel()
+        public async Task CreateOutgoingPaymentFromQuoteAsync_ReturnsModel()
         {
             var result = await _client.CreateOutgoingPaymentAsync(
                 _fixture.GrantWithTokenArgs,
-                _fixture.CreateOutgoingPaymentBody
+                _fixture.CreateOutgoingPaymentBodyFromQuote
             );
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.CreateOutgoingPaymentResponse);
+        }
+
+        [Fact]
+        public async Task CreateOutgoingPaymentFromIncomingAsync_ReturnsModel()
+        {
+            var result = await _client.CreateOutgoingPaymentAsync(
+                _fixture.GrantWithTokenArgs,
+                _fixture.CreateOutgoingPaymentBodyFromIncomingPayment
+            );
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.CreateOutgoingPaymentResponse);
+        }
+    }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_GetOutgoingPayment_Tests
+    {
+        private readonly AuthenticatedClient _client;
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_GetOutgoingPayment_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.GetOutgoingPaymentResponse,
+                HttpStatusCode.OK
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
+        }
+
+        [Fact]
+        public async Task GetOutgoingPaymentAsync_ReturnsModel()
+        {
+            var result = await _client.GetOutgoingPaymentAsync(_fixture.GrantWithTokenArgs);
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.GetOutgoingPaymentResponse);
+        }
+    }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_ListOutgoingPayments_Tests
+    {
+        private readonly AuthenticatedClient _client;
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_ListOutgoingPayments_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.ListOutgoingPaymentsResponse,
+                HttpStatusCode.OK
+            );
+            _client = new AuthenticatedClient(
+                httpClient,
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
+        }
+
+        [Fact]
+        public async Task ListOutgoingPaymentsAsync_ReturnsModel()
+        {
+            var result = await _client.ListOutgoingPaymentsAsync(
+                _fixture.GrantWithTokenArgs,
+                _fixture.ListOutgoingPaymentQuery
+            );
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(_fixture.ListOutgoingPaymentsResponse);
         }
     }
 }

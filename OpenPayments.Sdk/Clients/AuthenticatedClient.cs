@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 using OpenPayments.Sdk.Generated.Resource;
@@ -138,17 +139,69 @@ internal sealed class AuthenticatedClient(
     }
 
     /// <inheritdoc/>
-    public Task<QuoteResponse> GetQuoteAsync(AuthRequestArgs requestArgs, CancellationToken cancellationToken = default)
+    public Task<QuoteResponse> CreateQuoteAsync(
+        AuthRequestArgs requestArgs,
+        QuoteBodyWithDebitAmount body,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<QuoteResponse> CreateQuoteAsync(
+        AuthRequestArgs requestArgs,
+        QuoteBodyWithReceiveAmount body,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.CreateQuoteAsync(requestArgs, body, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<QuoteResponse> GetQuoteAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
     {
         return _resClient.GetQuoteAsync(requestArgs, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public Task<OutgoingPaymentResponse> CreateOutgoingPaymentAsync(AuthRequestArgs requestArgs,
-        OutgoingPaymentBody body,
-        CancellationToken cancellationToken = default)
+    public Task<OutgoingPaymentWithSpentAmountsResponse> CreateOutgoingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        OutgoingPaymentBodyFromQuote body,
+        CancellationToken cancellationToken = default
+    )
     {
         return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<OutgoingPaymentWithSpentAmountsResponse> CreateOutgoingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        OutgoingPaymentBodyFromIncomingPayment body,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.CreateOutgoingPaymentAsync(requestArgs, body, cancellationToken);
+    }
+
+    public Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.GetOutgoingPaymentAsync(requestArgs, cancellationToken);
+    }
+
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        ListOutgoingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.ListOutgoingPaymentAsync(requestArgs, query, cancellationToken);
     }
 }
 

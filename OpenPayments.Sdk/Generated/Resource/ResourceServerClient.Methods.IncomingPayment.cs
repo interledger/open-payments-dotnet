@@ -307,7 +307,6 @@ public partial class ResourceServerClient
                     )
                 )
             );
-
         if (cursor != null)
         {
             urlBuilder
