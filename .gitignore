@@ -11,5 +11,4 @@ nupkg/
 .env
 .idea/
 OpenPayments.sln.DotSettings.user
-
-
+.DS_Store
