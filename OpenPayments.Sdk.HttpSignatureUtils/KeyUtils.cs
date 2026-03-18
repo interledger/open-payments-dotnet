@@ -7,9 +7,21 @@ using Org.BouncyCastle.OpenSsl;
 
 namespace OpenPayments.Sdk.HttpSignatureUtils;
 
+/// <summary>
+/// Represents the arguments for generating a key, including optional directory and filename information.
+/// </summary>
 public sealed class GenerateKeyArgs
 {
+    /// <summary>
+    /// Gets or sets the directory path where the key file should be saved.
+    /// If the specified directory does not exist, it will be created automatically.
+    /// </summary>
     public string? Dir { get; set; }
+
+    /// <summary>
+    /// Gets or sets the filename to be used when saving the key file.
+    /// If not specified, a default filename will be generated using the current timestamp.
+    /// </summary>
     public string? Filename { get; set; }
 }
 
