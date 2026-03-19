@@ -1,8 +1,6 @@
 # Open Payments .NET SDK
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/interledger/open-payments/main/docs/public/img/logo.svg" width="700" alt="Open Payments">
-</p>
+![image](https://raw.githubusercontent.com/interledger/open-payments/main/docs/public/img/logo.svg)
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 [![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/kylelobo/open-payments-dotnet/issues)
