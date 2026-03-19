@@ -15,14 +15,14 @@ public class IncomingPaymentService(IAuthenticatedClient client)
     {
         var waDetails = await client.GetWalletAddressAsync(receiver);
         var grant = await client.RequestGrantAsync(
-            new RequestArgs() { Url = waDetails.AuthServer },
-            new GrantCreateBody()
+            new RequestArgs { Url = waDetails.AuthServer },
+            new GrantCreateBody
             {
-                AccessToken = new AccessToken()
+                AccessToken = new AccessToken
                 {
                     Access =
                     [
-                        new IncomingAccess()
+                        new IncomingAccess
                         {
                             Actions =
                             [
@@ -38,15 +38,15 @@ public class IncomingPaymentService(IAuthenticatedClient client)
         );
 
         var iPaymentResponse = await client.CreateIncomingPaymentAsync(
-            new AuthRequestArgs()
+            new AuthRequestArgs
             {
                 Url = waDetails.ResourceServer,
                 AccessToken = grant.AccessToken!.Value,
             },
-            new IncomingPaymentBody()
+            new IncomingPaymentBody
             {
                 WalletAddress = waDetails.Id,
-                IncomingAmount = new Amount()
+                IncomingAmount = new Amount
                 {
                     AssetCode = waDetails.AssetCode,
                     AssetScale = waDetails.AssetScale,

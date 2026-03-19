@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Install swagger-cli
         run: npm install -g swagger-cli
@@ -69,7 +69,10 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
 
       - name: Pack with version from tag
-        run: dotnet pack OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-build -o ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }} 
+        run: dotnet pack OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-build -o ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }}
+
+      - name: Pack with version from tag
+        run: dotnet pack OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj --configuration Release --no-build -o ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }}
 
       - name: Generate changelog
         uses: heinrichreimer/github-changelog-generator-action@v2.3

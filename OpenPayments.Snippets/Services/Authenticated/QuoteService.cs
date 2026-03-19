@@ -18,16 +18,15 @@ public class QuoteService(IAuthenticatedClient client)
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var authResponse = await client.RequestGrantAsync(
-            new RequestArgs() { Url = waDetails.AuthServer },
-            new GrantCreateBody()
+            new RequestArgs { Url = waDetails.AuthServer },
+            new GrantCreateBody
             {
-                AccessToken = new AccessToken()
+                AccessToken = new AccessToken
                 {
                     Access =
                     [
-                        new QuoteAccess()
+                        new QuoteAccess
                         {
-                            Type = AccessType.Quote,
                             Actions = [Actions.Create, Actions.Read],
                         },
                     ],

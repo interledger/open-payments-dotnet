@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>OpenPayments.Sdk</PackageId>
+    <PackageId>Interledger.OpenPayments</PackageId>
+    <Version>1.0.0</Version>
     <Authors>Interledger Foundation - Tech Team</Authors>
     <Description>.NET SDK for OpenPayments</Description>
     <TargetFramework>net9.0</TargetFramework>
@@ -8,14 +9,29 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
+    <AssemblyName>Interledger.OpenPayments</AssemblyName>
+    <RootNamespace>Interledger.OpenPayments</RootNamespace>
+    <RepositoryUrl>https://github.com/interledger/open-payments-dotnet</RepositoryUrl>
+    <PackageTags>interledger openpayments</PackageTags>
+    <Product>Interledger.OpenPayments</Product>
+    <LangVersion>12</LangVersion>
+    <Title>OpenPayments SDK</Title>
+    <PackageProjectUrl>https://openpayments.dev/</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6"/>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     <PackageReference Include="NSec.Cryptography" Version="25.4.0"/>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenPayments.Sdk.HttpSignatureUtils\OpenPayments.Sdk.HttpSignatureUtils.csproj"/>
+    <ProjectReference Include="..\OpenPayments.Sdk.HttpSignatureUtils\OpenPayments.Sdk.HttpSignatureUtils.csproj" />
+    <None Include="../LICENSE" Pack="true" PackagePath=""/>
+    <None Include="../README.md" Pack="true" PackagePath=""/>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>

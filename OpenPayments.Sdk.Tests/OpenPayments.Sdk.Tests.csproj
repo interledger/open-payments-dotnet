@@ -5,6 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Interledger.OpenPayments.Tests</RootNamespace>
+    <PackageId>OpenPayments.Sdk.Tests</PackageId>
+    <Authors />
+    <Company>Interledger.OpenPayments.Tests</Company>
+    <Product>Interledger.OpenPayments.Tests</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenPayments.Sdk\OpenPayments.Sdk.csproj"/>
+    <ProjectReference Include="..\OpenPayments.Sdk\OpenPayments.Sdk.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>Interledger.OpenPayments.HttpSignatureUtils</RootNamespace>
+    <PackageId>Interledger.OpenPayments.HttpSignatureUtils</PackageId>
+    <Authors>Interledger.OpenPayments.HttpSignatureUtils</Authors>
+    <Company>Interledger</Company>
+    <Product>OpenPayments.HttpSignatureUtils</Product>
+    <AssemblyName>Interledger.OpenPayments.HttpSignatureUtils</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NSec.Cryptography" Version="25.4.0"/>

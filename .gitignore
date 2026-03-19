@@ -6,9 +6,10 @@ coveragereport/
 **/Generated/AuthServerClient.cs*
 **/Generated/WalletAddressClient.cs*
 **/Generated/ResourceServerClient.cs*
+nupkg/
 
 .env
 .idea/
+.vscode/
 OpenPayments.sln.DotSettings.user
-
-
+.DS_Store

@@ -18,25 +18,25 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 
         var grantResponse = await client.RequestGrantAsync(
-            new RequestArgs() { Url = waDetails.AuthServer },
-            new GrantCreateBodyWithInteract()
+            new RequestArgs { Url = waDetails.AuthServer },
+            new GrantCreateBodyWithInteract
             {
-                AccessToken = new AccessToken()
+                AccessToken = new AccessToken
                 {
                     Access =
                     [
-                        new OutgoingAccess()
+                        new OutgoingAccess
                         {
                             Actions = [Actions.Create, Actions.Read, Actions.List],
                             Identifier = waDetails.Id,
-                            Limits = new OutgoingAccessLimits()
+                            Limits = new OutgoingAccessLimits
                             {
                                 DebitAmount = new Amount(debitAmount, "EUR", 2),
                             },
                         },
                     ],
                 },
-                Interact = new InteractRequest()
+                Interact = new InteractRequest
                 {
                     Start = [Start.Redirect],
                     // Finish = new Finish()

@@ -4,11 +4,9 @@ namespace OpenPayments.Snippets.Services.Unauthenticated;
 
 public class WalletAddressService(IUnauthenticatedClient client)
 {
-    private readonly IUnauthenticatedClient _client = client;
-
     public async Task DisplayWalletAddressKeysAsync(string address)
     {
-        var walletAddressKeys = await _client.GetWalletAddressKeysAsync(address);
+        var walletAddressKeys = await client.GetWalletAddressKeysAsync(address);
 
         Console.WriteLine("=== Wallet Keys ===");
         foreach (var key in walletAddressKeys.Keys)
@@ -24,7 +22,7 @@ public class WalletAddressService(IUnauthenticatedClient client)
 
     public async Task DisplayWalletInfoAsync(string address)
     {
-        var walletAddressData = await _client.GetWalletAddressAsync(address);
+        var walletAddressData = await client.GetWalletAddressAsync(address);
         Console.WriteLine("===Wallet Info===");
         Console.WriteLine("PublicName: {0}", walletAddressData.PublicName);
         Console.WriteLine("AssetCode: {0}", walletAddressData.AssetCode);
