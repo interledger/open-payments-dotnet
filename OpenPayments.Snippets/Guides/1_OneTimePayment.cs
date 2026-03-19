@@ -35,6 +35,8 @@ public class OneTimePayment(IAuthenticatedClient client)
             }
         );
 
+        if (retailerIncomingPaymentGrant.AccessToken == null) throw new Exception("Expected a non-interactive grant");
+
         // 3. Request the creation of an incoming payment resource
         var retailerIncomingPayment = await client.CreateIncomingPaymentAsync(
             new AuthRequestArgs
