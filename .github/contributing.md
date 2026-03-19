@@ -5,7 +5,7 @@ Thank you for contributing to Open Payments :tada: Your contributions are essent
 ## Before you begin
 
 - Have you read the [code of conduct](code_of_conduct.md)?
-- Check out the [existing issues](https://github.com/interledger/open-payments/issues) & see if we [accept contributions](#types-of-contributions) for your type of issue.
+- Check out the [existing issues](https://github.com/interledger/open-payments-dotnet/issues) & see if we [accept contributions](#types-of-contributions) for your type of issue.
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -78,73 +78,11 @@ minimal configuration overhead.
 
 We try not to put config files in workspaces, unless absolutely necessary.
 
-#### Linting
-
-[Eslint](https://eslint.org/) is used for linting.
-
-```shell
-./.eslintrc.yml # config
-./.eslintignore # ignore file
-```
-
-Eslint config should not be overridden in any packages.
-
-#### Formatting
-
-[Prettier](https://prettier.io/) is used for formatting.
-
-```shell
-./.prettierrc.yml # config
-./.prettierignore # ignore file
-```
-
-Prettier config should not be overridden in any packages.
-
 #### Testing
 
-[Jest](https://jestjs.io/) is used for testing.
-
 ```shell
-./jest.config.js # config used to configure projects and run all tests
-./jest.config.base.js # (base jest config, imported by other packages)
-./packages/*/jest.config.js # jest config file for package * (extends base.config.base.js)
+dotnet test
 ```
-
-Jest config at the root is intended to be a base config that should be extended by
-each package to suit the package's testing requirements.
-
-#### Commit hooks
-
-[Husky](https://github.com/typicode/husky) provides git hooks.
-
-```shell
-./.husky/commit-msg # linting commit messages
-./.husky/pre-commit # perform functions before committing
-```
-
-[Commitlint](https://commitlint.js.org/) is used for linting commit messages
-so that they conform to [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
-
-```shell
-./commitlint.config.js # config
-```
-
-[Lint-staged](https://github.com/okonet/lint-staged) is used for linting and formatting staged files on commit.
-
-```shell
-./.lintstagedrc.yml # config
-```
-
-#### Language
-
-[Typescript](https://www.staging-typescript.org/) is the chosen language.
-
-```shell
-./tsconfig.json # config
-```
-
-Typescript config at the root is intended to be a base config that should be extended by
-each package to suit the package's requirements.
 
 #### CI
 
@@ -154,7 +92,7 @@ The workflows can be found in `.github/workflows`
 
 ## Reporting Issues
 
-If you encounter any issues or have a feature request, please [create a new issue](https://github.com/interledger/open-payments/issues/new) and provide the following details:
+If you encounter any issues or have a feature request, please [create a new issue](https://github.com/interledger/open-payments-dotnet/issues/new) and provide the following details:
 
 - A clear and descriptive title.
 - A detailed description of the issue, including steps to reproduce if applicable.
@@ -163,7 +101,7 @@ If you encounter any issues or have a feature request, please [create a new issu
 
 ## Submitting Pull Requests
 
-1. [Fork](https://github.com/interledger/open-payments) the repository.
+1. [Fork](https://github.com/interledger/open-payments-dotnet) the repository.
 2. Create a new branch from `main`.
 3. Make your changes and commit them.
 4. Create a pull request (PR) to `main`.
