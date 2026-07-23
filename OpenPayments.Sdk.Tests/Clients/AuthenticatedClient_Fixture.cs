@@ -238,6 +238,41 @@ public class AuthenticatedClientFixture
         ],
     };
 
+    public OpenPayments.Sdk.Generated.Auth.ErrorResponse GrantErrorResponse =>
+        new()
+        {
+            Error = new OpenPayments.Sdk.Generated.Auth.ErrorItem
+            {
+                Code = OpenPayments.Sdk.Generated.Auth.ErrorItemCode.InvalidRequest,
+                Description = "bad grant",
+            },
+        };
+
+    public HttpClient CreateHttpClientMock(object responseObject, HttpStatusCode code)
+    {
+        var handler = new Mock<HttpMessageHandler>();
+        handler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = code,
+                    Content = new StringContent(
+                        JsonConvert.SerializeObject(responseObject),
+                        Encoding.UTF8,
+                        "application/json"
+                    ),
+                }
+            );
+
+        return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
+    }
+
     public HttpClient CreateHttpClientMock(
         object? responseObject = null,
         HttpStatusCode? code = null

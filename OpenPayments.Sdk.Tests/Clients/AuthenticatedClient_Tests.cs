@@ -1,6 +1,7 @@
 using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -29,6 +30,23 @@ public class AuthenticatedClient_Tests
 
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.ApprovedGrantResponse);
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_ServerReturns400_ThrowsOpenPaymentsApiException()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(
+                _fixture.GrantErrorResponse,
+                HttpStatusCode.BadRequest
+            );
+            var client = new AuthenticatedClient(httpClient, _fixture.ClientUrl);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(
+                () => client.RequestGrantAsync(_fixture.RequestGrantArgs, _fixture.RequestGrantBody)
+            );
+
+            exception.StatusCode.Should().Be(400);
+            exception.ErrorCode.Should().Be("InvalidRequest");
         }
     }
 
