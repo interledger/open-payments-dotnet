@@ -24,11 +24,13 @@ public partial class ResourceServerClient
     /// <returns>Outgoing Payment Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<OutgoingPaymentWithSpentAmountsResponse> PostOutgoingPaymentAsync(
+        Uri baseUri,
         OutgoingPaymentBody body,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentNullException.ThrowIfNull(body);
 
         var client = _httpClient;
@@ -40,9 +42,7 @@ public partial class ResourceServerClient
         request.Method = new HttpMethod("POST");
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
         urlBuilder.Append("outgoing-payments");
 
         PrepareRequest(client, request, urlBuilder);
@@ -147,10 +147,12 @@ public partial class ResourceServerClient
     /// <returns>Outgoing Payment Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(
+        Uri baseUri,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         var client = _httpClient;
@@ -159,7 +161,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -267,6 +269,7 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
+        Uri baseUri,
         string accessToken,
         string walletAddress,
         string? cursor,
@@ -275,6 +278,7 @@ public partial class ResourceServerClient
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
         ArgumentException.ThrowIfNullOrWhiteSpace(walletAddress);
 
@@ -284,9 +288,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
         urlBuilder.Append("outgoing-payments");
         urlBuilder.Append('?');
         urlBuilder

@@ -30,11 +30,13 @@ public partial class ResourceServerClient
     /// <returns>Incoming Payment Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<IncomingPaymentResponse> PostIncomingPaymentAsync(
+        Uri baseUri,
         Body body,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentNullException.ThrowIfNull(body);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
@@ -48,9 +50,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
         urlBuilder.Append("incoming-payments");
 
         PrepareRequest(client, request, urlBuilder);
@@ -154,10 +154,12 @@ public partial class ResourceServerClient
     /// <returns>Incoming Payment Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        Uri baseUri,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         var client = _httpClient;
@@ -166,7 +168,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -274,6 +276,7 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
+        Uri baseUri,
         string accessToken,
         string walletAddress,
         string? cursor,
@@ -282,6 +285,7 @@ public partial class ResourceServerClient
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
         ArgumentException.ThrowIfNullOrWhiteSpace(walletAddress);
 
@@ -291,9 +295,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
         urlBuilder.Append("incoming-payments");
         urlBuilder.Append('?');
         urlBuilder
@@ -450,10 +452,12 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
+        Uri baseUri,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         var client = _httpClient;
@@ -463,7 +467,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
         urlBuilder.Append("/complete");
 
         PrepareRequest(client, request, urlBuilder);

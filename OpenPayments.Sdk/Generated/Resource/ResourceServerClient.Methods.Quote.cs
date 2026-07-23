@@ -20,11 +20,13 @@ public partial class ResourceServerClient
     /// <returns>Quote Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<QuoteResponse> PostQuoteAsync(
+        Uri baseUri,
         QuoteBody body,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentNullException.ThrowIfNull(body);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
@@ -38,9 +40,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
         urlBuilder.Append("quotes");
 
         PrepareRequest(client, request, urlBuilder);
@@ -145,10 +145,12 @@ public partial class ResourceServerClient
     /// <returns>Quote Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<QuoteResponse> GetQuoteAsync(
+        Uri baseUri,
         string accessToken,
         CancellationToken cancellationToken
     )
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         var client = _httpClient;
@@ -157,7 +159,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(NormalizeBaseUrl(baseUri));
 
         PrepareRequest(client, request, urlBuilder);
 

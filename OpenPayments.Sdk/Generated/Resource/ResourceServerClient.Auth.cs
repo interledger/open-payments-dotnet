@@ -15,6 +15,12 @@ public partial class ResourceServerClient
         _keyId = keyId;
     }
 
+    private static string NormalizeBaseUrl(Uri baseUri)
+    {
+        var value = baseUri.ToString();
+        return value.EndsWith("/") ? value : value + "/";
+    }
+
     static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
     {
         settings.ContractResolver = new ResourceContractResolver();
