@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Interledger.OpenPayments.Clients;
 using Interledger.OpenPayments.Configuration;
+using Interledger.OpenPayments.HttpSignatureUtils;
 
 namespace Interledger.OpenPayments.Extensions;
 

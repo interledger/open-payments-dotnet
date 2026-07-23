@@ -5,6 +5,8 @@ using NSec.Cryptography;
 
 [assembly: InternalsVisibleTo("Interledger.OpenPayments.HttpSignatureUtils.Tests")]
 
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <summary>
 /// Signature headers returned by the HttpRequestSigner.
 /// </summary>

@@ -1,3 +1,5 @@
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <inheritdoc cref="ISignatureInputParser"/>
 public class SignatureInputParser : ISignatureInputParser
 {

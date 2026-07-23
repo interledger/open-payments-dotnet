@@ -1,5 +1,7 @@
 using NSec.Cryptography;
 
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <summary>
 /// A <see cref="DelegatingHandler"/> that signs every outgoing request using HTTP Message
 /// Signatures before forwarding it to the inner handler. Replaces the sync-over-async

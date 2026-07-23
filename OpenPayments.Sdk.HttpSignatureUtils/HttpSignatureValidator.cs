@@ -2,6 +2,8 @@ using System.Text;
 using NSec.Cryptography;
 using Interledger.OpenPayments.HttpSignatureUtils;
 
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <inheritdoc cref="IHttpSignatureValidator"/>
 public class HttpSignatureValidator : IHttpSignatureValidator
 {

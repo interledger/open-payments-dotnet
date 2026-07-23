@@ -3,6 +3,8 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Utilities.IO.Pem;
 
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 internal static class KeyExtensions
 {
     public static void ToPem(this Key key, string filePath)

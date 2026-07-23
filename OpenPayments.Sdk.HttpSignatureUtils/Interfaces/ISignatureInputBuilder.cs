@@ -1,3 +1,5 @@
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <summary>
 /// Defines the contract for building a signature input string based on given components, an HTTP request,
 /// and a provided signature input string.

@@ -1,3 +1,5 @@
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <summary>
 /// Defines the contract for a signature input validator, responsible for validating
 /// the components of the signature input against an HTTP request.

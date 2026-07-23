@@ -1,3 +1,5 @@
+namespace Interledger.OpenPayments.HttpSignatureUtils;
+
 /// <summary>
 /// Defines the contract for parsing a signature input string into a list of components.
 /// </summary>
