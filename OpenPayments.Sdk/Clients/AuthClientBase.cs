@@ -6,11 +6,9 @@ namespace OpenPayments.Sdk.Clients;
 public class AuthClientBase : IAuthClientBase
 {
     private readonly AuthServerClient _client;
-    private readonly HttpClient _httpClient;
 
     public AuthClientBase(HttpClient http, Uri clientUrl)
     {
-        _httpClient = http;
         _client = new AuthServerClient(http);
         _client.ClientUrl = clientUrl;
     }

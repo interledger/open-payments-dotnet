@@ -7,6 +7,7 @@ namespace OpenPayments.Sdk.Generated.Resource;
 
 public partial class ResourceServerClient
 {
+    /// <param name="baseUri">Base URI of the resource server.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <summary>
     /// Create an Incoming Payment
@@ -143,6 +144,7 @@ public partial class ResourceServerClient
         }
     }
 
+    /// <param name="baseUri">Base URI of the resource server.</param>
     /// <summary>
     /// Get an Incoming Payment
     /// </summary>
@@ -260,6 +262,7 @@ public partial class ResourceServerClient
         }
     }
 
+    /// <param name="baseUri">Base URI of the resource server.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <summary>
     /// List Incoming Payments
@@ -437,6 +440,7 @@ public partial class ResourceServerClient
         }
     }
 
+    /// <param name="baseUri">Base URI of the resource server.</param>
     /// <summary>
     /// Complete an Incoming Payment
     /// </summary>

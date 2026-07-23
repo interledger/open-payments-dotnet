@@ -7,6 +7,7 @@ namespace OpenPayments.Sdk.Generated.Resource;
 
 public partial class ResourceServerClient
 {
+    /// <param name="baseUri">Base URI of the resource server.</param>
     /// <summary>
     /// Create a Quote
     /// </summary>
@@ -134,6 +135,7 @@ public partial class ResourceServerClient
         }
     }
 
+    /// <param name="baseUri">Base URI of the resource server.</param>
     /// <summary>
     /// Get a Quote
     /// </summary>

@@ -5,11 +5,9 @@ namespace OpenPayments.Sdk.Clients;
 public class ResourceClientBase : IResourceClientBase
 {
     private readonly ResourceServerClient _client;
-    private readonly HttpClient _httpClient;
 
     public ResourceClientBase(HttpClient http, Uri clientUrl)
     {
-        _httpClient = http;
         _client = new ResourceServerClient(http);
         _client.ClientUrl = clientUrl;
     }

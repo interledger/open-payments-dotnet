@@ -15,8 +15,6 @@ namespace OpenPayments.Sdk.Tests.Clients;
 public class AuthenticatedClientFixture
 {
     public string BaseUrl => "https://example.com";
-    public Key PrivateKey => Key.Create(SignatureAlgorithm.Ed25519);
-    public string KeyId => "1234";
     public Uri ClientUrl => new(BaseUrl);
 
     public RequestArgs RequestGrantArgs => new() { Url = new Uri("https://example.com/auth") };
