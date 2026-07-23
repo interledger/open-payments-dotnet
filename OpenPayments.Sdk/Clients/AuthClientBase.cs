@@ -23,10 +23,11 @@ public class AuthClientBase : IAuthClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
         body.Client = _client.ClientUrl;
 
-        return await _client.CreateGrantAsync(body, cancellationToken).ConfigureAwait(false);
+        return await _client
+            .CreateGrantAsync(requestArgs.Url, body, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     public async Task<AuthResponse> ContinueGrantAsync(
