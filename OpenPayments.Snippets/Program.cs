@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Extensions;
-using OpenPayments.Sdk.HttpSignatureUtils;
+using Interledger.OpenPayments.Extensions;
+using Interledger.OpenPayments.HttpSignatureUtils;
 using OpenPayments.Snippets.Services.Authenticated;
 using OpenPayments.Snippets.Services.Unauthenticated;
 using IncomingPaymentService = OpenPayments.Snippets.Services.Authenticated.IncomingPaymentService;

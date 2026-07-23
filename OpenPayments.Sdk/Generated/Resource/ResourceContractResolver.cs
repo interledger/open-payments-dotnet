@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace OpenPayments.Sdk.Generated.Resource;
+namespace Interledger.OpenPayments.Generated.Resource;
 
 public sealed class ResourceContractResolver : DefaultContractResolver
 {

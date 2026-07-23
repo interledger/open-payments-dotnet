@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Configuration;
+using Interledger.OpenPayments.Clients;
+using Interledger.OpenPayments.Configuration;
 
-namespace OpenPayments.Sdk.Extensions;
+namespace Interledger.OpenPayments.Extensions;
 
 /// <summary>
 /// Provides extension methods for registering OpenPayments services in the dependency injection container.

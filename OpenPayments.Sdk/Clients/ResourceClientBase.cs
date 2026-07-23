@@ -1,6 +1,6 @@
-using OpenPayments.Sdk.Generated.Resource;
+using Interledger.OpenPayments.Generated.Resource;
 
-namespace OpenPayments.Sdk.Clients;
+namespace Interledger.OpenPayments.Clients;
 
 public class ResourceClientBase : IResourceClientBase
 {

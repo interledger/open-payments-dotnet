@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using NSec.Cryptography;
 
-[assembly: InternalsVisibleTo("OpenPayments.Sdk.HttpSignatureUtils.Tests")]
+[assembly: InternalsVisibleTo("Interledger.OpenPayments.HttpSignatureUtils.Tests")]
 
 /// <summary>
 /// Signature headers returned by the HttpRequestSigner.

@@ -5,7 +5,7 @@ using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.OpenSsl;
 
-namespace OpenPayments.Sdk.HttpSignatureUtils;
+namespace Interledger.OpenPayments.HttpSignatureUtils;
 
 /// <summary>
 /// Represents the arguments for generating a key, including optional directory and filename information.

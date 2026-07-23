@@ -1,10 +1,10 @@
 using System.Net;
 using FluentAssertions;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk;
-using OpenPayments.Sdk.Generated.Resource;
+using Interledger.OpenPayments.Clients;
+using Interledger.OpenPayments;
+using Interledger.OpenPayments.Generated.Resource;
 
-namespace OpenPayments.Sdk.Tests.Clients;
+namespace Interledger.OpenPayments.Tests.Clients;
 
 public class AuthenticatedClient_Tests
 {

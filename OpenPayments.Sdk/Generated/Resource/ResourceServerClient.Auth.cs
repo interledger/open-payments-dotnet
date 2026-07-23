@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace OpenPayments.Sdk.Generated.Resource;
+namespace Interledger.OpenPayments.Generated.Resource;
 
 public partial class ResourceServerClient
 {

@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using OpenPayments.Sdk;
+using Interledger.OpenPayments;
 
-namespace OpenPayments.Sdk.Generated.Auth;
+namespace Interledger.OpenPayments.Generated.Auth;
 
 public partial class AuthServerClient
 {

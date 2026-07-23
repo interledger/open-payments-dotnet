@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace OpenPayments.Sdk.HttpSignatureUtils;
+namespace Interledger.OpenPayments.HttpSignatureUtils;
 
 /// <summary>
 /// Minimal JSON Web Key (JWK) representation for Ed25519 keys used in Open Payments HTTP signatures.

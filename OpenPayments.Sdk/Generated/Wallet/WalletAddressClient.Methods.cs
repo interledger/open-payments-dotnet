@@ -1,7 +1,7 @@
 using System.Text;
-using OpenPayments.Sdk;
+using Interledger.OpenPayments;
 
-namespace OpenPayments.Sdk.Generated.Wallet
+namespace Interledger.OpenPayments.Generated.Wallet
 {
     public partial class WalletAddressClient
     {

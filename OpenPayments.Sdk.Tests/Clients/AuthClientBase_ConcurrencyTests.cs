@@ -5,10 +5,10 @@ using FluentAssertions;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Generated.Auth;
+using Interledger.OpenPayments.Clients;
+using Interledger.OpenPayments.Generated.Auth;
 
-namespace OpenPayments.Sdk.Tests.Clients;
+namespace Interledger.OpenPayments.Tests.Clients;
 
 public class AuthClientBase_ConcurrencyTests
 {

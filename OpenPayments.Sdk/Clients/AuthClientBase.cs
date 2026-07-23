@@ -1,7 +1,7 @@
 using System.Globalization;
-using OpenPayments.Sdk.Generated.Auth;
+using Interledger.OpenPayments.Generated.Auth;
 
-namespace OpenPayments.Sdk.Clients;
+namespace Interledger.OpenPayments.Clients;
 
 public class AuthClientBase : IAuthClientBase
 {

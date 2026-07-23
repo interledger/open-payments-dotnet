@@ -1,14 +1,14 @@
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using OpenPayments.Sdk;
-using OpenPayments.Sdk.Generated;
-using OpenPayments.Sdk.Generated.Resource;
-using OpenPayments.Sdk.Generated.Wallet;
+using Interledger.OpenPayments;
+using Interledger.OpenPayments.Generated;
+using Interledger.OpenPayments.Generated.Resource;
+using Interledger.OpenPayments.Generated.Wallet;
 
-[assembly: InternalsVisibleTo("OpenPayments.Sdk.Tests")]
+[assembly: InternalsVisibleTo("Interledger.OpenPayments.Tests")]
 
-namespace OpenPayments.Sdk.Clients;
+namespace Interledger.OpenPayments.Clients;
 
 /// <inheritdoc/>
 /// <remarks>

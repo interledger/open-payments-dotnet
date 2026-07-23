@@ -5,12 +5,12 @@ using Moq.Protected;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSec.Cryptography;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Generated.Auth;
-using OpenPayments.Sdk.Generated.Resource;
-using Amount = OpenPayments.Sdk.Generated.Resource.Amount;
+using Interledger.OpenPayments.Clients;
+using Interledger.OpenPayments.Generated.Auth;
+using Interledger.OpenPayments.Generated.Resource;
+using Amount = Interledger.OpenPayments.Generated.Resource.Amount;
 
-namespace OpenPayments.Sdk.Tests.Clients;
+namespace Interledger.OpenPayments.Tests.Clients;
 
 public class AuthenticatedClientFixture
 {
@@ -236,12 +236,12 @@ public class AuthenticatedClientFixture
         ],
     };
 
-    public OpenPayments.Sdk.Generated.Auth.ErrorResponse GrantErrorResponse =>
+    public Interledger.OpenPayments.Generated.Auth.ErrorResponse GrantErrorResponse =>
         new()
         {
-            Error = new OpenPayments.Sdk.Generated.Auth.ErrorItem
+            Error = new Interledger.OpenPayments.Generated.Auth.ErrorItem
             {
-                Code = OpenPayments.Sdk.Generated.Auth.ErrorItemCode.InvalidRequest,
+                Code = Interledger.OpenPayments.Generated.Auth.ErrorItemCode.InvalidRequest,
                 Description = "bad grant",
             },
         };

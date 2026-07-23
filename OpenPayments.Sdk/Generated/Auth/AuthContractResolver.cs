@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace OpenPayments.Sdk.Generated.Auth;
+namespace Interledger.OpenPayments.Generated.Auth;
 
 public sealed class AuthContractResolver : DefaultContractResolver
 {

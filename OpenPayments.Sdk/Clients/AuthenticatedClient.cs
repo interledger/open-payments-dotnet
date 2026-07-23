@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
-using OpenPayments.Sdk.Generated.Auth;
-using OpenPayments.Sdk.Generated.Resource;
+using Interledger.OpenPayments.Generated.Auth;
+using Interledger.OpenPayments.Generated.Resource;
 
-namespace OpenPayments.Sdk.Clients;
+namespace Interledger.OpenPayments.Clients;
 
 /// <remarks>
 /// Create a new AuthenticatedClient wrapping an existing <see cref="UnauthenticatedClient"/> instance.

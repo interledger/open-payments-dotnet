@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
+namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
 
 public class HttpRequestSignerTests
 {

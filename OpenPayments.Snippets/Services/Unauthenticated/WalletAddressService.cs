@@ -1,4 +1,4 @@
-using OpenPayments.Sdk.Clients;
+using Interledger.OpenPayments.Clients;
 
 namespace OpenPayments.Snippets.Services.Unauthenticated;
 

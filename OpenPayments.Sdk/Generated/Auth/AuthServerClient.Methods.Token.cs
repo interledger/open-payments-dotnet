@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
-using OpenPayments.Sdk;
+using Interledger.OpenPayments;
 
-namespace OpenPayments.Sdk.Generated.Auth;
+namespace Interledger.OpenPayments.Generated.Auth;
 
 public partial class AuthServerClient
 {

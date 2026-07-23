@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Moq.Protected;
 using NSec.Cryptography;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Extensions;
-using OpenPayments.Sdk.Generated.Auth;
+using Interledger.OpenPayments.Clients;
+using Interledger.OpenPayments.Extensions;
+using Interledger.OpenPayments.Generated.Auth;
 
-namespace OpenPayments.Sdk.Tests.Extensions;
+namespace Interledger.OpenPayments.Tests.Extensions;
 
 public class ServiceCollectionExtensions_Tests
 {

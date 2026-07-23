@@ -1,9 +1,9 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
-using OpenPayments.Sdk;
+using Interledger.OpenPayments;
 
-namespace OpenPayments.Sdk.Generated.Resource;
+namespace Interledger.OpenPayments.Generated.Resource;
 
 public partial class ResourceServerClient
 {

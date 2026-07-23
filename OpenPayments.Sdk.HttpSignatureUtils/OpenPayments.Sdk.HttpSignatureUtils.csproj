@@ -16,6 +16,6 @@
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0"/>
     <PackageReference Include="Sodium.Core" Version="1.4.0"/>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-    <InternalsVisibleTo Include="../OpenPayments.Sdk.HttpSignatureUtils.Tests"/>
+    <InternalsVisibleTo Include="Interledger.OpenPayments.HttpSignatureUtils.Tests"/>
   </ItemGroup>
 </Project>

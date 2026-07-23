@@ -1,4 +1,4 @@
-using OpenPayments.Sdk.HttpSignatureUtils;
+using Interledger.OpenPayments.HttpSignatureUtils;
 
 /// <summary>
 /// Defines methods for validating HTTP signatures in requests.

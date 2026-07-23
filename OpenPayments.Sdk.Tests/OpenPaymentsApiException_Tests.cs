@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-namespace OpenPayments.Sdk.Tests;
+namespace Interledger.OpenPayments.Tests;
 
 public class OpenPaymentsApiExceptionTests
 {

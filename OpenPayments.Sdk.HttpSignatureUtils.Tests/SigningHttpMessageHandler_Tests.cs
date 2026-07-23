@@ -8,7 +8,7 @@ using Moq;
 using Moq.Protected;
 using Xunit;
 
-namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
+namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
 
 public class SigningHttpMessageHandlerTests
 {

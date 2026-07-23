@@ -2,7 +2,7 @@ using System;
 using NSec.Cryptography;
 using Xunit;
 
-namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
+namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
 
 public class KeyUtils_LoadBase64Key_Tests
 {

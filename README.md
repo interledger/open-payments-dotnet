@@ -107,9 +107,9 @@ Then add it to your project code
 ```csharp
 // Import dependencies
 using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Extensions;
-using OpenPayments.Sdk.HttpSignatureUtils;
+using Interledger.OpenPayments.Clients;
+using Interledger.OpenPayments.Extensions;
+using Interledger.OpenPayments.HttpSignatureUtils;
 
 // Initialize client
 var client = new ServiceCollection()
