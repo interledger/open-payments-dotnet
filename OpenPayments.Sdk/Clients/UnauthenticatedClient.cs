@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using OpenPayments.Sdk;
+using OpenPayments.Sdk.Generated;
 using OpenPayments.Sdk.Generated.Resource;
 using OpenPayments.Sdk.Generated.Wallet;
 
@@ -63,11 +64,7 @@ internal class UnauthenticatedClient(HttpClient http)
         var json = await response
             .Content.ReadAsStringAsync(cancellationToken)
             .ConfigureAwait(false);
-        var responseHeaders = new Dictionary<string, IEnumerable<string>>();
-        foreach (var item in response.Headers)
-            responseHeaders[item.Key] = item.Value;
-        foreach (var item in response.Content.Headers)
-            responseHeaders[item.Key] = item.Value;
+        var responseHeaders = Helpers.ExtractHeaders(response);
 
         if (!response.IsSuccessStatusCode)
         {
