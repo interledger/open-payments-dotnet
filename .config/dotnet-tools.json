@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "nswag.consolecore": {
+      "version": "14.7.1",
+      "commands": ["nswag"]
+    }
+  }
+}

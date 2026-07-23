@@ -38,6 +38,20 @@ public class UnauthenticatedClient_Tests
         {
             await Assert.ThrowsAsync<ArgumentException>(() => _client.GetWalletAddressAsync(url));
         }
+
+        [Fact]
+        public async Task GetWalletAddressAsync_MalformedJson_ThrowsOpenPaymentsApiException()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(HttpStatusCode.OK, "{ this is not json");
+            var client = new UnauthenticatedClient(httpClient);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(
+                () => client.GetWalletAddressAsync("https://example.com/alice")
+            );
+
+            exception.StatusCode.Should().Be(200);
+            exception.InnerException.Should().BeAssignableTo<Newtonsoft.Json.JsonException>();
+        }
     }
 
     [Collection("UnauthenticatedClient")]

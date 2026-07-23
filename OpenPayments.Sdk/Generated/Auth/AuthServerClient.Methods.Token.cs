@@ -15,7 +15,7 @@ public partial class AuthServerClient
     /// Management endpoint to rotate access token.
     /// </remarks>
     /// <returns>OK</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<RotateTokenResponse> RotateTokenAsync(
         Uri tokenUrl,
         string accessToken,
@@ -138,7 +138,7 @@ public partial class AuthServerClient
     /// Management endpoint to revoke access token.
     /// </remarks>
     /// <returns>No Content</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task RevokeTokenAsync(
         Uri tokenUrl,
         string accessToken,

@@ -24,7 +24,7 @@ public partial class ResourceServerClient
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Outgoing Payment Created</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<OutgoingPaymentWithSpentAmountsResponse> PostOutgoingPaymentAsync(
         Uri baseUri,
         OutgoingPaymentBody body,
@@ -147,7 +147,7 @@ public partial class ResourceServerClient
     /// <param name="accessToken">Access Token</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Outgoing Payment Found</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
     public virtual async Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(
         Uri baseUri,
         string accessToken,
@@ -269,7 +269,7 @@ public partial class ResourceServerClient
     /// <param name="last">The number of items to return before the cursor.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>OK</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
     public virtual async Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         Uri baseUri,
         string accessToken,

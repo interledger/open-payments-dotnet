@@ -37,9 +37,10 @@ public class OpenPaymentsApiException : Exception
         int statusCode,
         string? errorCode,
         string? rawResponse,
-        IReadOnlyDictionary<string, IEnumerable<string>> headers
+        IReadOnlyDictionary<string, IEnumerable<string>> headers,
+        Exception? innerException = null
     )
-        : base(message)
+        : base(message, innerException)
     {
         StatusCode = statusCode;
         ErrorCode = errorCode;
@@ -63,6 +64,7 @@ internal static class OpenPaymentsExceptionFactory
         int statusCode,
         string? errorCode,
         string? rawResponse,
-        IReadOnlyDictionary<string, IEnumerable<string>> headers
-    ) => new(message, statusCode, errorCode, rawResponse, headers);
+        IReadOnlyDictionary<string, IEnumerable<string>> headers,
+        Exception? innerException = null
+    ) => new(message, statusCode, errorCode, rawResponse, headers, innerException);
 }
