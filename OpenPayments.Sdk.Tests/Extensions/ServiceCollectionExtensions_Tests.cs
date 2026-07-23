@@ -58,16 +58,55 @@ public class ServiceCollectionExtensions_Tests
     }
 
     [Fact]
-    public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsException()
+    public void UseOpenPayments_AuthenticatedClient_WithoutAnyOptions_ThrowsImmediately()
     {
         var services = new ServiceCollection();
 
-        // Validation now happens eagerly at registration time (UseOpenPayments), not lazily
-        // at first resolution, because SigningHttpMessageHandler needs a non-null
-        // privateKey/keyId at the point AddHttpMessageHandler captures them.
-        Assert.Throws<InvalidOperationException>(
-            () => services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; })
-        );
+        var act = () => services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; });
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*KeyId*");
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_MissingPrivateKey_ThrowsImmediately()
+    {
+        var services = new ServiceCollection();
+
+        var act = () =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.KeyId = "1234";
+                options.ClientUrl = new Uri("https://example.com");
+            });
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*PrivateKey*");
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_MissingClientUrl_ThrowsImmediately()
+    {
+        var services = new ServiceCollection();
+
+        var act = () =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.KeyId = "1234";
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            });
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*ClientUrl*");
+    }
+
+    [Fact]
+    public void UseOpenPayments_NullConfigure_ThrowsArgumentNullException()
+    {
+        var services = new ServiceCollection();
+
+        Action act = () => services.UseOpenPayments(null!);
+
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]

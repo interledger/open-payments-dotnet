@@ -23,6 +23,8 @@ public static class ServiceCollectionExtensions
         Action<OpenPaymentsOptions> configure
     )
     {
+        ArgumentNullException.ThrowIfNull(configure);
+
         var options = new OpenPaymentsOptions();
         configure(options);
 
