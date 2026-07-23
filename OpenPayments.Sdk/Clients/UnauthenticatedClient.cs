@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using OpenPayments.Sdk;
 using OpenPayments.Sdk.Generated.Resource;
 using OpenPayments.Sdk.Generated.Wallet;
 
@@ -58,16 +59,36 @@ internal class UnauthenticatedClient(HttpClient http)
         using var response = await _httpClient
             .SendAsync(request, cancellationToken)
             .ConfigureAwait(false);
-        response.EnsureSuccessStatusCode();
 
         var json = await response
             .Content.ReadAsStringAsync(cancellationToken)
             .ConfigureAwait(false);
+        var responseHeaders = new Dictionary<string, IEnumerable<string>>();
+        foreach (var item in response.Headers)
+            responseHeaders[item.Key] = item.Value;
+        foreach (var item in response.Content.Headers)
+            responseHeaders[item.Key] = item.Value;
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw OpenPaymentsExceptionFactory.Create(
+                $"The HTTP status code of the response was not expected ({(int)response.StatusCode}).",
+                (int)response.StatusCode,
+                null,
+                json,
+                responseHeaders
+            );
+        }
+
         var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
 
         return model
-            ?? throw new InvalidOperationException(
-                "Server returned empty or invalid IncomingPayment JSON."
+            ?? throw OpenPaymentsExceptionFactory.Create(
+                "Server returned empty or invalid IncomingPayment JSON.",
+                (int)response.StatusCode,
+                null,
+                json,
+                responseHeaders
             );
     }
 }

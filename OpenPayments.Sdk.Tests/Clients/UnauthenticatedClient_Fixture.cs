@@ -81,4 +81,25 @@ public class UnauthenticatedClientFixture
 
         return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
     }
+
+    public HttpClient CreateHttpClientMock(HttpStatusCode statusCode, string responseBody)
+    {
+        var handler = new Mock<HttpMessageHandler>();
+        handler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = statusCode,
+                    Content = new StringContent(responseBody, Encoding.UTF8, "application/json"),
+                }
+            );
+
+        return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
+    }
 }

@@ -1,3 +1,4 @@
+using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
 
@@ -108,6 +109,35 @@ public class UnauthenticatedClient_Tests
         public async Task GetIncomingPaymentAsync_InvalidInput_Throws(string url)
         {
             await Assert.ThrowsAsync<ArgumentException>(() => _client.GetIncomingPaymentAsync(url));
+        }
+
+        [Fact]
+        public async Task GetIncomingPaymentAsync_ServerReturns404_ThrowsOpenPaymentsApiException()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(
+                HttpStatusCode.NotFound,
+                "{\"error\":\"not found\"}"
+            );
+            var client = new UnauthenticatedClient(httpClient);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(
+                () => client.GetIncomingPaymentAsync(_url)
+            );
+
+            exception.StatusCode.Should().Be(404);
+        }
+
+        [Fact]
+        public async Task GetIncomingPaymentAsync_NullJson_ThrowsOpenPaymentsApiException()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(HttpStatusCode.OK, "null");
+            var client = new UnauthenticatedClient(httpClient);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(
+                () => client.GetIncomingPaymentAsync(_url)
+            );
+
+            exception.StatusCode.Should().Be(200);
         }
     }
 }
