@@ -5,7 +5,6 @@ using FluentAssertions;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Generated.Resource;
 
@@ -66,12 +65,7 @@ public class ResourceClientBase_ConcurrencyTests
             );
 
         var httpClient = new HttpClient(handler.Object);
-        var client = new ResourceClientBase(
-            httpClient,
-            Key.Create(SignatureAlgorithm.Ed25519),
-            "test-key",
-            new Uri("https://client.example")
-        );
+        var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
 
         const string hostA = "host-a.example";
         const string hostB = "host-b.example";

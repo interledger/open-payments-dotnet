@@ -38,29 +38,32 @@ public static class ServiceCollectionExtensions
 
         if (options.UseAuthenticatedClient)
         {
+            if (string.IsNullOrWhiteSpace(options.KeyId))
+                throw new InvalidOperationException(
+                    "OpenPaymentsOptions.KeyId must be provided when UseAuthenticatedClient is true."
+                );
+            if (options.PrivateKey is null)
+                throw new InvalidOperationException(
+                    "OpenPaymentsOptions.PrivateKey must be provided when UseAuthenticatedClient is true."
+                );
+            if (options.ClientUrl is null)
+                throw new InvalidOperationException(
+                    "OpenPaymentsOptions.ClientUrl must be provided when UseAuthenticatedClient is true."
+                );
+
+            var privateKey = options.PrivateKey;
+            var keyId = options.KeyId;
+            var clientUrl = options.ClientUrl;
+
+            services
+                .AddHttpClient("authenticated")
+                .AddHttpMessageHandler(() => new SigningHttpMessageHandler(privateKey, keyId));
+
             services.AddSingleton<AuthenticatedClient>(sp =>
             {
-                if (string.IsNullOrWhiteSpace(options.KeyId))
-                    throw new InvalidOperationException(
-                        "OpenPaymentsOptions.KeyId must be provided."
-                    );
-                if (options.PrivateKey is null)
-                    throw new InvalidOperationException(
-                        "OpenPaymentsOptions.PrivateKey must be provided."
-                    );
-                if (options.ClientUrl is null)
-                    throw new InvalidOperationException(
-                        "OpenPaymentsOptions.ClientUrl must be provided."
-                    );
-
                 var http = sp.GetRequiredService<IHttpClientFactory>()
                     .CreateClient("authenticated");
-                return new AuthenticatedClient(
-                    http,
-                    options.PrivateKey,
-                    options.KeyId,
-                    options.ClientUrl
-                );
+                return new AuthenticatedClient(http, clientUrl);
             });
             services.AddSingleton<IAuthenticatedClient>(sp =>
                 sp.GetRequiredService<AuthenticatedClient>()

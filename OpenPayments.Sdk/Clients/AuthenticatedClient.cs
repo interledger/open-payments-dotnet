@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 using OpenPayments.Sdk.Generated.Resource;
 
@@ -7,31 +6,18 @@ namespace OpenPayments.Sdk.Clients;
 
 /// <remarks>
 /// Create a new AuthenticatedClient wrapping an existing <see cref="UnauthenticatedClient"/> instance.
+/// Request signing is expected to already be configured on <paramref name="http"/>'s handler
+/// pipeline (see <see cref="Extensions.ServiceCollectionExtensions.UseOpenPayments"/>).
 /// </remarks>
-/// <param name="http">Pre-configured <see cref="HttpClient"/> instance. It's <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-/// <param name="privateKey">Private key used to sign requests.</param>
-/// <param name="keyId">Key ID used to sign requests.</param>
+/// <param name="http">Pre-configured, already signing-capable <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
 /// <param name="clientUrl">Client Wallet URL Address (e.g. <c>https://wallet.example</c>).</param>
-internal sealed class AuthenticatedClient(
-    HttpClient http,
-    Key privateKey,
-    string keyId,
-    Uri clientUrl
-) : UnauthenticatedClient(http), IAuthenticatedClient
+internal sealed class AuthenticatedClient(HttpClient http, Uri clientUrl)
+    : UnauthenticatedClient(http),
+        IAuthenticatedClient
 {
-    private readonly IAuthClientBase _authClient = new AuthClientBase(
-        http,
-        privateKey,
-        keyId,
-        clientUrl
-    );
+    private readonly IAuthClientBase _authClient = new AuthClientBase(http, clientUrl);
 
-    private readonly IResourceClientBase _resClient = new ResourceClientBase(
-        http,
-        privateKey,
-        keyId,
-        clientUrl
-    );
+    private readonly IResourceClientBase _resClient = new ResourceClientBase(http, clientUrl);
 
     /// <inheritdoc/>
     public Task<AuthResponse> RequestGrantAsync(

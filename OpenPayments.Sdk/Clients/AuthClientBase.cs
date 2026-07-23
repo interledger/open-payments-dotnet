@@ -1,5 +1,4 @@
 using System.Globalization;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Sdk.Clients;
@@ -9,11 +8,10 @@ public class AuthClientBase : IAuthClientBase
     private readonly AuthServerClient _client;
     private readonly HttpClient _httpClient;
 
-    public AuthClientBase(HttpClient http, Key privateKey, string keyId, Uri clientUrl)
+    public AuthClientBase(HttpClient http, Uri clientUrl)
     {
         _httpClient = http;
         _client = new AuthServerClient(http);
-        _client.AddSigningKey(privateKey, keyId);
         _client.ClientUrl = clientUrl;
     }
 

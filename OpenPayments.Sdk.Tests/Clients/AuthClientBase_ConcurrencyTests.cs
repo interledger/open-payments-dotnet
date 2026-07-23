@@ -5,7 +5,6 @@ using FluentAssertions;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Generated.Auth;
 
@@ -70,12 +69,7 @@ public class AuthClientBase_ConcurrencyTests
             {
                 var host = i % 2 == 0 ? hostA : hostB;
                 var clientUrl = new Uri($"https://{host}/client");
-                var client = new AuthClientBase(
-                    httpClient,
-                    Key.Create(SignatureAlgorithm.Ed25519),
-                    "test-key",
-                    clientUrl
-                );
+                var client = new AuthClientBase(httpClient, clientUrl);
                 return Task.Run(async () =>
                 {
                     ready.Signal();
