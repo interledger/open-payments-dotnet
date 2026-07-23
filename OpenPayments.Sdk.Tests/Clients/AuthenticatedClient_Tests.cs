@@ -2,6 +2,7 @@ using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk;
+using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -179,6 +180,28 @@ public class AuthenticatedClient_Tests
             );
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.CreateIncomingPaymentResponseWithMetadata);
+        }
+
+        [Fact]
+        public async Task CreateIncomingPaymentAsync_ServerReturns401_ThrowsOpenPaymentsApiException()
+        {
+            var errorResponse = new ErrorResponse
+            {
+                Error = new Error { Code = "invalid_client", Description = "bad token" },
+            };
+            var httpClient = _fixture.CreateHttpClientMock(errorResponse, HttpStatusCode.Unauthorized);
+            _client = new AuthenticatedClient(httpClient, _fixture.ClientUrl);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(
+                () =>
+                    _client.CreateIncomingPaymentAsync(
+                        _fixture.GrantWithTokenArgs,
+                        _fixture.CreateIncomingPaymentBody
+                    )
+            );
+
+            exception.StatusCode.Should().Be(401);
+            exception.ErrorCode.Should().Be("invalid_client");
         }
     }
 

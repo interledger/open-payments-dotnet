@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
+using OpenPayments.Sdk;
 
 namespace OpenPayments.Sdk.Generated.Resource;
 
@@ -83,12 +84,12 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
@@ -105,34 +106,33 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
-                    throw new ApiException<ErrorResponse>(
+                    throw OpenPaymentsExceptionFactory.Create(
                         objectResponse.Object.Error.Description,
                         status,
+                        objectResponse.Object.Error.Code,
                         objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
+                        headers
                     );
                 }
                 default:
                 {
                     var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
                         .ConfigureAwait(false);
-                    throw new ApiException(
+                    throw OpenPaymentsExceptionFactory.Create(
                         "The HTTP status code of the response was not expected (" + status + ").",
                         status,
+                        null,
                         responseData,
-                        headers,
-                        null
+                        headers
                     );
                 }
             }
@@ -200,12 +200,12 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
@@ -223,34 +223,33 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
-                    throw new ApiException<ErrorResponse>(
+                    throw OpenPaymentsExceptionFactory.Create(
                         objectResponse.Object.Error.Description,
                         status,
+                        objectResponse.Object.Error.Code,
                         objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
+                        headers
                     );
                 }
                 default:
                 {
                     var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
                         .ConfigureAwait(false);
-                    throw new ApiException(
+                    throw OpenPaymentsExceptionFactory.Create(
                         "The HTTP status code of the response was not expected (" + status + ").",
                         status,
+                        null,
                         responseData,
-                        headers,
-                        null
+                        headers
                     );
                 }
             }
@@ -379,12 +378,12 @@ public partial class ResourceServerClient
                             .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
@@ -401,34 +400,33 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
-                    throw new ApiException<ErrorResponse>(
+                    throw OpenPaymentsExceptionFactory.Create(
                         objectResponse.Object.Error.Description,
                         status,
+                        objectResponse.Object.Error.Code,
                         objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
+                        headers
                     );
                 }
                 default:
                 {
                     var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
                         .ConfigureAwait(false);
-                    throw new ApiException(
+                    throw OpenPaymentsExceptionFactory.Create(
                         "The HTTP status code of the response was not expected (" + status + ").",
                         status,
+                        null,
                         responseData,
-                        headers,
-                        null
+                        headers
                     );
                 }
             }
@@ -500,12 +498,12 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
@@ -523,34 +521,33 @@ public partial class ResourceServerClient
                         .ConfigureAwait(false);
                     if (objectResponse.Object == null)
                     {
-                        throw new ApiException(
+                        throw OpenPaymentsExceptionFactory.Create(
                             "Response was null which was not expected.",
                             status,
+                            null,
                             objectResponse.Text,
-                            headers,
-                            null
+                            headers
                         );
                     }
 
-                    throw new ApiException<ErrorResponse>(
+                    throw OpenPaymentsExceptionFactory.Create(
                         objectResponse.Object.Error.Description,
                         status,
+                        objectResponse.Object.Error.Code,
                         objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
+                        headers
                     );
                 }
                 default:
                 {
                     var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
                         .ConfigureAwait(false);
-                    throw new ApiException(
+                    throw OpenPaymentsExceptionFactory.Create(
                         "The HTTP status code of the response was not expected (" + status + ").",
                         status,
+                        null,
                         responseData,
-                        headers,
-                        null
+                        headers
                     );
                 }
             }

@@ -1,4 +1,5 @@
 using System.Text;
+using OpenPayments.Sdk;
 
 namespace OpenPayments.Sdk.Generated.Wallet
 {
@@ -63,12 +64,12 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                 .ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new ApiException(
+                                throw OpenPaymentsExceptionFactory.Create(
                                     "Response was null which was not expected.",
                                     status_,
+                                    null,
                                     objectResponse_.Text,
-                                    headers_,
-                                    null
+                                    headers_
                                 );
                             }
 
@@ -82,12 +83,12 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                     : await response_
                                         .Content.ReadAsStringAsync()
                                         .ConfigureAwait(false);
-                            throw new ApiException(
+                            throw OpenPaymentsExceptionFactory.Create(
                                 "If the `Accept` header is `text/html` in the request, the server may choose to redirect to an HTML page for the given wallet address.",
                                 status_,
+                                null,
                                 responseText_,
-                                headers_,
-                                null
+                                headers_
                             );
                         }
                         else if (status_ == 404)
@@ -98,12 +99,12 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                     : await response_
                                         .Content.ReadAsStringAsync()
                                         .ConfigureAwait(false);
-                            throw new ApiException(
+                            throw OpenPaymentsExceptionFactory.Create(
                                 "Wallet Address Not Found",
                                 status_,
+                                null,
                                 responseText_,
-                                headers_,
-                                null
+                                headers_
                             );
                         }
                         else
@@ -114,14 +115,14 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                     : await response_
                                         .Content.ReadAsStringAsync()
                                         .ConfigureAwait(false);
-                            throw new ApiException(
+                            throw OpenPaymentsExceptionFactory.Create(
                                 "The HTTP status code of the response was not expected ("
                                 + status_
                                 + ").",
                                 status_,
+                                null,
                                 responseData_,
-                                headers_,
-                                null
+                                headers_
                             );
                         }
                     }
@@ -200,12 +201,12 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                 .ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new ApiException(
+                                throw OpenPaymentsExceptionFactory.Create(
                                     "Response was null which was not expected.",
                                     status_,
+                                    null,
                                     objectResponse_.Text,
-                                    headers_,
-                                    null
+                                    headers_
                                 );
                             }
 
@@ -219,12 +220,12 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                     : await response_
                                         .Content.ReadAsStringAsync()
                                         .ConfigureAwait(false);
-                            throw new ApiException(
+                            throw OpenPaymentsExceptionFactory.Create(
                                 "JWKS Document Not Found",
                                 status_,
+                                null,
                                 responseText_,
-                                headers_,
-                                null
+                                headers_
                             );
                         }
                         else
@@ -235,14 +236,14 @@ namespace OpenPayments.Sdk.Generated.Wallet
                                     : await response_
                                         .Content.ReadAsStringAsync()
                                         .ConfigureAwait(false);
-                            throw new ApiException(
+                            throw OpenPaymentsExceptionFactory.Create(
                                 "The HTTP status code of the response was not expected ("
                                 + status_
                                 + ").",
                                 status_,
+                                null,
                                 responseData_,
-                                headers_,
-                                null
+                                headers_
                             );
                         }
                     }
