@@ -1,0 +1,39 @@
+name: Codegen Drift Check
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'open-payments-specifications'
+      - 'Makefile'
+      - '.config/dotnet-tools.json'
+      - '.github/workflows/codegen-check.yaml'
+
+jobs:
+  codegen-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup .NET 9.0 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
+      - name: Regenerate models
+        run: make models
+
+      - name: Fail if committed generated code drifted
+        run: git diff --exit-code -- 'OpenPayments.Sdk/Generated/**/*.g.cs'

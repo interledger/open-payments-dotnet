@@ -1,4 +1,4 @@
-name: Build and Test HttpSignatureUtils
+name: Build and Test
 
 on:
   workflow_dispatch:
@@ -8,13 +8,14 @@ on:
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
-      - '.github/workflows/dotnet.yml'
+      - '.github/workflows/build.yaml'
   pull_request:
     paths:
       - 'OpenPayments.Sdk/**'
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+      - '.github/workflows/build.yaml'
 
 jobs:
   build-and-test:
@@ -23,33 +24,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Setup .NET 9.0 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install swagger-cli
-        run: npm install -g swagger-cli
-
-      - name: Install NSwag CLI
-        run: dotnet tool install --global NSwag.ConsoleCore
-
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Build models
-        run: make models
 
       - name: Restore dependencies
         run: dotnet restore
@@ -58,12 +43,10 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run tests
-        run: |
-          dotnet test --collect:"XPlat Code Coverage"
+        run: dotnet test --collect:"XPlat Code Coverage"
 
       - name: Generate coverage report
-        run: |
-          reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html -classfilters:"-Interledger.OpenPayments.Generated.*"
+        run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html -classfilters:"-Interledger.OpenPayments.Generated.*"
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
