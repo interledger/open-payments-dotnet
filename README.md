@@ -106,6 +106,13 @@ development with:
 dotnet test --filter "Category!=Slow"
 ```
 
+Test projects target both `net8.0` and `net9.0`. If you only have one runtime installed
+locally, pick it explicitly, e.g.:
+
+```bash
+dotnet test -f net9.0
+```
+
 ## 🎈 Usage
 
 To use in your project, just add the package using the command line
