@@ -7,6 +7,8 @@ using OpenPayments.Snippets.Services.Unauthenticated;
 using IncomingPaymentService = OpenPayments.Snippets.Services.Authenticated.IncomingPaymentService;
 using PublicIncomingPaymentService = OpenPayments.Snippets.Services.Unauthenticated.IncomingPaymentService;
 
+LoadDotEnv();
+
 var services = new ServiceCollection();
 
 // let's register OP SDK here
@@ -269,3 +271,36 @@ rootCommand.Add(oneTimePaymentCommand);
 
 var config = new CommandLineConfiguration(rootCommand);
 return await config.InvokeAsync(args);
+
+// Loads .env from the executable's directory, or a parent directory if not found there.
+// Needed because Rider runs the built exe with its output folder as the working directory,
+// so a `dotnet run`-relative `.env` in the project root wouldn't otherwise be picked up.
+static void LoadDotEnv()
+{
+    var directory = new DirectoryInfo(AppContext.BaseDirectory);
+    while (directory is not null)
+    {
+        var envPath = Path.Combine(directory.FullName, ".env");
+        if (File.Exists(envPath))
+        {
+            foreach (var line in File.ReadAllLines(envPath))
+            {
+                var trimmed = line.Trim();
+                if (trimmed.Length == 0 || trimmed.StartsWith('#'))
+                    continue;
+
+                var separatorIndex = trimmed.IndexOf('=');
+                if (separatorIndex < 0)
+                    continue;
+
+                var key = trimmed[..separatorIndex].Trim();
+                var value = trimmed[(separatorIndex + 1)..].Trim().Trim('"');
+
+                if (Environment.GetEnvironmentVariable(key) is null)
+                    Environment.SetEnvironmentVariable(key, value);
+            }
+            return;
+        }
+        directory = directory.Parent;
+    }
+}
