@@ -1,0 +1,832 @@
+#nullable enable
+Interledger.OpenPayments.Clients.AuthClientBase
+Interledger.OpenPayments.Clients.AuthClientBase.AuthClientBase(System.Net.Http.HttpClient! http, System.Uri! clientUrl) -> void
+Interledger.OpenPayments.Clients.AuthClientBase.CancelGrantAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Clients.AuthClientBase.ContinueGrantAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Auth.GrantContinueBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Clients.AuthClientBase.RequestGrantAsync(Interledger.OpenPayments.Clients.RequestArgs! requestArgs, Interledger.OpenPayments.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Clients.AuthClientBase.RevokeTokenAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Clients.AuthClientBase.RotateTokenAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.RotateTokenResponse!>!
+Interledger.OpenPayments.Clients.AuthRequestArgs
+Interledger.OpenPayments.Clients.AuthRequestArgs.AccessToken.get -> string!
+Interledger.OpenPayments.Clients.AuthRequestArgs.AccessToken.set -> void
+Interledger.OpenPayments.Clients.AuthRequestArgs.AuthRequestArgs() -> void
+Interledger.OpenPayments.Clients.IAuthClientBase
+Interledger.OpenPayments.Clients.IAuthClientBase.CancelGrantAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Clients.IAuthClientBase.ContinueGrantAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Auth.GrantContinueBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Clients.IAuthClientBase.RequestGrantAsync(Interledger.OpenPayments.Clients.RequestArgs! requestArgs, Interledger.OpenPayments.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Clients.IAuthClientBase.RevokeTokenAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Clients.IAuthClientBase.RotateTokenAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.RotateTokenResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CancelGrantAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CompleteIncomingPaymentsAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.ContinueGrantAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Auth.GrantContinueBody? body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CreateIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CreateOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CreateOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromQuote! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CreateQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.QuoteBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CreateQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.QuoteBodyWithDebitAmount! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.CreateQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.GetIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.GetOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.GetPublicIncomingPaymentAsync(Interledger.OpenPayments.Clients.RequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.GetQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.ListIncomingPaymentsAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentsResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.ListOutgoingPaymentsAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentsResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.RequestGrantAsync(Interledger.OpenPayments.Clients.RequestArgs! requestArgs, Interledger.OpenPayments.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.RevokeTokenAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Clients.IAuthenticatedClient.RotateTokenAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.RotateTokenResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase
+Interledger.OpenPayments.Clients.IResourceClientBase.CompleteIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.CreateIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.Body! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.CreateOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.CreateQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.QuoteBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.GetIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.GetOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.GetQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.ListIncomingPaymentsAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentsResponse!>!
+Interledger.OpenPayments.Clients.IResourceClientBase.ListOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentsResponse!>!
+Interledger.OpenPayments.Clients.IUnauthenticatedClient
+Interledger.OpenPayments.Clients.IUnauthenticatedClient.GetIncomingPaymentAsync(string! incomingPaymentUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment!>!
+Interledger.OpenPayments.Clients.IUnauthenticatedClient.GetWalletAddressAsync(string! walletAddressOrPaymentPointer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Wallet.WalletAddress!>!
+Interledger.OpenPayments.Clients.IUnauthenticatedClient.GetWalletAddressKeysAsync(string! walletAddressOrPaymentPointer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Wallet.JsonWebKeySet!>!
+Interledger.OpenPayments.Clients.RequestArgs
+Interledger.OpenPayments.Clients.RequestArgs.RequestArgs() -> void
+Interledger.OpenPayments.Clients.RequestArgs.Url.get -> System.Uri!
+Interledger.OpenPayments.Clients.RequestArgs.Url.set -> void
+Interledger.OpenPayments.Clients.ResourceClientBase
+Interledger.OpenPayments.Clients.ResourceClientBase.CompleteIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.CreateIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.Body! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.CreateOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.CreateQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.QuoteBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.GetIncomingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.GetOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.GetQuoteAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.ListIncomingPaymentsAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentsResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.ListOutgoingPaymentAsync(Interledger.OpenPayments.Clients.AuthRequestArgs! requestArgs, Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentsResponse!>!
+Interledger.OpenPayments.Clients.ResourceClientBase.ResourceClientBase(System.Net.Http.HttpClient! http, System.Uri! clientUrl) -> void
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.ClientUrl.get -> System.Uri?
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.ClientUrl.set -> void
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.KeyId.get -> string?
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.KeyId.set -> void
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.OpenPaymentsOptions() -> void
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.PrivateKey.get -> NSec.Cryptography.Key?
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.PrivateKey.set -> void
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.UseAuthenticatedClient.get -> bool
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.UseAuthenticatedClient.set -> void
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.UseUnauthenticatedClient.get -> bool
+Interledger.OpenPayments.Configuration.OpenPaymentsOptions.UseUnauthenticatedClient.set -> void
+Interledger.OpenPayments.Extensions.ServiceCollectionExtensions
+Interledger.OpenPayments.Generated.Anonymous
+Interledger.OpenPayments.Generated.Anonymous.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Anonymous.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Anonymous.Anonymous() -> void
+Interledger.OpenPayments.Generated.Auth.Access
+Interledger.OpenPayments.Generated.Auth.Access.Access() -> void
+Interledger.OpenPayments.Generated.Auth.AccessItem
+Interledger.OpenPayments.Generated.Auth.AccessItem.AccessItem() -> void
+Interledger.OpenPayments.Generated.Auth.AccessItem.Actions.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Auth.Actions>!
+Interledger.OpenPayments.Generated.Auth.AccessItem.Actions.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessItem.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.AccessItem.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessItem.Identifier.get -> System.Uri?
+Interledger.OpenPayments.Generated.Auth.AccessItem.Identifier.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessItem.Limits.get -> Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits?
+Interledger.OpenPayments.Generated.Auth.AccessItem.Limits.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessItem.Type.get -> Interledger.OpenPayments.Generated.Auth.AccessType
+Interledger.OpenPayments.Generated.Auth.AccessItem.Type.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessItemType
+Interledger.OpenPayments.Generated.Auth.AccessItemType.IncomingPayment = 0 -> Interledger.OpenPayments.Generated.Auth.AccessItemType
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.AccessOutgoing() -> void
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Actions.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Auth.Actions2>!
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Actions.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Identifier.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Identifier.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Limits.get -> Interledger.OpenPayments.Generated.Auth.LimitsOutgoing?
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Limits.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Type.get -> Interledger.OpenPayments.Generated.Auth.AccessOutgoingType
+Interledger.OpenPayments.Generated.Auth.AccessOutgoing.Type.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessOutgoingType
+Interledger.OpenPayments.Generated.Auth.AccessOutgoingType.OutgoingPayment = 0 -> Interledger.OpenPayments.Generated.Auth.AccessOutgoingType
+Interledger.OpenPayments.Generated.Auth.AccessQuote
+Interledger.OpenPayments.Generated.Auth.AccessQuote.AccessQuote() -> void
+Interledger.OpenPayments.Generated.Auth.AccessQuote.Actions.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Auth.Actions3>!
+Interledger.OpenPayments.Generated.Auth.AccessQuote.Actions.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessQuote.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.AccessQuote.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessQuote.Type.get -> Interledger.OpenPayments.Generated.Auth.AccessQuoteType
+Interledger.OpenPayments.Generated.Auth.AccessQuote.Type.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessQuoteType
+Interledger.OpenPayments.Generated.Auth.AccessQuoteType.Quote = 0 -> Interledger.OpenPayments.Generated.Auth.AccessQuoteType
+Interledger.OpenPayments.Generated.Auth.AccessToken
+Interledger.OpenPayments.Generated.Auth.AccessToken.Access.get -> System.Collections.ObjectModel.Collection<Interledger.OpenPayments.Generated.Auth.AccessItem!>!
+Interledger.OpenPayments.Generated.Auth.AccessToken.Access.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessToken.AccessToken() -> void
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.Access.get -> System.Collections.ObjectModel.Collection<Interledger.OpenPayments.Generated.Auth.AccessItem!>!
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.Access.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.AccessTokenResponse() -> void
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.ExpiresIn.get -> int?
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.ExpiresIn.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.Manage.get -> string!
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.Manage.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.Value.get -> string!
+Interledger.OpenPayments.Generated.Auth.AccessTokenResponse.Value.set -> void
+Interledger.OpenPayments.Generated.Auth.AccessType
+Interledger.OpenPayments.Generated.Auth.AccessType.IncomingPayment = 0 -> Interledger.OpenPayments.Generated.Auth.AccessType
+Interledger.OpenPayments.Generated.Auth.AccessType.OutgoingPayment = 1 -> Interledger.OpenPayments.Generated.Auth.AccessType
+Interledger.OpenPayments.Generated.Auth.AccessType.Quote = 2 -> Interledger.OpenPayments.Generated.Auth.AccessType
+Interledger.OpenPayments.Generated.Auth.Access_token
+Interledger.OpenPayments.Generated.Auth.Access_token.Access.get -> Interledger.OpenPayments.Generated.Auth.Access!
+Interledger.OpenPayments.Generated.Auth.Access_token.Access.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token.Access_token() -> void
+Interledger.OpenPayments.Generated.Auth.Access_token.Expires_in.get -> int?
+Interledger.OpenPayments.Generated.Auth.Access_token.Expires_in.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token.Manage.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.Access_token.Manage.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token.Value.get -> string!
+Interledger.OpenPayments.Generated.Auth.Access_token.Value.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token2
+Interledger.OpenPayments.Generated.Auth.Access_token2.Access_token2() -> void
+Interledger.OpenPayments.Generated.Auth.Access_token2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Access_token2.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token2.Value.get -> string!
+Interledger.OpenPayments.Generated.Auth.Access_token2.Value.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token3
+Interledger.OpenPayments.Generated.Auth.Access_token3.Access.get -> Interledger.OpenPayments.Generated.Auth.Access!
+Interledger.OpenPayments.Generated.Auth.Access_token3.Access.set -> void
+Interledger.OpenPayments.Generated.Auth.Access_token3.Access_token3() -> void
+Interledger.OpenPayments.Generated.Auth.Access_token3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Access_token3.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions.Complete = 1 -> Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions.Create = 0 -> Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions.List = 4 -> Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions.ListAll = 5 -> Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions.Read = 2 -> Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions.ReadAll = 3 -> Interledger.OpenPayments.Generated.Auth.Actions
+Interledger.OpenPayments.Generated.Auth.Actions2
+Interledger.OpenPayments.Generated.Auth.Actions2.Create = 0 -> Interledger.OpenPayments.Generated.Auth.Actions2
+Interledger.OpenPayments.Generated.Auth.Actions2.List = 3 -> Interledger.OpenPayments.Generated.Auth.Actions2
+Interledger.OpenPayments.Generated.Auth.Actions2.ListAll = 4 -> Interledger.OpenPayments.Generated.Auth.Actions2
+Interledger.OpenPayments.Generated.Auth.Actions2.Read = 1 -> Interledger.OpenPayments.Generated.Auth.Actions2
+Interledger.OpenPayments.Generated.Auth.Actions2.ReadAll = 2 -> Interledger.OpenPayments.Generated.Auth.Actions2
+Interledger.OpenPayments.Generated.Auth.Actions3
+Interledger.OpenPayments.Generated.Auth.Actions3.Create = 0 -> Interledger.OpenPayments.Generated.Auth.Actions3
+Interledger.OpenPayments.Generated.Auth.Actions3.Read = 1 -> Interledger.OpenPayments.Generated.Auth.Actions3
+Interledger.OpenPayments.Generated.Auth.Actions3.ReadAll = 2 -> Interledger.OpenPayments.Generated.Auth.Actions3
+Interledger.OpenPayments.Generated.Auth.Amount
+Interledger.OpenPayments.Generated.Auth.Amount.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Amount.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Amount.Amount() -> void
+Interledger.OpenPayments.Generated.Auth.Amount.Amount(string! value, string! assetCode, int? assetScale = 2) -> void
+Interledger.OpenPayments.Generated.Auth.Amount.AssetCode.get -> string!
+Interledger.OpenPayments.Generated.Auth.Amount.AssetCode.set -> void
+Interledger.OpenPayments.Generated.Auth.Amount.AssetScale.get -> int
+Interledger.OpenPayments.Generated.Auth.Amount.AssetScale.set -> void
+Interledger.OpenPayments.Generated.Auth.Amount.Value.get -> string!
+Interledger.OpenPayments.Generated.Auth.Amount.Value.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthContinue
+Interledger.OpenPayments.Generated.Auth.AuthContinue.AccessToken.get -> Interledger.OpenPayments.Generated.Auth.ContinueAccessToken!
+Interledger.OpenPayments.Generated.Auth.AuthContinue.AccessToken.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthContinue.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.AuthContinue.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthContinue.AuthContinue() -> void
+Interledger.OpenPayments.Generated.Auth.AuthContinue.Uri.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.AuthContinue.Uri.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthContinue.Wait.get -> int?
+Interledger.OpenPayments.Generated.Auth.AuthContinue.Wait.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthContractResolver
+Interledger.OpenPayments.Generated.Auth.AuthContractResolver.AuthContractResolver() -> void
+Interledger.OpenPayments.Generated.Auth.AuthResponse
+Interledger.OpenPayments.Generated.Auth.AuthResponse.AccessToken.get -> Interledger.OpenPayments.Generated.Auth.AccessTokenResponse?
+Interledger.OpenPayments.Generated.Auth.AuthResponse.AccessToken.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthResponse.AuthResponse() -> void
+Interledger.OpenPayments.Generated.Auth.AuthResponse.Continue.get -> Interledger.OpenPayments.Generated.Auth.AuthContinue!
+Interledger.OpenPayments.Generated.Auth.AuthResponse.Continue.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthResponse.Interact.get -> Interledger.OpenPayments.Generated.Auth.InteractResponse?
+Interledger.OpenPayments.Generated.Auth.AuthResponse.Interact.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthServerClient
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.AuthServerClient(System.Net.Http.HttpClient! httpClient) -> void
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.CancelGrantAsync(System.Uri! continueUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.ClientUrl.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.ClientUrl.set -> void
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.ContinueGrantAsync(System.Uri! continueUrl, string! accessToken, Interledger.OpenPayments.Generated.Auth.GrantContinueBody! body, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.CreateGrantAsync(System.Uri! baseUri, Interledger.OpenPayments.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.AuthResponse!>!
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.RevokeTokenAsync(System.Uri! tokenUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Interledger.OpenPayments.Generated.Auth.AuthServerClient.RotateTokenAsync(System.Uri! tokenUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Auth.RotateTokenResponse!>!
+Interledger.OpenPayments.Generated.Auth.Body
+Interledger.OpenPayments.Generated.Auth.Body.Access_token.get -> Interledger.OpenPayments.Generated.Auth.Access_token3!
+Interledger.OpenPayments.Generated.Auth.Body.Access_token.set -> void
+Interledger.OpenPayments.Generated.Auth.Body.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Body.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Body.Body() -> void
+Interledger.OpenPayments.Generated.Auth.Body.Client.get -> string!
+Interledger.OpenPayments.Generated.Auth.Body.Client.set -> void
+Interledger.OpenPayments.Generated.Auth.Body.Interact.get -> Interledger.OpenPayments.Generated.Auth.InteractRequest?
+Interledger.OpenPayments.Generated.Auth.Body.Interact.set -> void
+Interledger.OpenPayments.Generated.Auth.Body2
+Interledger.OpenPayments.Generated.Auth.Body2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Body2.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Body2.Body2() -> void
+Interledger.OpenPayments.Generated.Auth.Body2.Interact_ref.get -> string?
+Interledger.OpenPayments.Generated.Auth.Body2.Interact_ref.set -> void
+Interledger.OpenPayments.Generated.Auth.Continue
+Interledger.OpenPayments.Generated.Auth.Continue.Access_token.get -> Interledger.OpenPayments.Generated.Auth.Access_token2!
+Interledger.OpenPayments.Generated.Auth.Continue.Access_token.set -> void
+Interledger.OpenPayments.Generated.Auth.Continue.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Continue.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Continue.Continue() -> void
+Interledger.OpenPayments.Generated.Auth.Continue.Uri.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.Continue.Uri.set -> void
+Interledger.OpenPayments.Generated.Auth.Continue.Wait.get -> int?
+Interledger.OpenPayments.Generated.Auth.Continue.Wait.set -> void
+Interledger.OpenPayments.Generated.Auth.ContinueAccessToken
+Interledger.OpenPayments.Generated.Auth.ContinueAccessToken.ContinueAccessToken() -> void
+Interledger.OpenPayments.Generated.Auth.Error
+Interledger.OpenPayments.Generated.Auth.Error.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Error.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Error.Code.get -> Interledger.OpenPayments.Generated.Auth.ErrorCode?
+Interledger.OpenPayments.Generated.Auth.Error.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.Error.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.Error.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.Error.Error() -> void
+Interledger.OpenPayments.Generated.Auth.Error2
+Interledger.OpenPayments.Generated.Auth.Error2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Error2.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Error2.Code.get -> Interledger.OpenPayments.Generated.Auth.Error2Code?
+Interledger.OpenPayments.Generated.Auth.Error2.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.Error2.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.Error2.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.Error2.Error2() -> void
+Interledger.OpenPayments.Generated.Auth.Error2Code
+Interledger.OpenPayments.Generated.Auth.Error2Code.Invalid_request = 0 -> Interledger.OpenPayments.Generated.Auth.Error2Code
+Interledger.OpenPayments.Generated.Auth.Error3
+Interledger.OpenPayments.Generated.Auth.Error3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Error3.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Error3.Code.get -> Interledger.OpenPayments.Generated.Auth.Error3Code?
+Interledger.OpenPayments.Generated.Auth.Error3.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.Error3.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.Error3.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.Error3.Error3() -> void
+Interledger.OpenPayments.Generated.Auth.Error3Code
+Interledger.OpenPayments.Generated.Auth.Error3Code.Request_denied = 0 -> Interledger.OpenPayments.Generated.Auth.Error3Code
+Interledger.OpenPayments.Generated.Auth.Error4
+Interledger.OpenPayments.Generated.Auth.Error4.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Error4.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Error4.Code.get -> Interledger.OpenPayments.Generated.Auth.Error4Code?
+Interledger.OpenPayments.Generated.Auth.Error4.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.Error4.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.Error4.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.Error4.Error4() -> void
+Interledger.OpenPayments.Generated.Auth.Error4Code
+Interledger.OpenPayments.Generated.Auth.Error4Code.Too_fast = 0 -> Interledger.OpenPayments.Generated.Auth.Error4Code
+Interledger.OpenPayments.Generated.Auth.Error5
+Interledger.OpenPayments.Generated.Auth.Error5.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Error5.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Error5.Code.get -> Interledger.OpenPayments.Generated.Auth.Error5Code?
+Interledger.OpenPayments.Generated.Auth.Error5.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.Error5.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.Error5.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.Error5.Error5() -> void
+Interledger.OpenPayments.Generated.Auth.Error5Code
+Interledger.OpenPayments.Generated.Auth.Error5Code.Invalid_continuation = 0 -> Interledger.OpenPayments.Generated.Auth.Error5Code
+Interledger.OpenPayments.Generated.Auth.Error6
+Interledger.OpenPayments.Generated.Auth.Error6.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Error6.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Error6.Code.get -> Interledger.OpenPayments.Generated.Auth.Error6Code?
+Interledger.OpenPayments.Generated.Auth.Error6.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.Error6.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.Error6.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.Error6.Error6() -> void
+Interledger.OpenPayments.Generated.Auth.Error6Code
+Interledger.OpenPayments.Generated.Auth.Error6Code.Invalid_rotation = 0 -> Interledger.OpenPayments.Generated.Auth.Error6Code
+Interledger.OpenPayments.Generated.Auth.ErrorCode
+Interledger.OpenPayments.Generated.Auth.ErrorCode.Invalid_client = 0 -> Interledger.OpenPayments.Generated.Auth.ErrorCode
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidClient
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidClient.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidClient.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidClient.Error.get -> Interledger.OpenPayments.Generated.Auth.Error?
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidClient.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidClient.ErrorInvalidClient() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidContinuation
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidContinuation.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidContinuation.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidContinuation.Error.get -> Interledger.OpenPayments.Generated.Auth.Error5?
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidContinuation.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidContinuation.ErrorInvalidContinuation() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRequest
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRequest.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRequest.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRequest.Error.get -> Interledger.OpenPayments.Generated.Auth.Error2?
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRequest.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRequest.ErrorInvalidRequest() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRotation
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRotation.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRotation.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRotation.Error.get -> Interledger.OpenPayments.Generated.Auth.Error6?
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRotation.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorInvalidRotation.ErrorInvalidRotation() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorItem
+Interledger.OpenPayments.Generated.Auth.ErrorItem.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorItem.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorItem.Code.get -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItem.Code.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorItem.Description.get -> string?
+Interledger.OpenPayments.Generated.Auth.ErrorItem.Description.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorItem.ErrorItem() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode.InvalidClient = 0 -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode.InvalidContinuation = 4 -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode.InvalidRequest = 1 -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode.InvalidRotation = 5 -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode.RequestDenied = 2 -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorItemCode.TooFast = 3 -> Interledger.OpenPayments.Generated.Auth.ErrorItemCode
+Interledger.OpenPayments.Generated.Auth.ErrorRequestDenied
+Interledger.OpenPayments.Generated.Auth.ErrorRequestDenied.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorRequestDenied.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorRequestDenied.Error.get -> Interledger.OpenPayments.Generated.Auth.Error3?
+Interledger.OpenPayments.Generated.Auth.ErrorRequestDenied.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorRequestDenied.ErrorRequestDenied() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorResponse
+Interledger.OpenPayments.Generated.Auth.ErrorResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorResponse.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorResponse.Error.get -> Interledger.OpenPayments.Generated.Auth.ErrorItem!
+Interledger.OpenPayments.Generated.Auth.ErrorResponse.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorResponse.ErrorResponse() -> void
+Interledger.OpenPayments.Generated.Auth.ErrorTooFast
+Interledger.OpenPayments.Generated.Auth.ErrorTooFast.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.ErrorTooFast.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorTooFast.Error.get -> Interledger.OpenPayments.Generated.Auth.Error4?
+Interledger.OpenPayments.Generated.Auth.ErrorTooFast.Error.set -> void
+Interledger.OpenPayments.Generated.Auth.ErrorTooFast.ErrorTooFast() -> void
+Interledger.OpenPayments.Generated.Auth.Finish
+Interledger.OpenPayments.Generated.Auth.Finish.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Finish.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Finish.Finish() -> void
+Interledger.OpenPayments.Generated.Auth.Finish.Method.get -> Interledger.OpenPayments.Generated.Auth.FinishMethod
+Interledger.OpenPayments.Generated.Auth.Finish.Method.set -> void
+Interledger.OpenPayments.Generated.Auth.Finish.Nonce.get -> string!
+Interledger.OpenPayments.Generated.Auth.Finish.Nonce.set -> void
+Interledger.OpenPayments.Generated.Auth.Finish.Uri.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.Finish.Uri.set -> void
+Interledger.OpenPayments.Generated.Auth.FinishMethod
+Interledger.OpenPayments.Generated.Auth.FinishMethod.Redirect = 0 -> Interledger.OpenPayments.Generated.Auth.FinishMethod
+Interledger.OpenPayments.Generated.Auth.GrantContinueBody
+Interledger.OpenPayments.Generated.Auth.GrantContinueBody.GrantContinueBody() -> void
+Interledger.OpenPayments.Generated.Auth.GrantContinueBody.InteractRef.get -> string?
+Interledger.OpenPayments.Generated.Auth.GrantContinueBody.InteractRef.set -> void
+Interledger.OpenPayments.Generated.Auth.GrantCreateBody
+Interledger.OpenPayments.Generated.Auth.GrantCreateBody.AccessToken.get -> Interledger.OpenPayments.Generated.Auth.AccessToken?
+Interledger.OpenPayments.Generated.Auth.GrantCreateBody.AccessToken.set -> void
+Interledger.OpenPayments.Generated.Auth.GrantCreateBody.Client.get -> System.Uri?
+Interledger.OpenPayments.Generated.Auth.GrantCreateBody.Client.set -> void
+Interledger.OpenPayments.Generated.Auth.GrantCreateBody.GrantCreateBody() -> void
+Interledger.OpenPayments.Generated.Auth.GrantCreateBodyWithInteract
+Interledger.OpenPayments.Generated.Auth.GrantCreateBodyWithInteract.AccessToken.get -> Interledger.OpenPayments.Generated.Auth.AccessToken!
+Interledger.OpenPayments.Generated.Auth.GrantCreateBodyWithInteract.AccessToken.set -> void
+Interledger.OpenPayments.Generated.Auth.GrantCreateBodyWithInteract.GrantCreateBodyWithInteract() -> void
+Interledger.OpenPayments.Generated.Auth.GrantCreateBodyWithInteract.Interact.get -> Interledger.OpenPayments.Generated.Auth.InteractRequest!
+Interledger.OpenPayments.Generated.Auth.GrantCreateBodyWithInteract.Interact.set -> void
+Interledger.OpenPayments.Generated.Auth.IncomingAccess
+Interledger.OpenPayments.Generated.Auth.IncomingAccess.Identifier.get -> System.Uri?
+Interledger.OpenPayments.Generated.Auth.IncomingAccess.Identifier.set -> void
+Interledger.OpenPayments.Generated.Auth.IncomingAccess.IncomingAccess() -> void
+Interledger.OpenPayments.Generated.Auth.InteractRequest
+Interledger.OpenPayments.Generated.Auth.InteractRequest.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.InteractRequest.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.InteractRequest.Finish.get -> Interledger.OpenPayments.Generated.Auth.Finish?
+Interledger.OpenPayments.Generated.Auth.InteractRequest.Finish.set -> void
+Interledger.OpenPayments.Generated.Auth.InteractRequest.InteractRequest() -> void
+Interledger.OpenPayments.Generated.Auth.InteractRequest.Start.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Auth.Start>!
+Interledger.OpenPayments.Generated.Auth.InteractRequest.Start.set -> void
+Interledger.OpenPayments.Generated.Auth.InteractResponse
+Interledger.OpenPayments.Generated.Auth.InteractResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.InteractResponse.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.InteractResponse.Finish.get -> string!
+Interledger.OpenPayments.Generated.Auth.InteractResponse.Finish.set -> void
+Interledger.OpenPayments.Generated.Auth.InteractResponse.InteractResponse() -> void
+Interledger.OpenPayments.Generated.Auth.InteractResponse.Redirect.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.InteractResponse.Redirect.set -> void
+Interledger.OpenPayments.Generated.Auth.LimitsOutgoing
+Interledger.OpenPayments.Generated.Auth.LimitsOutgoing.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.LimitsOutgoing.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.LimitsOutgoing.LimitsOutgoing() -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccess
+Interledger.OpenPayments.Generated.Auth.OutgoingAccess.Identifier.get -> System.Uri!
+Interledger.OpenPayments.Generated.Auth.OutgoingAccess.Identifier.set -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccess.Limits.get -> Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits?
+Interledger.OpenPayments.Generated.Auth.OutgoingAccess.Limits.set -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccess.OutgoingAccess() -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.DebitAmount.get -> Interledger.OpenPayments.Generated.Auth.Amount?
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.DebitAmount.set -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.Interval.get -> string?
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.Interval.set -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.OutgoingAccessLimits() -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.ReceiveAmount.get -> Interledger.OpenPayments.Generated.Auth.Amount?
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.ReceiveAmount.set -> void
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.Receiver.get -> string?
+Interledger.OpenPayments.Generated.Auth.OutgoingAccessLimits.Receiver.set -> void
+Interledger.OpenPayments.Generated.Auth.QuoteAccess
+Interledger.OpenPayments.Generated.Auth.QuoteAccess.QuoteAccess() -> void
+Interledger.OpenPayments.Generated.Auth.Response
+Interledger.OpenPayments.Generated.Auth.Response.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Response.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Response.Continue.get -> Interledger.OpenPayments.Generated.Auth.Continue!
+Interledger.OpenPayments.Generated.Auth.Response.Continue.set -> void
+Interledger.OpenPayments.Generated.Auth.Response.Interact.get -> Interledger.OpenPayments.Generated.Auth.InteractResponse!
+Interledger.OpenPayments.Generated.Auth.Response.Interact.set -> void
+Interledger.OpenPayments.Generated.Auth.Response.Response() -> void
+Interledger.OpenPayments.Generated.Auth.Response2
+Interledger.OpenPayments.Generated.Auth.Response2.Access_token.get -> Interledger.OpenPayments.Generated.Auth.Access_token?
+Interledger.OpenPayments.Generated.Auth.Response2.Access_token.set -> void
+Interledger.OpenPayments.Generated.Auth.Response2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Response2.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Response2.Continue.get -> Interledger.OpenPayments.Generated.Auth.Continue!
+Interledger.OpenPayments.Generated.Auth.Response2.Continue.set -> void
+Interledger.OpenPayments.Generated.Auth.Response2.Response2() -> void
+Interledger.OpenPayments.Generated.Auth.Response3
+Interledger.OpenPayments.Generated.Auth.Response3.Access_token.get -> Interledger.OpenPayments.Generated.Auth.Access_token!
+Interledger.OpenPayments.Generated.Auth.Response3.Access_token.set -> void
+Interledger.OpenPayments.Generated.Auth.Response3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Auth.Response3.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Auth.Response3.Response3() -> void
+Interledger.OpenPayments.Generated.Auth.RotateTokenResponse
+Interledger.OpenPayments.Generated.Auth.RotateTokenResponse.AccessToken.get -> Interledger.OpenPayments.Generated.Auth.AccessTokenResponse!
+Interledger.OpenPayments.Generated.Auth.RotateTokenResponse.AccessToken.set -> void
+Interledger.OpenPayments.Generated.Auth.RotateTokenResponse.RotateTokenResponse() -> void
+Interledger.OpenPayments.Generated.Auth.Start
+Interledger.OpenPayments.Generated.Auth.Start.Redirect = 0 -> Interledger.OpenPayments.Generated.Auth.Start
+Interledger.OpenPayments.Generated.GeneratedClientBase
+Interledger.OpenPayments.Generated.GeneratedClientBase.GeneratedClientBase(System.Net.Http.HttpClient! httpClient, Newtonsoft.Json.JsonSerializerSettings! serializerSettings) -> void
+Interledger.OpenPayments.Generated.GeneratedClientBase.JsonSerializerSettings.get -> Newtonsoft.Json.JsonSerializerSettings!
+Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>
+Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>.Object.get -> T
+Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>.ObjectResponseResult() -> void
+Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>.ObjectResponseResult(T responseObject, string! responseText) -> void
+Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>.Text.get -> string!
+Interledger.OpenPayments.Generated.GeneratedClientBase.ReadResponseAsString.get -> bool
+Interledger.OpenPayments.Generated.GeneratedClientBase.ReadResponseAsString.set -> void
+Interledger.OpenPayments.Generated.Helpers
+Interledger.OpenPayments.Generated.Resource.Amount
+Interledger.OpenPayments.Generated.Resource.Amount.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.Amount.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.Amount.Amount() -> void
+Interledger.OpenPayments.Generated.Resource.Amount.Amount(string! value, string! assetCode, int? assetScale = 2) -> void
+Interledger.OpenPayments.Generated.Resource.Amount.AssetCode.get -> string!
+Interledger.OpenPayments.Generated.Resource.Amount.AssetCode.set -> void
+Interledger.OpenPayments.Generated.Resource.Amount.AssetScale.get -> int
+Interledger.OpenPayments.Generated.Resource.Amount.AssetScale.set -> void
+Interledger.OpenPayments.Generated.Resource.Amount.Value.get -> string!
+Interledger.OpenPayments.Generated.Resource.Amount.Value.set -> void
+Interledger.OpenPayments.Generated.Resource.Body
+Interledger.OpenPayments.Generated.Resource.Body.Body() -> void
+Interledger.OpenPayments.Generated.Resource.Body.ExpiresAt.get -> System.DateTimeOffset?
+Interledger.OpenPayments.Generated.Resource.Body.ExpiresAt.set -> void
+Interledger.OpenPayments.Generated.Resource.Body.IncomingAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount?
+Interledger.OpenPayments.Generated.Resource.Body.IncomingAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.Body.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.Body.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.Body.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Body.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.Body2
+Interledger.OpenPayments.Generated.Resource.Body2.Body2() -> void
+Interledger.OpenPayments.Generated.Resource.Body2.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.Body2.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.Body2.QuoteId.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Body2.QuoteId.set -> void
+Interledger.OpenPayments.Generated.Resource.Body2.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Body2.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.Body3
+Interledger.OpenPayments.Generated.Resource.Body3.Body3() -> void
+Interledger.OpenPayments.Generated.Resource.Body3.Method.get -> Interledger.OpenPayments.Generated.Resource.PaymentMethod
+Interledger.OpenPayments.Generated.Resource.Body3.Method.set -> void
+Interledger.OpenPayments.Generated.Resource.Body3.Receiver.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Body3.Receiver.set -> void
+Interledger.OpenPayments.Generated.Resource.Body3.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Body3.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.Error
+Interledger.OpenPayments.Generated.Resource.Error.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.Error.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.Error.Code.get -> string!
+Interledger.OpenPayments.Generated.Resource.Error.Code.set -> void
+Interledger.OpenPayments.Generated.Resource.Error.Description.get -> string!
+Interledger.OpenPayments.Generated.Resource.Error.Description.set -> void
+Interledger.OpenPayments.Generated.Resource.Error.Details.get -> object?
+Interledger.OpenPayments.Generated.Resource.Error.Details.set -> void
+Interledger.OpenPayments.Generated.Resource.Error.Error() -> void
+Interledger.OpenPayments.Generated.Resource.ErrorResponse
+Interledger.OpenPayments.Generated.Resource.ErrorResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.ErrorResponse.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.ErrorResponse.Error.get -> Interledger.OpenPayments.Generated.Resource.Error!
+Interledger.OpenPayments.Generated.Resource.ErrorResponse.Error.set -> void
+Interledger.OpenPayments.Generated.Resource.ErrorResponse.ErrorResponse() -> void
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.IlpAddress.get -> string!
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.IlpAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.IlpPaymentMethod() -> void
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.SharedSecret.get -> string!
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.SharedSecret.set -> void
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.Type.get -> Interledger.OpenPayments.Generated.Resource.IlpPaymentMethodType
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod.Type.set -> void
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethodType
+Interledger.OpenPayments.Generated.Resource.IlpPaymentMethodType.Ilp = 0 -> Interledger.OpenPayments.Generated.Resource.IlpPaymentMethodType
+Interledger.OpenPayments.Generated.Resource.IncomingPayment
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.Completed.get -> bool
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.Completed.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.CreatedAt.get -> System.DateTimeOffset
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.CreatedAt.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.ExpiresAt.get -> System.DateTimeOffset?
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.ExpiresAt.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.Id.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.Id.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.IncomingAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount?
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.IncomingAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.IncomingPayment() -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.ReceivedAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.ReceivedAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.IncomingPayment.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody.ExpiresAt.get -> System.DateTimeOffset?
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody.ExpiresAt.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody.IncomingPaymentBody() -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentBody.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse.IncomingPaymentResponse() -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentWithMethods
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentWithMethods.IncomingPaymentWithMethods() -> void
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentWithMethods.Methods.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Resource.IlpPaymentMethod!>!
+Interledger.OpenPayments.Generated.Resource.IncomingPaymentWithMethods.Methods.set -> void
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.Cursor.get -> string?
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.Cursor.set -> void
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.First.get -> int?
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.First.set -> void
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.Last.get -> int?
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.Last.set -> void
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.ListIncomingPaymentQuery() -> void
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.WalletAddress.get -> string!
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentQuery.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentsResponse
+Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentsResponse.ListIncomingPaymentsResponse() -> void
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.Cursor.get -> string?
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.Cursor.set -> void
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.First.get -> int?
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.First.set -> void
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.Last.get -> int?
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.Last.set -> void
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.ListOutgoingPaymentQuery() -> void
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.WalletAddress.get -> string!
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentQuery.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentsResponse
+Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentsResponse.ListOutgoingPaymentsResponse() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.CreatedAt.get -> System.DateTimeOffset
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.CreatedAt.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.DebitAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.DebitAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Failed.get -> bool?
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Failed.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Id.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Id.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.OutgoingPayment() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.QuoteId.get -> System.Uri?
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.QuoteId.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.ReceiveAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.ReceiveAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Receiver.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.Receiver.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.SentAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.SentAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPayment.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody.OutgoingPaymentBody() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.DebitAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.DebitAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.IncomingPayment.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.IncomingPayment.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.OutgoingPaymentBodyFromIncomingPayment() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromQuote
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromQuote.OutgoingPaymentBodyFromQuote() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromQuote.QuoteId.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBodyFromQuote.QuoteId.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentResponse
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentResponse.OutgoingPaymentResponse() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.CreatedAt.get -> System.DateTimeOffset
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.CreatedAt.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.DebitAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.DebitAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Failed.get -> bool?
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Failed.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentDebitAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount?
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentDebitAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentReceiveAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount?
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentReceiveAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Id.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Id.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Metadata.get -> object?
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Metadata.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.OutgoingPaymentWithSpentAmounts() -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.QuoteId.get -> System.Uri?
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.QuoteId.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.ReceiveAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.ReceiveAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Receiver.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.Receiver.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.SentAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.SentAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmounts.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse
+Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse.OutgoingPaymentWithSpentAmountsResponse() -> void
+Interledger.OpenPayments.Generated.Resource.PageInfo
+Interledger.OpenPayments.Generated.Resource.PageInfo.EndCursor.get -> string?
+Interledger.OpenPayments.Generated.Resource.PageInfo.EndCursor.set -> void
+Interledger.OpenPayments.Generated.Resource.PageInfo.HasNextPage.get -> bool
+Interledger.OpenPayments.Generated.Resource.PageInfo.HasNextPage.set -> void
+Interledger.OpenPayments.Generated.Resource.PageInfo.HasPreviousPage.get -> bool
+Interledger.OpenPayments.Generated.Resource.PageInfo.HasPreviousPage.set -> void
+Interledger.OpenPayments.Generated.Resource.PageInfo.PageInfo() -> void
+Interledger.OpenPayments.Generated.Resource.PageInfo.StartCursor.get -> string?
+Interledger.OpenPayments.Generated.Resource.PageInfo.StartCursor.set -> void
+Interledger.OpenPayments.Generated.Resource.PaymentMethod
+Interledger.OpenPayments.Generated.Resource.PaymentMethod.Ilp = 0 -> Interledger.OpenPayments.Generated.Resource.PaymentMethod
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.AuthServer.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.AuthServer.set -> void
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.PublicIncomingPayment() -> void
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.ReceivedAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount?
+Interledger.OpenPayments.Generated.Resource.PublicIncomingPayment.ReceivedAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote
+Interledger.OpenPayments.Generated.Resource.Quote.CreatedAt.get -> System.DateTimeOffset
+Interledger.OpenPayments.Generated.Resource.Quote.CreatedAt.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.DebitAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.Quote.DebitAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.ExpiresAt.get -> string?
+Interledger.OpenPayments.Generated.Resource.Quote.ExpiresAt.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.Id.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Quote.Id.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.Method.get -> Interledger.OpenPayments.Generated.Resource.PaymentMethod
+Interledger.OpenPayments.Generated.Resource.Quote.Method.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.Quote() -> void
+Interledger.OpenPayments.Generated.Resource.Quote.ReceiveAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.Quote.ReceiveAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.Receiver.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Quote.Receiver.set -> void
+Interledger.OpenPayments.Generated.Resource.Quote.WalletAddress.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.Quote.WalletAddress.set -> void
+Interledger.OpenPayments.Generated.Resource.QuoteBody
+Interledger.OpenPayments.Generated.Resource.QuoteBody.QuoteBody() -> void
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithDebitAmount
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithDebitAmount.DebitAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithDebitAmount.DebitAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithDebitAmount.QuoteBodyWithDebitAmount() -> void
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount.QuoteBodyWithReceiveAmount() -> void
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount.ReceiveAmount.get -> Interledger.OpenPayments.Generated.Resource.Amount!
+Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount.ReceiveAmount.set -> void
+Interledger.OpenPayments.Generated.Resource.QuoteResponse
+Interledger.OpenPayments.Generated.Resource.QuoteResponse.QuoteResponse() -> void
+Interledger.OpenPayments.Generated.Resource.ResourceContractResolver
+Interledger.OpenPayments.Generated.Resource.ResourceContractResolver.ResourceContractResolver() -> void
+Interledger.OpenPayments.Generated.Resource.ResourceError
+Interledger.OpenPayments.Generated.Resource.ResourceError.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.ResourceError.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceError.Code.get -> string!
+Interledger.OpenPayments.Generated.Resource.ResourceError.Code.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceError.Description.get -> string!
+Interledger.OpenPayments.Generated.Resource.ResourceError.Description.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceError.Details.get -> object!
+Interledger.OpenPayments.Generated.Resource.ResourceError.Details.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceError.ResourceError() -> void
+Interledger.OpenPayments.Generated.Resource.ResourceErrorResponse
+Interledger.OpenPayments.Generated.Resource.ResourceErrorResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.ResourceErrorResponse.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceErrorResponse.Error.get -> Interledger.OpenPayments.Generated.Resource.ResourceError!
+Interledger.OpenPayments.Generated.Resource.ResourceErrorResponse.Error.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceErrorResponse.ResourceErrorResponse() -> void
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient.ClientUrl.get -> System.Uri!
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient.ClientUrl.set -> void
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient.PostIncomingPaymentAsync(System.Uri! baseUri, Interledger.OpenPayments.Generated.Resource.Body! body, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient.PostOutgoingPaymentAsync(System.Uri! baseUri, Interledger.OpenPayments.Generated.Resource.OutgoingPaymentBody! body, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient.PostQuoteAsync(System.Uri! baseUri, Interledger.OpenPayments.Generated.Resource.QuoteBody! body, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+Interledger.OpenPayments.Generated.Resource.ResourceServerClient.ResourceServerClient(System.Net.Http.HttpClient! httpClient) -> void
+Interledger.OpenPayments.Generated.Resource.Response
+Interledger.OpenPayments.Generated.Resource.Response.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.Response.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.Response.Pagination.get -> Interledger.OpenPayments.Generated.Resource.PageInfo?
+Interledger.OpenPayments.Generated.Resource.Response.Pagination.set -> void
+Interledger.OpenPayments.Generated.Resource.Response.Response() -> void
+Interledger.OpenPayments.Generated.Resource.Response.Result.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Resource.IncomingPayment!>?
+Interledger.OpenPayments.Generated.Resource.Response.Result.set -> void
+Interledger.OpenPayments.Generated.Resource.Response2
+Interledger.OpenPayments.Generated.Resource.Response2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.Response2.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.Response2.Pagination.get -> Interledger.OpenPayments.Generated.Resource.PageInfo?
+Interledger.OpenPayments.Generated.Resource.Response2.Pagination.set -> void
+Interledger.OpenPayments.Generated.Resource.Response2.Response2() -> void
+Interledger.OpenPayments.Generated.Resource.Response2.Result.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Resource.OutgoingPayment!>?
+Interledger.OpenPayments.Generated.Resource.Response2.Result.set -> void
+Interledger.OpenPayments.Generated.Resource.Response3
+Interledger.OpenPayments.Generated.Resource.Response3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Resource.Response3.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Resource.Response3.Response3() -> void
+Interledger.OpenPayments.Generated.Wallet.DidDocument
+Interledger.OpenPayments.Generated.Wallet.DidDocument.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Wallet.DidDocument.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Wallet.DidDocument.DidDocument() -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Alg.get -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyAlg
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Alg.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Crv.get -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyCrv
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Crv.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.JsonWebKey() -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Kid.get -> string!
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Kid.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Kty.get -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyKty
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Kty.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Use.get -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyUse?
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.Use.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.X.get -> string!
+Interledger.OpenPayments.Generated.Wallet.JsonWebKey.X.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyAlg
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyAlg.EdDSA = 0 -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyAlg
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyCrv
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyCrv.Ed25519 = 0 -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyCrv
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyKty
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyKty.OKP = 0 -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyKty
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeySet
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeySet.JsonWebKeySet() -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeySet.Keys.get -> System.Collections.Generic.ICollection<Interledger.OpenPayments.Generated.Wallet.JsonWebKey!>!
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeySet.Keys.set -> void
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyUse
+Interledger.OpenPayments.Generated.Wallet.JsonWebKeyUse.Sig = 0 -> Interledger.OpenPayments.Generated.Wallet.JsonWebKeyUse
+Interledger.OpenPayments.Generated.Wallet.WalletAddress
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AdditionalProperties.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AssetCode.get -> string!
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AssetCode.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AssetScale.get -> int
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AssetScale.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AuthServer.get -> System.Uri!
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.AuthServer.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.Id.get -> System.Uri!
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.Id.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.PublicName.get -> string?
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.PublicName.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.ResourceServer.get -> System.Uri!
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.ResourceServer.set -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddress.WalletAddress() -> void
+Interledger.OpenPayments.Generated.Wallet.WalletAddressClient
+Interledger.OpenPayments.Generated.Wallet.WalletAddressClient.GetWalletAddressAsync(string! walletAddress, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Wallet.WalletAddress!>!
+Interledger.OpenPayments.Generated.Wallet.WalletAddressClient.GetWalletAddressKeysAsync(string! walletAddress, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Wallet.JsonWebKeySet!>!
+Interledger.OpenPayments.Generated.Wallet.WalletAddressClient.WalletAddressClient(System.Net.Http.HttpClient! httpClient) -> void
+Interledger.OpenPayments.OpenPaymentsApiException
+Interledger.OpenPayments.OpenPaymentsApiException.ErrorCode.get -> string?
+Interledger.OpenPayments.OpenPaymentsApiException.Headers.get -> System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>!
+Interledger.OpenPayments.OpenPaymentsApiException.OpenPaymentsApiException(string! message, int statusCode, string? errorCode, string? rawResponse, System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>! headers, System.Exception? innerException = null) -> void
+Interledger.OpenPayments.OpenPaymentsApiException.RawResponse.get -> string?
+Interledger.OpenPayments.OpenPaymentsApiException.StatusCode.get -> int
+override Interledger.OpenPayments.OpenPaymentsApiException.ToString() -> string!
+readonly Interledger.OpenPayments.Generated.GeneratedClientBase._httpClient -> System.Net.Http.HttpClient!
+static Interledger.OpenPayments.Extensions.ServiceCollectionExtensions.UseOpenPayments(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Interledger.OpenPayments.Configuration.OpenPaymentsOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Interledger.OpenPayments.Generated.GeneratedClientBase.ConvertToString(object? value, System.Globalization.CultureInfo! cultureInfo) -> string!
+static Interledger.OpenPayments.Generated.GeneratedClientBase.NormalizeBaseUrl(System.Uri! baseUri) -> string!
+static Interledger.OpenPayments.Generated.GeneratedClientBase.ReadAsStringAsync(System.Net.Http.HttpContent? content, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<string!>!
+static Interledger.OpenPayments.Generated.Helpers.ExtractHeaders(System.Net.Http.HttpResponseMessage! response) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.IEnumerable<string!>!>!
+virtual Interledger.OpenPayments.Generated.GeneratedClientBase.ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage? response, System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>! headers, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>>!
+virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.CompleteIncomingPaymentAsync(System.Uri! baseUri, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.GetIncomingPaymentAsync(System.Uri! baseUri, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
+virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.GetOutgoingPaymentAsync(System.Uri! baseUri, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.OutgoingPaymentResponse!>!
+virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.GetQuoteAsync(System.Uri! baseUri, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.QuoteResponse!>!
+virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.ListIncomingPaymentsAsync(System.Uri! baseUri, string! accessToken, string! walletAddress, string? cursor, int? first, int? last, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListIncomingPaymentsResponse!>!
+virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.ListOutgoingPaymentsAsync(System.Uri! baseUri, string! accessToken, string! walletAddress, string? cursor, int? first, int? last, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.ListOutgoingPaymentsResponse!>!

@@ -1,0 +1,61 @@
+#nullable enable
+Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs
+Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs.Dir.get -> string?
+Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs.Dir.set -> void
+Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs.Filename.get -> string?
+Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs.Filename.set -> void
+Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs.GenerateKeyArgs() -> void
+Interledger.OpenPayments.HttpSignatureUtils.HttpClientSignatureExtensions
+Interledger.OpenPayments.HttpSignatureUtils.HttpRequestSigner
+Interledger.OpenPayments.HttpSignatureUtils.HttpSignatureValidator
+Interledger.OpenPayments.HttpSignatureUtils.HttpSignatureValidator.AreSignatureHeadersPresent(System.Net.Http.HttpRequestMessage! request) -> bool
+Interledger.OpenPayments.HttpSignatureUtils.HttpSignatureValidator.HttpSignatureValidator(Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputParser! parser, Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputValidator! validator, Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputBuilder! builder) -> void
+Interledger.OpenPayments.HttpSignatureUtils.HttpSignatureValidator.ValidateSignatureAsync(System.Net.Http.HttpRequestMessage! request, Interledger.OpenPayments.HttpSignatureUtils.Jwk! clientKey) -> System.Threading.Tasks.Task<bool>!
+Interledger.OpenPayments.HttpSignatureUtils.IHttpSignatureValidator
+Interledger.OpenPayments.HttpSignatureUtils.IHttpSignatureValidator.AreSignatureHeadersPresent(System.Net.Http.HttpRequestMessage! request) -> bool
+Interledger.OpenPayments.HttpSignatureUtils.IHttpSignatureValidator.ValidateSignatureAsync(System.Net.Http.HttpRequestMessage! request, Interledger.OpenPayments.HttpSignatureUtils.Jwk! clientKey) -> System.Threading.Tasks.Task<bool>!
+Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputBuilder
+Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputBuilder.BuildBaseAsync(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request, string! sigInput) -> System.Threading.Tasks.Task<string?>!
+Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputParser
+Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputParser.GetComponents(string! sigInput) -> System.Collections.Generic.List<string!>?
+Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputValidator
+Interledger.OpenPayments.HttpSignatureUtils.ISignatureInputValidator.Validate(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request) -> bool
+Interledger.OpenPayments.HttpSignatureUtils.Jwk
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Alg.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Alg.init -> void
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Crv.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Crv.init -> void
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.D.get -> string?
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.D.init -> void
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Jwk() -> void
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Kid.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Kid.init -> void
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Kty.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.Kty.init -> void
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.X.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.Jwk.X.init -> void
+Interledger.OpenPayments.HttpSignatureUtils.KeyUtils
+Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders
+Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders.Signature.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders.Signature.set -> void
+Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders.SignatureHeaders() -> void
+Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders.SignatureInput.get -> string!
+Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders.SignatureInput.set -> void
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputBuilder
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputBuilder.BuildBaseAsync(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request, string! sigInput) -> System.Threading.Tasks.Task<string?>!
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputBuilder.SignatureInputBuilder() -> void
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputParser
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputParser.GetComponents(string! sigInput) -> System.Collections.Generic.List<string!>?
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputParser.SignatureInputParser() -> void
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputValidator
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputValidator.SignatureInputValidator() -> void
+Interledger.OpenPayments.HttpSignatureUtils.SignatureInputValidator.Validate(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request) -> bool
+Interledger.OpenPayments.HttpSignatureUtils.SigningHttpMessageHandler
+Interledger.OpenPayments.HttpSignatureUtils.SigningHttpMessageHandler.SigningHttpMessageHandler(NSec.Cryptography.Key! privateKey, string! keyId) -> void
+static Interledger.OpenPayments.HttpSignatureUtils.HttpRequestSigner.SignHttpRequestAsync(System.Net.Http.HttpRequestMessage! request, NSec.Cryptography.Key! privateKey, string! keyId) -> System.Threading.Tasks.Task<Interledger.OpenPayments.HttpSignatureUtils.SignatureHeaders!>!
+static Interledger.OpenPayments.HttpSignatureUtils.KeyUtils.GenerateJwk(string! keyId, NSec.Cryptography.Key? privateKey = null) -> Interledger.OpenPayments.HttpSignatureUtils.Jwk!
+static Interledger.OpenPayments.HttpSignatureUtils.KeyUtils.GenerateKey(Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs? args = null) -> NSec.Cryptography.Key!
+static Interledger.OpenPayments.HttpSignatureUtils.KeyUtils.LoadBase64Key(string! base64Key) -> NSec.Cryptography.Key!
+static Interledger.OpenPayments.HttpSignatureUtils.KeyUtils.LoadKey(string! keyFilePath) -> NSec.Cryptography.Key!
+static Interledger.OpenPayments.HttpSignatureUtils.KeyUtils.LoadOrGenerateKey(string? keyFilePath = null, Interledger.OpenPayments.HttpSignatureUtils.GenerateKeyArgs? generateKeyArgs = null) -> NSec.Cryptography.Key!
+static Interledger.OpenPayments.HttpSignatureUtils.KeyUtils.LoadPem(string! pem) -> NSec.Cryptography.Key!

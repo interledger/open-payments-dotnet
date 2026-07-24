@@ -28,3 +28,9 @@ dotnet_sort_system_directives_first = true
 # Coding Style (Var vs Explicit Type)
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
+
+# RS0026 (PublicApiAnalyzers): "do not add multiple overloads with optional parameters" fires on
+# CreateQuoteAsync/CreateOutgoingPaymentAsync, whose overloads intentionally differ by required
+# body-parameter type (e.g. QuoteBody vs QuoteBodyWithDebitAmount) and share a trailing optional
+# CancellationToken; callers cannot hit real overload-resolution ambiguity here.
+dotnet_diagnostic.RS0026.severity = none
