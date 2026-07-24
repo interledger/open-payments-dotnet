@@ -118,3 +118,19 @@ If you encounter any issues or have a feature request, please [create a new issu
 Thank you for contributing to Open Payments! We appreciate your time and effort in helping make Open Payments better. Join our community on [Slack](https://communityinviter.com/apps/interledger/interledger-working-groups-slack) to connect with other contributors and stay updated on project developments.
 
 Happy coding!
+
+## Regenerating models and public API baselines
+
+`OpenPayments.Sdk/Generated/**/*.g.cs` is committed, and the public API surface is tracked by
+PublicApiAnalyzers (`PublicAPI.Shipped.txt` / `PublicAPI.Unshipped.txt`). If you regenerate the
+models — after updating the `open-payments-specifications` submodule, the `Makefile` NSwag
+flags, or the pinned NSwag version — refresh the baselines in the same PR:
+
+```bash
+make models   # regenerate *.g.cs from the OpenAPI specs
+make api      # sync PublicAPI.*.txt with the regenerated surface
+```
+
+CI (`codegen-check.yaml`) reruns both on any PR touching codegen inputs, generated output, or
+the baselines, and fails if the committed files drift. See
+`docs/adr/0002-public-api-tracking-of-generated-types.md` for why generated types stay tracked.

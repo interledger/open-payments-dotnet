@@ -8,6 +8,9 @@ on:
       - 'Makefile'
       - '.config/dotnet-tools.json'
       - '.github/workflows/codegen-check.yaml'
+      - 'OpenPayments.Sdk/Generated/**'
+      - 'OpenPayments.Sdk/PublicAPI.Shipped.txt'
+      - 'OpenPayments.Sdk/PublicAPI.Unshipped.txt'
 
 jobs:
   codegen-check:
@@ -35,5 +38,8 @@ jobs:
       - name: Regenerate models
         run: make models
 
-      - name: Fail if committed generated code drifted
-        run: git diff --exit-code -- 'OpenPayments.Sdk/Generated/**/*.g.cs'
+      - name: Refresh public API baselines
+        run: make api
+
+      - name: Fail if committed generated code or API baselines drifted
+        run: git diff --exit-code -- 'OpenPayments.Sdk/Generated/**/*.g.cs' 'OpenPayments.Sdk/PublicAPI.Shipped.txt' 'OpenPayments.Sdk/PublicAPI.Unshipped.txt'
