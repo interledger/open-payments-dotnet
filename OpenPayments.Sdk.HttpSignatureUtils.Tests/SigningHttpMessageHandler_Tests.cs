@@ -73,7 +73,7 @@ public class SigningHttpMessageHandlerTests
         // blocking via .Result/.Wait() anywhere in the signing path.
         var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com/resource");
         var task = invoker.SendAsync(request, CancellationToken.None);
-        var response = await task.ConfigureAwait(false);
+        var response = await task;
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
