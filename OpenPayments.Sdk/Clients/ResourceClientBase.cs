@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Interledger.OpenPayments.Generated.Resource;
 
 namespace Interledger.OpenPayments.Clients;
@@ -73,6 +74,54 @@ public class ResourceClientBase : IResourceClientBase
             query.Last,
             cancellationToken
         );
+    }
+
+    /// <inheritdoc/>
+    public async IAsyncEnumerable<IncomingPayment> ListIncomingPaymentsAllAsync(
+        AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
+    )
+    {
+        if (query.Last is not null)
+            throw new ArgumentException(
+                "Backward paging (Last) is not supported by auto-paging; use ListIncomingPaymentsAsync for page-at-a-time access.",
+                nameof(query)
+            );
+
+        var cursor = query.Cursor;
+        while (true)
+        {
+            var page = await _client
+                .ListIncomingPaymentsAsync(
+                    requestArgs.Url,
+                    requestArgs.AccessToken,
+                    query.WalletAddress,
+                    cursor,
+                    query.First,
+                    null,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
+
+            foreach (var payment in page.Result ?? [])
+                yield return payment;
+
+            if (
+                page.Pagination is not { HasNextPage: true } pageInfo
+                || string.IsNullOrEmpty(pageInfo.EndCursor)
+            )
+            {
+                yield break;
+            }
+
+            if (pageInfo.EndCursor == cursor)
+                throw new InvalidOperationException(
+                    "The server returned the same pagination cursor twice; aborting to avoid an infinite paging loop."
+                );
+
+            cursor = pageInfo.EndCursor;
+        }
     }
 
     /// <inheritdoc/>
@@ -179,6 +228,22 @@ public interface IResourceClientBase
     /// <param name="query">Wallet address and paging parameters (cursor, first, last).</param>
     /// <param name="cancellationToken">Optional cancellation token.</param>
     public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Enumerates <b>all</b> incoming payments on a wallet address, transparently following
+    /// <c>pageInfo</c> cursors across pages. <see cref="ListIncomingPaymentQuery.First"/> sets the
+    /// per-page size and <see cref="ListIncomingPaymentQuery.Cursor"/> the starting position;
+    /// <see cref="ListIncomingPaymentQuery.Last"/> must be unset (backward paging is not supported —
+    /// use <see cref="ListIncomingPaymentsAsync"/> instead).
+    /// </summary>
+    /// <param name="requestArgs">Resource server URL and access token.</param>
+    /// <param name="query">Wallet address filter, page size, and optional starting cursor.</param>
+    /// <param name="cancellationToken">Optional cancellation token, observed between and during page requests.</param>
+    public IAsyncEnumerable<IncomingPayment> ListIncomingPaymentsAllAsync(
         AuthRequestArgs requestArgs,
         ListIncomingPaymentQuery query,
         CancellationToken cancellationToken = default
