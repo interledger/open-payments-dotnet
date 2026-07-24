@@ -191,12 +191,16 @@ internal sealed class AuthenticatedClient(HttpClient http, Uri clientUrl)
     }
 }
 
+/// <summary>Target of an unauthenticated Open Payments request.</summary>
 public class RequestArgs
 {
+    /// <summary>Absolute URL of the resource or endpoint to call.</summary>
     public required Uri Url { get; set; }
 }
 
+/// <summary>Target of an authenticated Open Payments request.</summary>
 public class AuthRequestArgs : RequestArgs
 {
+    /// <summary>GNAP access token authorizing the request.</summary>
     public required string AccessToken { get; set; }
 }

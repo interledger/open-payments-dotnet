@@ -1,0 +1,4 @@
+[*.cs]
+# Generated DTOs and the hand-written type aliases/partials that extend them are exempt
+# from XML-doc coverage; the curated public surface lives outside this folder.
+dotnet_diagnostic.CS1591.severity = none

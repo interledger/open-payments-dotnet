@@ -32,6 +32,7 @@ public class OpenPaymentsApiException : Exception
     /// </summary>
     public IReadOnlyDictionary<string, IEnumerable<string>> Headers { get; }
 
+    /// <summary>Creates the exception. See the property documentation for parameter semantics.</summary>
     public OpenPaymentsApiException(
         string message,
         int statusCode,
@@ -48,6 +49,7 @@ public class OpenPaymentsApiException : Exception
         Headers = headers;
     }
 
+    /// <inheritdoc/>
     public override string ToString() =>
         $"HTTP Response ({StatusCode}):\n\n{RawResponse}\n\n{base.ToString()}";
 }
