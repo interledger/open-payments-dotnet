@@ -1,9 +1,6 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
 using NSec.Cryptography;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Pkcs;
-using Org.BouncyCastle.OpenSsl;
 
 namespace Interledger.OpenPayments.HttpSignatureUtils;
 
@@ -67,50 +64,19 @@ public static class KeyUtils
     /// <exception cref="ArgumentException"></exception>
     public static Key LoadPem(string pem)
     {
-        // Read PEM -> DER object
-        using var sr = new StringReader(pem);
-        var pemObj = new PemReader(sr).ReadPemObject();
-        if (pemObj == null)
+        if (!PemEncoding.TryFind(pem, out var fields))
             throw new ArgumentException("Invalid PEM");
 
-        // Parse PKCS#8 PrivateKeyInfo
-        var pkInfo = PrivateKeyInfo.GetInstance(Asn1Object.FromByteArray(pemObj.Content));
-
-        // Ensure Ed25519 OID (1.3.101.112)
-        var oid = pkInfo.PrivateKeyAlgorithm.Algorithm.Id;
-        if (oid != "1.3.101.112")
+        var label = pem[fields.Label];
+        if (label != "PRIVATE KEY")
             throw new ArgumentException(
-                $"Unexpected algorithm OID: {oid}. Expected Ed25519 (1.3.101.112)."
+                $"Unexpected PEM label: {label}. Expected a PKCS#8 \"PRIVATE KEY\" block."
             );
 
-        // Extract the inner OCTET STRING (seed). For Ed25519 in PKCS#8, this is 32 bytes.
-        var privateKeyOctets = Asn1OctetString.GetInstance(pkInfo.ParsePrivateKey());
-        var privateKeyBytes = privateKeyOctets.GetOctets();
+        var der = Convert.FromBase64String(pem[fields.Base64Data]);
+        var seed = Ed25519Pkcs8.DecodeSeed(der);
 
-        // Some toolchains wrap the seed in another OCTET STRING layer:
-        // If lenght is not 32, try one more unwrap.
-        if (privateKeyBytes.Length != 32)
-        {
-            try
-            {
-                var inner = Asn1OctetString.GetInstance(Asn1Object.FromByteArray(privateKeyBytes));
-                privateKeyBytes = inner.GetOctets();
-            }
-            catch
-            {
-                /* ignore */
-            }
-        }
-
-        if (privateKeyBytes.Length != 32)
-            throw new ArgumentException(
-                $"Ed25519 seed must be 32 bytes, got {privateKeyBytes.Length}."
-            );
-
-        // Import into NSec as a raw private key (seed)
-        var algorithm = SignatureAlgorithm.Ed25519;
-        var seed = privateKeyBytes.AsSpan(0, 32);
-        return Key.Import(algorithm, seed, KeyBlobFormat.RawPrivateKey);
+        return Key.Import(SignatureAlgorithm.Ed25519, seed, KeyBlobFormat.RawPrivateKey);
     }
 
     /// <summary>

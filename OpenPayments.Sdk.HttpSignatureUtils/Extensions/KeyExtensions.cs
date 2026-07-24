@@ -1,7 +1,5 @@
+using System.Security.Cryptography;
 using NSec.Cryptography;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Pkcs;
-using Org.BouncyCastle.Utilities.IO.Pem;
 
 namespace Interledger.OpenPayments.HttpSignatureUtils;
 
@@ -13,17 +11,9 @@ internal static class KeyExtensions
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("File path is required.", nameof(filePath));
 
-        byte[] seed = key.Export(KeyBlobFormat.RawPrivateKey);
-        var bcKey = new Ed25519PrivateKeyParameters(seed, 0);
+        var seed = key.Export(KeyBlobFormat.RawPrivateKey);
+        var pkcs8 = Ed25519Pkcs8.Encode(seed);
 
-        var privateKeyInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(bcKey);
-        var pkcs8Bytes = privateKeyInfo.ToAsn1Object().GetEncoded();
-
-        var pemObject = new PemObject("PRIVATE KEY", pkcs8Bytes);
-
-        using var sw = new StreamWriter(filePath);
-        var pemWriter = new Org.BouncyCastle.Utilities.IO.Pem.PemWriter(sw);
-        pemWriter.WriteObject(pemObject);
-        sw.Flush();
+        File.WriteAllText(filePath, new string(PemEncoding.Write("PRIVATE KEY", pkcs8)) + "\n");
     }
 }
