@@ -135,6 +135,13 @@ CI (`codegen-check.yaml`) reruns both on any PR touching codegen inputs, generat
 the baselines, and fails if the committed files drift. See
 `docs/adr/0002-public-api-tracking-of-generated-types.md` for why generated types stay tracked.
 
+## Updating the Open Payments specification
+
+This repo tracks `open-payments-specifications` as a submodule, pinned to a specific tag.
+For how to notice new upstream spec releases and the full step-by-step procedure for
+pulling one in (submodule bump, regenerating models, updating hand-written code, versioning),
+see [`docs/SPEC_UPDATES.md`](../docs/SPEC_UPDATES.md).
+
 ## Cutting a release
 
 Versions are derived from git tags via MinVer (`v*.*.*`). Before pushing a release tag, promote
