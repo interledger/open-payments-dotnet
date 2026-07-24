@@ -9,70 +9,51 @@ jobs:
   release:
     name: Release & Publish to NuGet
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup .NET 9.0 SDK
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          global-json-file: global.json
 
-      - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
-      - name: Add dotnet tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
 
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build solution
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build --no-restore --configuration Release -p:ContinuousIntegrationBuild=true
 
       - name: Run tests
-        run: |
-          dotnet test --collect:"XPlat Code Coverage"
+        run: dotnet test --no-build --configuration Release
 
-      - name: Build
-        run: dotnet build OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-restore
+      - name: Pack Interledger.OpenPayments
+        run: dotnet pack OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-build -o ./nupkg
 
-      - name: Generate coverage report
-        run: |
-          reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html -classfilters:"-Interledger.OpenPayments.Generated.*"
-
-      - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage-report
-
-      - name: Extract version from tag
-        id: version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
-
-      - name: Pack with version from tag
-        run: dotnet pack OpenPayments.Sdk/OpenPayments.Sdk.csproj --configuration Release --no-build -o ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }}
-
-      - name: Pack with version from tag
-        run: dotnet pack OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj --configuration Release --no-build -o ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }}
-
-      - name: Generate changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          sinceTag: ${{ github.ref_name }}
-          futureRelease: ${{ github.ref_name }}
+      - name: Pack Interledger.OpenPayments.HttpSignatureUtils
+        run: dotnet pack OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj --configuration Release --no-build -o ./nupkg
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref_name }}
-          body_path: CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
 
-      - name: Push to NuGet
-        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      - name: Push packages to NuGet
+        run: dotnet nuget push "./nupkg/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Push symbol packages to NuGet
+        run: dotnet nuget push "./nupkg/*.snupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
