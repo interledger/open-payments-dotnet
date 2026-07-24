@@ -12,10 +12,10 @@
     <AssemblyName>Interledger.OpenPayments.HttpSignatureUtils</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NSec.Cryptography" Version="25.4.0"/>
-    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0"/>
-    <PackageReference Include="Sodium.Core" Version="1.4.0"/>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    <PackageReference Include="NSec.Cryptography"/>
+    <PackageReference Include="Portable.BouncyCastle"/>
+    <PackageReference Include="Sodium.Core"/>
+    <PackageReference Include="Newtonsoft.Json"/>
     <InternalsVisibleTo Include="Interledger.OpenPayments.HttpSignatureUtils.Tests"/>
   </ItemGroup>
 </Project>
