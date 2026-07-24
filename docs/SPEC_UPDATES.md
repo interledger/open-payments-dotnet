@@ -78,8 +78,9 @@ Compile errors point at renamed/removed generated members referenced by the hand
 
 For anything found in step 3 that didn't surface as a compile error (purely additive
 changes — new endpoints, new optional fields), add hand-written support: new wrapper
-methods in the relevant `*.Methods.*.cs` partial, following the existing pattern for that
-client (Auth/Resource/Wallet).
+methods in the relevant `*.Methods*.cs` partial, following the existing pattern for that
+client (Auth/Resource use per-feature partials like `AuthServerClient.Methods.Grant.cs`;
+Wallet uses a single `WalletAddressClient.Methods.cs`).
 
 If this adds new public methods or types, rerun `make api` to capture them in
 `PublicAPI.Unshipped.txt` — CI's `codegen-check.yaml` fails the PR if the baseline is out
@@ -115,9 +116,11 @@ under `[Unreleased]`, following its existing Keep a Changelog structure:
 Open a PR referencing the spec release (and the auto-filed issue, if one exists — check off
 its todo items). `codegen-check.yaml` independently reruns `make models` + `make api` on the
 PR and fails if the committed generated code or baselines drift from what's in the PR — this
-is enforcement, not just informational, so a clean CI run on this PR confirms steps 4 and 6
-were done completely. Once merged, tag and release via the existing `release.yaml` flow
-(`make ship-api` first — see "Cutting a release" below).
+is enforcement, not just informational, so a clean CI run on this PR confirms step 4 was done
+completely, and that any new public surface added in step 6 was captured in the baseline
+(it can't confirm you actually wrote hand-written wrappers for every new endpoint from step
+3 — that's a human review judgment). Once merged, tag and release via the existing
+`release.yaml` flow (`make ship-api` first — see "Cutting a release" below).
 
 ## Out of scope
 
