@@ -43,8 +43,13 @@ public class ResourceClientBase_PagingTests
                 ItExpr.IsAny<CancellationToken>()
             )
             .Returns<HttpRequestMessage, CancellationToken>(
-                (request, _) =>
+                (request, cancellationToken) =>
                 {
+                    // Real handlers (e.g. SocketsHttpHandler) observe the token before
+                    // dispatching a request; mirror that here so cancellation tests are
+                    // meaningful rather than relying on an unobserved token flowing through.
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     lock (requests)
                         requests.Add(request.RequestUri!);
 
@@ -204,6 +209,35 @@ public class ResourceClientBase_PagingTests
                 )
             ) { }
         });
+    }
+
+    [Fact]
+    public async Task ListIncomingPaymentsAllAsync_CanceledMidEnumeration_ThrowsAndStopsFetching()
+    {
+        var (httpClient, requests) = CreateTwoPageClient();
+        var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
+
+        using var cts = new CancellationTokenSource();
+        var payments = new List<IncomingPayment>();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
+        {
+            await foreach (
+                var payment in client.ListIncomingPaymentsAllAsync(
+                    Args(),
+                    new ListIncomingPaymentQuery { WalletAddress = "https://host-a.example/alice" },
+                    cts.Token
+                )
+            )
+            {
+                payments.Add(payment);
+                if (payments.Count == 2)
+                    cts.Cancel();
+            }
+        });
+
+        payments.Should().HaveCount(2);
+        requests.Should().HaveCount(1);
     }
 
     private static OutgoingPayment MakeOutgoingPayment(int i) =>
