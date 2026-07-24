@@ -8,6 +8,9 @@ on:
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'global.json'
       - '.github/workflows/build.yaml'
   pull_request:
     paths:
@@ -15,6 +18,9 @@ on:
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'global.json'
       - '.github/workflows/build.yaml'
 
 jobs:
@@ -25,10 +31,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET 9.0 SDK
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          global-json-file: global.json
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
@@ -42,11 +55,17 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests
-        run: dotnet test --collect:"XPlat Code Coverage"
+      - name: Run tests with coverage
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Generate coverage report
-        run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html -classfilters:"-Interledger.OpenPayments.Generated.*"
+        run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:"Html;TextSummary" -classfilters:"-Interledger.OpenPayments.Generated.*"
+
+      - name: Enforce coverage threshold
+        run: |
+          COVERAGE=$(grep -Eo 'Line coverage: [0-9.]+' coverage-report/Summary.txt | grep -Eo '[0-9.]+' | head -1)
+          echo "Line coverage: ${COVERAGE}%"
+          awk -v c="$COVERAGE" 'BEGIN { exit !(c + 0 >= 60) }' || { echo "::error::Line coverage ${COVERAGE}% is below the 60% floor"; exit 1; }
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
