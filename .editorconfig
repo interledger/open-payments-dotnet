@@ -32,5 +32,7 @@ csharp_style_var_when_type_is_apparent = true:suggestion
 # RS0026 (PublicApiAnalyzers): "do not add multiple overloads with optional parameters" fires on
 # CreateQuoteAsync/CreateOutgoingPaymentAsync, whose overloads intentionally differ by required
 # body-parameter type (e.g. QuoteBody vs QuoteBodyWithDebitAmount) and share a trailing optional
-# CancellationToken; callers cannot hit real overload-resolution ambiguity here.
+# CancellationToken; callers cannot hit real overload-resolution ambiguity here. Scoped to the
+# three files declaring those overload sets so a new ambiguous overload elsewhere still fails.
+[OpenPayments.Sdk/Clients/{IAuthenticatedClient,AuthenticatedClient,ResourceClientBase}.cs]
 dotnet_diagnostic.RS0026.severity = none
