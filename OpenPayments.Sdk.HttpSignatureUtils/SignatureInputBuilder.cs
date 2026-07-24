@@ -29,7 +29,7 @@ public class SignatureInputBuilder : ISignatureInputBuilder
                     break;
                 default:
                     var value = await GetHeaderValueAsync(request, component);
-                    sb.Append($"\"{component}\": {value}\n");
+                    sb.Append($"\"{component.ToLowerInvariant()}\": {value}\n");
                     break;
             }
         }
