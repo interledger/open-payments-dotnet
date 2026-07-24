@@ -20,14 +20,16 @@ public class SignatureInputBuilder : ISignatureInputBuilder
             switch (component)
             {
                 case "@method":
-                    sb.AppendLine($"\"@method\": {request.Method.Method.ToLower()}");
+                    // RFC 9421 §2.2.1: uppercase, and HttpRequestSigner signs it uppercase —
+                    // the base built here must be byte-identical to the one that was signed.
+                    sb.Append($"\"@method\": {request.Method.Method.ToUpperInvariant()}\n");
                     break;
                 case "@target-uri":
-                    sb.AppendLine($"\"@target-uri\": {request.RequestUri}");
+                    sb.Append($"\"@target-uri\": {request.RequestUri}\n");
                     break;
                 default:
                     var value = await GetHeaderValueAsync(request, component);
-                    sb.AppendLine($"\"{component}\": {value}");
+                    sb.Append($"\"{component}\": {value}\n");
                     break;
             }
         }
@@ -45,9 +47,10 @@ public class SignatureInputBuilder : ISignatureInputBuilder
 
         if (name == "content-digest" && request.Content != null)
         {
+            // sha-512, matching HttpRequestSigner's ComputeContentDigest.
             var body = await request.Content.ReadAsStringAsync();
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(body));
-            return $"sha-256=:{Convert.ToBase64String(hash)}:";
+            var hash = SHA512.HashData(Encoding.UTF8.GetBytes(body));
+            return $"sha-512=:{Convert.ToBase64String(hash)}:";
         }
 
         return "";

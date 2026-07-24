@@ -19,6 +19,7 @@ Versions are derived from git tags (`vX.Y.Z`) via MinVer.
 ### Fixed
 - Thread-safety: concurrent requests through a singleton client no longer race on a shared `BaseUrl`.
 - Eager validation of `OpenPaymentsOptions` at registration time with clear messages.
+- `HttpSignatureValidator` now builds the same signature base as the signer (uppercase `@method`, LF separators, SHA-512 content-digest fallback), so requests signed by `HttpRequestSigner` validate successfully.
 
 ### Removed
 - Dependencies `Portable.BouncyCastle` (replaced by `PemEncoding` + minimal PKCS#8 handling) and `Sodium.Core` (unused).
