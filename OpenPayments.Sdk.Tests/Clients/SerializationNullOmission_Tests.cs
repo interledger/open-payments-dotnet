@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using Newtonsoft.Json;
 using Interledger.OpenPayments.Generated.Auth;
 using Interledger.OpenPayments.Serialization;

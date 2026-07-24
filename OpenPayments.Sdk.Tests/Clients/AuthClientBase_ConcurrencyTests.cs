@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Text;
-using FluentAssertions;
+using AwesomeAssertions;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;

@@ -1,5 +1,5 @@
 using System.Net;
-using FluentAssertions;
+using AwesomeAssertions;
 using Interledger.OpenPayments.Clients;
 
 namespace Interledger.OpenPayments.Tests.Clients;

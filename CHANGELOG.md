@@ -19,6 +19,7 @@ Versions are derived from git tags (`vX.Y.Z`) via MinVer.
 - NSwag now generates DTOs only; HTTP plumbing is hand-owned and shared.
 - Packages multi-target `net8.0;net9.0`, ship SourceLink + snupkg symbols, and version from git tags (MinVer).
 - `Interledger.OpenPayments.HttpSignatureUtils` graduated from placeholder package metadata to full NuGet metadata (description, license, README, repository URL, icon, authors).
+- Test suite: `FluentAssertions` replaced with `AwesomeAssertions` 9.5.0. FluentAssertions 8.x is licensed under the Xceed Fluent Assertions Community License (free for non-commercial use only), which is a liability for an SDK consumed by commercial adopters; AwesomeAssertions is the actively maintained Apache-2.0 fork.
 
 ### Fixed
 - Thread-safety: concurrent requests through a singleton client no longer race on a shared `BaseUrl`.

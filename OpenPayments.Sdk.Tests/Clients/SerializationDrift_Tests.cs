@@ -1,6 +1,6 @@
 using System.Net;
 using System.Text;
-using FluentAssertions;
+using AwesomeAssertions;
 using Moq;
 using Moq.Protected;
 using Interledger.OpenPayments.Clients;

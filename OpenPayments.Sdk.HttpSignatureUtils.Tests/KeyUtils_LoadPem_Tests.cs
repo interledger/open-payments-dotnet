@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
-using FluentAssertions;
+using AwesomeAssertions;
 using NSec.Cryptography;
 using Xunit;
 
