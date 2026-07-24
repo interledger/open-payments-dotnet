@@ -15,6 +15,7 @@ public class ResourceClientBase_ConcurrencyTests
     private const int Iterations = 500;
 
     [Fact]
+    [Trait("Category", "Slow")]
     public async Task GetIncomingPaymentAsync_ConcurrentCallsToDifferentHosts_NeverCrossesHosts()
     {
         var observations = new ConcurrentBag<(string ExpectedHost, string ActualHost)>();

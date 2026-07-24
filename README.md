@@ -99,6 +99,13 @@ However, you can generate them one by one (please check the `Makefile` for all s
 dotnet test
 ```
 
+The two thread-safety concurrency suites take several minutes; skip them during day-to-day
+development with:
+
+```bash
+dotnet test --filter "Category!=Slow"
+```
+
 ## 🎈 Usage
 
 To use in your project, just add the package using the command line
