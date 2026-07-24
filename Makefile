@@ -1,4 +1,4 @@
-.PHONY: tools auth-server-generate as-models resource-server-generate rs-models wallet-address-models wa-models models api
+.PHONY: tools auth-server-generate as-models resource-server-generate rs-models wallet-address-models wa-models models api ship-api
 
 NSWAG_FLAGS = /injectHttpClient:true /GenerateClientClasses:false /GenerateExceptionClasses:false /GenerateOptionalPropertiesAsNullable:true /GenerateNullableReferenceTypes:true
 
@@ -31,3 +31,8 @@ models: as-models rs-models wa-models
 api:
 	dotnet format analyzers OpenPayments.Sdk/OpenPayments.Sdk.csproj --diagnostics RS0016 RS0017 --severity warn --include-generated
 	dotnet format analyzers OpenPayments.Sdk.HttpSignatureUtils/OpenPayments.Sdk.HttpSignatureUtils.csproj --diagnostics RS0016 RS0017 --severity warn --include-generated
+
+# Promotes PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt. Run this as part
+# of the release-prep PR, before tagging a release - see .github/contributing.md.
+ship-api:
+	./scripts/promote-public-api.sh OpenPayments.Sdk OpenPayments.Sdk.HttpSignatureUtils

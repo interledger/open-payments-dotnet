@@ -134,3 +134,17 @@ make api      # sync PublicAPI.*.txt with the regenerated surface
 CI (`codegen-check.yaml`) reruns both on any PR touching codegen inputs, generated output, or
 the baselines, and fails if the committed files drift. See
 `docs/adr/0002-public-api-tracking-of-generated-types.md` for why generated types stay tracked.
+
+## Cutting a release
+
+Versions are derived from git tags via MinVer (`v*.*.*`). Before pushing a release tag, promote
+the accumulated `PublicAPI.Unshipped.txt` entries into `PublicAPI.Shipped.txt` in a normal PR to
+`main`:
+
+```bash
+make ship-api   # move Unshipped.txt entries into Shipped.txt for both packages
+```
+
+Commit the result, merge it, then tag that commit as `vX.Y.Z` and push the tag. `release.yaml`
+verifies `PublicAPI.Unshipped.txt` is empty (aside from its `#nullable enable` header) before
+building and publishing, and fails the release with instructions to run `make ship-api` if not.

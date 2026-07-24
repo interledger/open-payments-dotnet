@@ -182,6 +182,10 @@ Releases follow [Semantic Versioning](https://semver.org). The git tag (`vX.Y.Z`
 source of the package version ([MinVer](https://github.com/adamralph/minver)); pushing a tag
 publishes both packages (with SourceLink'd `snupkg` symbols) to NuGet.
 
+Before tagging, the public API baseline must be promoted first — see
+["Cutting a release"](.github/contributing.md#cutting-a-release) in the contribution guidelines
+for the full steps.
+
 See the [CHANGELOG](CHANGELOG.md) for notable changes per release.
 
 ## ✍️ Authors
