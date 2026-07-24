@@ -1,16 +1,11 @@
-using Newtonsoft.Json;
+using Interledger.OpenPayments.Serialization;
 
 namespace Interledger.OpenPayments.Generated.Auth;
 
 public partial class AuthServerClient : GeneratedClientBase
 {
-    private static readonly JsonSerializerSettings SerializerSettings = new()
-    {
-        ContractResolver = new AuthContractResolver(),
-    };
-
     public AuthServerClient(HttpClient httpClient)
-        : base(httpClient, SerializerSettings) { }
+        : base(httpClient, OpenPaymentsSerialization.DefaultSettings) { }
 
     /// <summary>Client wallet address URL sent as the <c>client</c> field of grant requests.</summary>
     public Uri ClientUrl { get; set; } = default!;

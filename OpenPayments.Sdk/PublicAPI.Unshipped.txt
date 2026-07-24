@@ -205,8 +205,6 @@ Interledger.OpenPayments.Generated.Auth.AuthContinue.Uri.get -> System.Uri!
 Interledger.OpenPayments.Generated.Auth.AuthContinue.Uri.set -> void
 Interledger.OpenPayments.Generated.Auth.AuthContinue.Wait.get -> int?
 Interledger.OpenPayments.Generated.Auth.AuthContinue.Wait.set -> void
-Interledger.OpenPayments.Generated.Auth.AuthContractResolver
-Interledger.OpenPayments.Generated.Auth.AuthContractResolver.AuthContractResolver() -> void
 Interledger.OpenPayments.Generated.Auth.AuthResponse
 Interledger.OpenPayments.Generated.Auth.AuthResponse.AccessToken.get -> Interledger.OpenPayments.Generated.Auth.AccessTokenResponse?
 Interledger.OpenPayments.Generated.Auth.AuthResponse.AccessToken.set -> void
@@ -719,8 +717,6 @@ Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount.ReceiveAm
 Interledger.OpenPayments.Generated.Resource.QuoteBodyWithReceiveAmount.ReceiveAmount.set -> void
 Interledger.OpenPayments.Generated.Resource.QuoteResponse
 Interledger.OpenPayments.Generated.Resource.QuoteResponse.QuoteResponse() -> void
-Interledger.OpenPayments.Generated.Resource.ResourceContractResolver
-Interledger.OpenPayments.Generated.Resource.ResourceContractResolver.ResourceContractResolver() -> void
 Interledger.OpenPayments.Generated.Resource.ResourceError
 Interledger.OpenPayments.Generated.Resource.ResourceError.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
 Interledger.OpenPayments.Generated.Resource.ResourceError.AdditionalProperties.set -> void
@@ -822,6 +818,9 @@ Interledger.OpenPayments.OpenPaymentsApiException.Headers.get -> System.Collecti
 Interledger.OpenPayments.OpenPaymentsApiException.OpenPaymentsApiException(string! message, int statusCode, string? errorCode, string? rawResponse, System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>! headers, System.Exception? innerException = null) -> void
 Interledger.OpenPayments.OpenPaymentsApiException.RawResponse.get -> string?
 Interledger.OpenPayments.OpenPaymentsApiException.StatusCode.get -> int
+Interledger.OpenPayments.Serialization.OpenPaymentsContractResolver
+Interledger.OpenPayments.Serialization.OpenPaymentsContractResolver.OpenPaymentsContractResolver() -> void
+Interledger.OpenPayments.Serialization.OpenPaymentsSerialization
 override Interledger.OpenPayments.OpenPaymentsApiException.ToString() -> string!
 readonly Interledger.OpenPayments.Generated.GeneratedClientBase._httpClient -> System.Net.Http.HttpClient!
 static Interledger.OpenPayments.Extensions.ServiceCollectionExtensions.UseOpenPayments(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Interledger.OpenPayments.Configuration.OpenPaymentsOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
@@ -829,6 +828,7 @@ static Interledger.OpenPayments.Generated.GeneratedClientBase.ConvertToString(ob
 static Interledger.OpenPayments.Generated.GeneratedClientBase.NormalizeBaseUrl(System.Uri! baseUri) -> string!
 static Interledger.OpenPayments.Generated.GeneratedClientBase.ReadAsStringAsync(System.Net.Http.HttpContent? content, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<string!>!
 static Interledger.OpenPayments.Generated.Helpers.ExtractHeaders(System.Net.Http.HttpResponseMessage! response) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.IEnumerable<string!>!>!
+static Interledger.OpenPayments.Serialization.OpenPaymentsSerialization.DefaultSettings.get -> Newtonsoft.Json.JsonSerializerSettings!
 virtual Interledger.OpenPayments.Generated.GeneratedClientBase.ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage? response, System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>! headers, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.GeneratedClientBase.ObjectResponseResult<T>>!
 virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.CompleteIncomingPaymentAsync(System.Uri! baseUri, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!
 virtual Interledger.OpenPayments.Generated.Resource.ResourceServerClient.GetIncomingPaymentAsync(System.Uri! baseUri, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Interledger.OpenPayments.Generated.Resource.IncomingPaymentResponse!>!

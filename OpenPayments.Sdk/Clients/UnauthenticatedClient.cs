@@ -5,6 +5,7 @@ using Interledger.OpenPayments;
 using Interledger.OpenPayments.Generated;
 using Interledger.OpenPayments.Generated.Resource;
 using Interledger.OpenPayments.Generated.Wallet;
+using Interledger.OpenPayments.Serialization;
 
 [assembly: InternalsVisibleTo("Interledger.OpenPayments.Tests")]
 
@@ -77,7 +78,10 @@ internal class UnauthenticatedClient(HttpClient http)
             );
         }
 
-        var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(json);
+        var model = JsonConvert.DeserializeObject<PublicIncomingPayment>(
+            json,
+            OpenPaymentsSerialization.DefaultSettings
+        );
 
         return model
             ?? throw OpenPaymentsExceptionFactory.Create(

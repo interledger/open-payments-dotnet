@@ -1,13 +1,11 @@
-using Newtonsoft.Json;
+using Interledger.OpenPayments.Serialization;
 
 namespace Interledger.OpenPayments.Generated.Wallet;
 
 public partial class WalletAddressClient : GeneratedClientBase
 {
-    private static readonly JsonSerializerSettings SerializerSettings = new();
-
     public WalletAddressClient(HttpClient httpClient)
-        : base(httpClient, SerializerSettings) { }
+        : base(httpClient, OpenPaymentsSerialization.DefaultSettings) { }
 
     partial void PrepareRequest(HttpClient client, HttpRequestMessage request, string url);
 

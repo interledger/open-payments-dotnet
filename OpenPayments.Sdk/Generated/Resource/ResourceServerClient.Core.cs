@@ -1,16 +1,11 @@
-using Newtonsoft.Json;
+using Interledger.OpenPayments.Serialization;
 
 namespace Interledger.OpenPayments.Generated.Resource;
 
 public partial class ResourceServerClient : GeneratedClientBase
 {
-    private static readonly JsonSerializerSettings SerializerSettings = new()
-    {
-        ContractResolver = new ResourceContractResolver(),
-    };
-
     public ResourceServerClient(HttpClient httpClient)
-        : base(httpClient, SerializerSettings) { }
+        : base(httpClient, OpenPaymentsSerialization.DefaultSettings) { }
 
     /// <summary>Client wallet address URL of the SDK consumer.</summary>
     public Uri ClientUrl { get; set; } = default!;
