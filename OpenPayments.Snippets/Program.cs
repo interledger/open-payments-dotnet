@@ -25,6 +25,7 @@ services.AddTransient<IncomingPaymentService>();
 services.AddTransient<QuoteService>();
 services.AddTransient<OutgoingPaymentService>();
 services.AddTransient<TokenService>();
+services.AddTransient<OneTimePaymentService>();
 
 var provider = services.BuildServiceProvider();
 
@@ -79,6 +80,11 @@ Option<string> tokenAction = new("--action", "-a")
 {
     Description = "The action to perform on the token: 'rotate' or 'revoke'.",
 };
+Option<int> callbackPortOption = new("--callbackPort")
+{
+    Description = "Local port for the GNAP redirect callback listener.",
+    DefaultValueFactory = _ => 3300,
+};
 
 // Commands
 var rootCommand = new RootCommand("OpenPayments CLI");
@@ -124,6 +130,13 @@ var getOutgoingPaymentCommand = new Command("GetOutgoingPayment")
     outgoingUrlOption,
 };
 var listOutgoingPaymentsCommand = new Command("ListOutgoingPayments") { senderWalletAddressOption };
+var oneTimePaymentCommand = new Command("OneTimePayment")
+{
+    senderWalletAddressOption,
+    receiverWalletAddressOption,
+    amountOption,
+    callbackPortOption,
+};
 
 // Actions
 getIncomingPaymentCommand.SetAction(async result =>
@@ -206,6 +219,16 @@ listOutgoingPaymentsCommand.SetAction(async result =>
     var service = provider.GetRequiredService<OutgoingPaymentService>();
     await service.ListOutgoingPaymentsAsync(sender);
 });
+oneTimePaymentCommand.SetAction(async result =>
+{
+    var sender = result.GetValue(senderWalletAddressOption)!;
+    var receiver = result.GetValue(receiverWalletAddressOption)!;
+    var amount = result.GetValue(amountOption)!;
+    var callbackPort = result.GetValue(callbackPortOption);
+
+    var service = provider.GetRequiredService<OneTimePaymentService>();
+    await service.RunAsync(sender, receiver, amount, callbackPort);
+});
 manageTokenCommand.SetAction(async result =>
 {
     var tokenUrl = result.GetValue(resourceUrlOption)!;
@@ -242,6 +265,7 @@ rootCommand.Add(getQuoteCommand);
 rootCommand.Add(createOutgoingPaymentCommand);
 rootCommand.Add(getOutgoingPaymentCommand);
 rootCommand.Add(listOutgoingPaymentsCommand);
+rootCommand.Add(oneTimePaymentCommand);
 
 var config = new CommandLineConfiguration(rootCommand);
 return await config.InvokeAsync(args);
