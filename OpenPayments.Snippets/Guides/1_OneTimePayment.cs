@@ -84,7 +84,7 @@ public class OneTimePayment(IAuthenticatedClient client)
             new QuoteBody
             {
                 WalletAddress = customerWalletAddress.Id,
-                Receiver = retailerWalletAddress.Id,
+                Receiver = retailerIncomingPayment.Id,
                 Method = PaymentMethod.Ilp
             }
         );
