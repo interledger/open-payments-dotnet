@@ -62,11 +62,23 @@ jobs:
       - name: Generate coverage report
         run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:"Html;TextSummary" -classfilters:"-Interledger.OpenPayments.Generated.*"
 
-      - name: Enforce coverage threshold
+      - name: Enforce per-assembly coverage floors
         run: |
-          COVERAGE=$(grep -Eo 'Line coverage: [0-9.]+' coverage-report/Summary.txt | grep -Eo '[0-9.]+' | head -1)
-          echo "Line coverage: ${COVERAGE}%"
-          awk -v c="$COVERAGE" 'BEGIN { exit !(c + 0 >= 60) }' || { echo "::error::Line coverage ${COVERAGE}% is below the 60% floor"; exit 1; }
+          check_assembly() {
+            NAME="$1"; FLOOR="$2"
+            COV=$(awk -v name="$NAME" '$1 == name && NF == 2 { sub(/%$/, "", $2); print $2 }' coverage-report/Summary.txt)
+            if [ -z "$COV" ]; then
+              echo "::error::Could not parse line coverage for ${NAME} from coverage-report/Summary.txt"
+              exit 1
+            fi
+            echo "${NAME} line coverage: ${COV}%"
+            if ! awk -v c="$COV" -v f="$FLOOR" 'BEGIN { exit !(c + 0 >= f + 0) }'; then
+              echo "::error::${NAME} line coverage ${COV}% is below the ${FLOOR}% floor"
+              exit 1
+            fi
+          }
+          check_assembly "Interledger.OpenPayments" 60
+          check_assembly "Interledger.OpenPayments.HttpSignatureUtils" 60
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
