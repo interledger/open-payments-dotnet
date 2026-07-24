@@ -61,6 +61,12 @@ public class AuthClientBase_ConcurrencyTests
         const string hostA = "auth-a.example";
         const string hostB = "auth-b.example";
 
+        // Without this, the ThreadPool ramps up ~1-2 workers/sec under sustained
+        // blocking, turning this test's 500 concurrent Task.Run + gate.Wait() into
+        // a multi-minute run instead of a real concurrency stress test.
+        ThreadPool.GetMinThreads(out var workerThreads, out var ioThreads);
+        ThreadPool.SetMinThreads(Math.Max(workerThreads, Iterations), ioThreads);
+
         var ready = new CountdownEvent(Iterations);
         var gate = new ManualResetEventSlim(false);
 
