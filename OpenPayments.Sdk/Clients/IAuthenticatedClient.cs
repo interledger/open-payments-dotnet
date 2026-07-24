@@ -116,6 +116,22 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     );
 
     /// <summary>
+    /// Enumerates <b>all</b> incoming payments on a wallet address, transparently following
+    /// <c>pageInfo</c> cursors across pages. <see cref="ListIncomingPaymentQuery.First"/> sets the
+    /// per-page size and <see cref="ListIncomingPaymentQuery.Cursor"/> the starting position;
+    /// <see cref="ListIncomingPaymentQuery.Last"/> must be unset (backward paging is not supported —
+    /// use <see cref="ListIncomingPaymentsAsync"/> instead).
+    /// </summary>
+    /// <param name="requestArgs">Resource server URL and access token.</param>
+    /// <param name="query">Wallet address filter, page size, and optional starting cursor.</param>
+    /// <param name="cancellationToken">Optional cancellation token, observed between and during page requests.</param>
+    public IAsyncEnumerable<IncomingPayment> ListIncomingPaymentsAllAsync(
+        AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Complete Incoming Payment
     /// </summary>
     /// <param name="requestArgs"></param>

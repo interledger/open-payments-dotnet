@@ -106,6 +106,16 @@ internal sealed class AuthenticatedClient(HttpClient http, Uri clientUrl)
     }
 
     /// <inheritdoc/>
+    public IAsyncEnumerable<IncomingPayment> ListIncomingPaymentsAllAsync(
+        AuthRequestArgs requestArgs,
+        ListIncomingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.ListIncomingPaymentsAllAsync(requestArgs, query, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
         AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default
