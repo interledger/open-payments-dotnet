@@ -8,6 +8,9 @@ Versions are derived from git tags (`vX.Y.Z`) via MinVer.
 
 ## [Unreleased]
 
+### Added
+- `IAsyncEnumerable` auto-paging: `ListIncomingPaymentsAllAsync` / `ListOutgoingPaymentsAllAsync` on both the authenticated client and the resource client follow `pageInfo` cursors automatically (rejecting backward-paging queries and repeated server cursors).
+
 ### Changed
 - **Breaking:** all namespaces renamed from `OpenPayments.Sdk.*` to `Interledger.OpenPayments.*`, matching the package ID.
 - **Breaking:** all client errors now throw a single `OpenPaymentsApiException` (status code, error code, raw body) instead of per-namespace `ApiException` types.
@@ -15,6 +18,7 @@ Versions are derived from git tags (`vX.Y.Z`) via MinVer.
 - Request signing moved to an async `SigningHttpMessageHandler` on the HTTP pipeline (no more sync-over-async blocking).
 - NSwag now generates DTOs only; HTTP plumbing is hand-owned and shared.
 - Packages multi-target `net8.0;net9.0`, ship SourceLink + snupkg symbols, and version from git tags (MinVer).
+- `Interledger.OpenPayments.HttpSignatureUtils` graduated from placeholder package metadata to full NuGet metadata (description, license, README, repository URL, icon, authors).
 
 ### Fixed
 - Thread-safety: concurrent requests through a singleton client no longer race on a shared `BaseUrl`.

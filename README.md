@@ -128,6 +128,7 @@ Then add it to your project code
 using Microsoft.Extensions.DependencyInjection;
 using Interledger.OpenPayments.Clients;
 using Interledger.OpenPayments.Extensions;
+using Interledger.OpenPayments.Generated.Resource;
 using Interledger.OpenPayments.HttpSignatureUtils;
 
 // Initialize client
@@ -141,6 +142,25 @@ var client = new ServiceCollection()
     })
     .BuildServiceProvider()
     .GetRequiredService<IAuthenticatedClient>();
+```
+
+List endpoints also come as auto-paging streams — `ListIncomingPaymentsAllAsync` /
+`ListOutgoingPaymentsAllAsync` follow the server's pagination cursors for you:
+
+```csharp
+await foreach (
+    var payment in client.ListIncomingPaymentsAllAsync(
+        new AuthRequestArgs
+        {
+            Url = new Uri(RESOURCE_SERVER_URL),
+            AccessToken = INCOMING_PAYMENT_ACCESS_TOKEN,
+        },
+        new ListIncomingPaymentQuery { WalletAddress = CLIENT_WALLET_ADDRESS }
+    )
+)
+{
+    Console.WriteLine(payment.Id);
+}
 ```
 
 Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
