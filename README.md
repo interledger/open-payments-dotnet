@@ -5,7 +5,8 @@
 </p>
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/kylelobo/open-payments-dotnet/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/issues)
+[![NuGet](https://img.shields.io/nuget/v/Interledger.OpenPayments.svg)](https://www.nuget.org/packages/Interledger.OpenPayments)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/pulls)
 
 ## What is Open Payments?
@@ -65,7 +66,7 @@ git submodule update --init
 Alternatively, clone the repository with submodules in one step:
 
 ```bash
-git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
+git clone --recurse-submodules git@github.com:interledger/open-payments-dotnet.git
 ```
 
 ### Prerequisites
@@ -77,8 +78,12 @@ git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
 
 ```bash
 npm install -g swagger-cli && \
-dotnet tool install --global NSwag.ConsoleCore
+dotnet tool restore
 ```
+
+NSwag is pinned as a local dotnet tool in `.config/dotnet-tools.json`; `make models` restores it
+automatically. Regenerated code is committed — CI verifies it stays in sync via the
+*Codegen Drift Check* workflow.
 
 Now generate models from the OpenAPI specs. You can generate all of them by running the command below:
 
@@ -125,6 +130,25 @@ var client = new ServiceCollection()
 ```
 
 Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
+
+## 📦 Packages
+
+| Package | Description |
+|---|---|
+| [`Interledger.OpenPayments`](https://www.nuget.org/packages/Interledger.OpenPayments) | The Open Payments SDK: authenticated & unauthenticated clients, DI integration, generated API models. |
+| [`Interledger.OpenPayments.HttpSignatureUtils`](https://www.nuget.org/packages/Interledger.OpenPayments.HttpSignatureUtils) | HTTP Message Signature utilities: Ed25519 key management, JWK export, request signing/validation. Installed automatically with the SDK; install directly if you only need signing primitives. |
+
+## 🎯 Supported frameworks
+
+Both packages target `net8.0` and `net9.0`.
+
+## 🔖 Versioning & releases
+
+Releases follow [Semantic Versioning](https://semver.org). The git tag (`vX.Y.Z`) is the single
+source of the package version ([MinVer](https://github.com/adamralph/minver)); pushing a tag
+publishes both packages (with SourceLink'd `snupkg` symbols) to NuGet.
+
+See the [CHANGELOG](CHANGELOG.md) for notable changes per release.
 
 ## ✍️ Authors
 
