@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>Interledger.OpenPayments</PackageId>
     <Description>.NET SDK for OpenPayments</Description>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

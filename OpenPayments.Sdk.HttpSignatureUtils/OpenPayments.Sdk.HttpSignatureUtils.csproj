@@ -1,15 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>Interledger.OpenPayments.HttpSignatureUtils</RootNamespace>
-    <PackageId>Interledger.OpenPayments.HttpSignatureUtils</PackageId>
-    <Authors>Interledger.OpenPayments.HttpSignatureUtils</Authors>
-    <Company>Interledger</Company>
-    <Product>OpenPayments.HttpSignatureUtils</Product>
     <AssemblyName>Interledger.OpenPayments.HttpSignatureUtils</AssemblyName>
+    <PackageId>Interledger.OpenPayments.HttpSignatureUtils</PackageId>
+    <Title>OpenPayments HTTP Signature Utils</Title>
+    <Product>Interledger.OpenPayments.HttpSignatureUtils</Product>
+    <Description>HTTP Message Signatures (RFC 9421) utilities for the Open Payments APIs: Ed25519 key loading/generation, JWK export, request signing, and signature validation. Used by and published alongside Interledger.OpenPayments.</Description>
+    <PackageTags>interledger openpayments http-signatures ed25519 gnap</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NSec.Cryptography"/>
@@ -17,5 +20,7 @@
     <PackageReference Include="Sodium.Core"/>
     <PackageReference Include="Newtonsoft.Json"/>
     <InternalsVisibleTo Include="Interledger.OpenPayments.HttpSignatureUtils.Tests"/>
+    <None Include="README.md" Pack="true" PackagePath=""/>
+    <None Include="../OpenPayments.Sdk/icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 </Project>
