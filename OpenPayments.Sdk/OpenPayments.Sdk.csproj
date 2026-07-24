@@ -25,9 +25,6 @@
     <AdditionalFiles Include="PublicAPI.Unshipped.txt"/>
     <ProjectReference Include="..\OpenPayments.Sdk.HttpSignatureUtils\OpenPayments.Sdk.HttpSignatureUtils.csproj" />
     <None Include="../README.md" Pack="true" PackagePath=""/>
-    <None Update="icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 </Project>
