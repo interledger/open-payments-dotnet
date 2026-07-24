@@ -9,7 +9,7 @@ public class ResourceClientBase : IResourceClientBase
 
     /// <summary>Creates the client. Signing must already be configured on <paramref name="http"/>'s handler pipeline.</summary>
     /// <param name="http">The HTTP client used for all requests.</param>
-    /// <param name="clientUrl">Client wallet address URL, sent as the <c>client</c> field of grant requests.</param>
+    /// <param name="clientUrl">Client wallet address URL of the SDK consumer, set on the underlying <see cref="ResourceServerClient.ClientUrl"/>.</param>
     public ResourceClientBase(HttpClient http, Uri clientUrl)
     {
         _client = new ResourceServerClient(http);
