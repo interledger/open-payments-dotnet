@@ -188,6 +188,54 @@ public class ResourceClientBase : IResourceClientBase
             cancellationToken
         );
     }
+
+    /// <inheritdoc/>
+    public async IAsyncEnumerable<OutgoingPayment> ListOutgoingPaymentsAllAsync(
+        AuthRequestArgs requestArgs,
+        ListOutgoingPaymentQuery query,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
+    )
+    {
+        if (query.Last is not null)
+            throw new ArgumentException(
+                "Backward paging (Last) is not supported by auto-paging; use ListOutgoingPaymentsAsync for page-at-a-time access.",
+                nameof(query)
+            );
+
+        var cursor = query.Cursor;
+        while (true)
+        {
+            var page = await _client
+                .ListOutgoingPaymentsAsync(
+                    requestArgs.Url,
+                    requestArgs.AccessToken,
+                    query.WalletAddress,
+                    cursor,
+                    query.First,
+                    null,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
+
+            foreach (var payment in page.Result ?? [])
+                yield return payment;
+
+            if (
+                page.Pagination is not { HasNextPage: true } pageInfo
+                || string.IsNullOrEmpty(pageInfo.EndCursor)
+            )
+            {
+                yield break;
+            }
+
+            if (pageInfo.EndCursor == cursor)
+                throw new InvalidOperationException(
+                    "The server returned the same pagination cursor twice; aborting to avoid an infinite paging loop."
+                );
+
+            cursor = pageInfo.EndCursor;
+        }
+    }
 }
 
 /// <summary>
@@ -290,6 +338,22 @@ public interface IResourceClientBase
     /// <param name="query">Wallet address and paging parameters (cursor, first, last).</param>
     /// <param name="cancellationToken">Optional cancellation token.</param>
     public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
+        AuthRequestArgs requestArgs,
+        ListOutgoingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Enumerates <b>all</b> outgoing payments on a wallet address, transparently following
+    /// <c>pageInfo</c> cursors across pages. <see cref="ListOutgoingPaymentQuery.First"/> sets the
+    /// per-page size and <see cref="ListOutgoingPaymentQuery.Cursor"/> the starting position;
+    /// <see cref="ListOutgoingPaymentQuery.Last"/> must be unset (backward paging is not supported —
+    /// use <see cref="ListOutgoingPaymentsAsync"/> instead).
+    /// </summary>
+    /// <param name="requestArgs">Resource server URL and access token.</param>
+    /// <param name="query">Wallet address filter, page size, and optional starting cursor.</param>
+    /// <param name="cancellationToken">Optional cancellation token, observed between and during page requests.</param>
+    public IAsyncEnumerable<OutgoingPayment> ListOutgoingPaymentsAllAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default

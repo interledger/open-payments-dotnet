@@ -199,6 +199,16 @@ internal sealed class AuthenticatedClient(HttpClient http, Uri clientUrl)
     {
         return _resClient.ListOutgoingPaymentsAsync(requestArgs, query, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public IAsyncEnumerable<OutgoingPayment> ListOutgoingPaymentsAllAsync(
+        AuthRequestArgs requestArgs,
+        ListOutgoingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.ListOutgoingPaymentsAllAsync(requestArgs, query, cancellationToken);
+    }
 }
 
 /// <summary>Target of an unauthenticated Open Payments request.</summary>

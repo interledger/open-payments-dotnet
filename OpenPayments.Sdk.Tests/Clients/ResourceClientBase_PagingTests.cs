@@ -205,4 +205,93 @@ public class ResourceClientBase_PagingTests
             ) { }
         });
     }
+
+    private static OutgoingPayment MakeOutgoingPayment(int i) =>
+        new()
+        {
+            Id = new Uri($"https://host-a.example/outgoing-payments/{i}"),
+            WalletAddress = new Uri("https://host-a.example/alice"),
+            Receiver = new Uri("https://host-b.example/incoming-payments/1"),
+            ReceiveAmount = new Amount("100", "EUR", 2),
+            DebitAmount = new Amount("101", "EUR", 2),
+            SentAmount = new Amount("0", "EUR", 2),
+            CreatedAt = DateTime.UtcNow,
+        };
+
+    [Fact]
+    public async Task ListOutgoingPaymentsAllAsync_FollowsCursorsAcrossAllPages()
+    {
+        var (httpClient, requests) = CreateClient(cursor =>
+            cursor switch
+            {
+                null => new ListOutgoingPaymentsResponse
+                {
+                    Result = [MakeOutgoingPayment(1), MakeOutgoingPayment(2)],
+                    Pagination = new PageInfo
+                    {
+                        EndCursor = "cursor-1",
+                        HasNextPage = true,
+                        HasPreviousPage = false,
+                    },
+                },
+                _ => new ListOutgoingPaymentsResponse
+                {
+                    Result = [MakeOutgoingPayment(3)],
+                    Pagination = new PageInfo
+                    {
+                        EndCursor = "cursor-2",
+                        HasNextPage = false,
+                        HasPreviousPage = true,
+                    },
+                },
+            }
+        );
+        var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
+
+        var payments = new List<OutgoingPayment>();
+        await foreach (
+            var payment in client.ListOutgoingPaymentsAllAsync(
+                Args(),
+                new ListOutgoingPaymentQuery { WalletAddress = "https://host-a.example/alice" }
+            )
+        )
+        {
+            payments.Add(payment);
+        }
+
+        payments
+            .Select(p => p.Id.ToString())
+            .Should()
+            .Equal(
+                "https://host-a.example/outgoing-payments/1",
+                "https://host-a.example/outgoing-payments/2",
+                "https://host-a.example/outgoing-payments/3"
+            );
+
+        requests.Should().HaveCount(2);
+        GetQueryValue(requests[1], "cursor").Should().Be("cursor-1");
+    }
+
+    [Fact]
+    public async Task ListOutgoingPaymentsAllAsync_LastSet_ThrowsArgumentException()
+    {
+        var (httpClient, requests) = CreateTwoPageClient();
+        var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
+
+        await Assert.ThrowsAsync<ArgumentException>(async () =>
+        {
+            await foreach (
+                var _ in client.ListOutgoingPaymentsAllAsync(
+                    Args(),
+                    new ListOutgoingPaymentQuery
+                    {
+                        WalletAddress = "https://host-a.example/alice",
+                        Last = 5,
+                    }
+                )
+            ) { }
+        });
+
+        requests.Should().BeEmpty();
+    }
 }
