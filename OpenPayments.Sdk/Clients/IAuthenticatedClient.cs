@@ -120,8 +120,8 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     /// </summary>
     /// <param name="requestArgs"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns>ListIncomingPaymentsResponse</returns>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(AuthRequestArgs requestArgs,
+    /// <returns>The completed incoming payment.</returns>
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -123,7 +123,7 @@ public class ResourceClientBase : IResourceClientBase
     }
 
     /// <inheritdoc/>
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default
@@ -224,7 +224,7 @@ public interface IResourceClientBase
     /// <param name="requestArgs">Resource server outgoing-payments endpoint URL and access token.</param>
     /// <param name="query">Wallet address and paging parameters (cursor, first, last).</param>
     /// <param name="cancellationToken">Optional cancellation token.</param>
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default

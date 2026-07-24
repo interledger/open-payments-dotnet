@@ -106,7 +106,7 @@ internal sealed class AuthenticatedClient(HttpClient http, Uri clientUrl)
     }
 
     /// <inheritdoc/>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
         AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default
     )
@@ -187,7 +187,7 @@ internal sealed class AuthenticatedClient(HttpClient http, Uri clientUrl)
         CancellationToken cancellationToken = default
     )
     {
-        return _resClient.ListOutgoingPaymentAsync(requestArgs, query, cancellationToken);
+        return _resClient.ListOutgoingPaymentsAsync(requestArgs, query, cancellationToken);
     }
 }
 
