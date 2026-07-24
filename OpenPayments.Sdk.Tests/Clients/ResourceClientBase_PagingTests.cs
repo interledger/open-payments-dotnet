@@ -240,7 +240,7 @@ public class ResourceClientBase_PagingTests
         requests.Should().HaveCount(1);
     }
 
-    private static OutgoingPayment MakeOutgoingPayment(int i) =>
+    internal static OutgoingPayment MakeOutgoingPayment(int i) =>
         new()
         {
             Id = new Uri($"https://host-a.example/outgoing-payments/{i}"),
@@ -251,6 +251,35 @@ public class ResourceClientBase_PagingTests
             SentAmount = new Amount("0", "EUR", 2),
             CreatedAt = DateTime.UtcNow,
         };
+
+    private static (HttpClient Client, List<Uri> Requests) CreateTwoPageOutgoingClient() =>
+        CreateClient(cursor =>
+            cursor switch
+            {
+                null => new ListOutgoingPaymentsResponse
+                {
+                    Result = [MakeOutgoingPayment(1), MakeOutgoingPayment(2)],
+                    Pagination = new PageInfo
+                    {
+                        EndCursor = "cursor-1",
+                        HasNextPage = true,
+                        HasPreviousPage = false,
+                    },
+                },
+                "cursor-1" => new ListOutgoingPaymentsResponse
+                {
+                    Result = [MakeOutgoingPayment(3)],
+                    Pagination = new PageInfo
+                    {
+                        StartCursor = "cursor-1",
+                        EndCursor = "cursor-2",
+                        HasNextPage = false,
+                        HasPreviousPage = true,
+                    },
+                },
+                _ => throw new InvalidOperationException($"Unexpected cursor: {cursor}"),
+            }
+        );
 
     [Fact]
     public async Task ListOutgoingPaymentsAllAsync_FollowsCursorsAcrossAllPages()
@@ -307,9 +336,63 @@ public class ResourceClientBase_PagingTests
     }
 
     [Fact]
+    public async Task ListOutgoingPaymentsAllAsync_StartsFromCallerCursorAndKeepsFirst()
+    {
+        var (httpClient, requests) = CreateTwoPageOutgoingClient();
+        var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
+
+        var payments = new List<OutgoingPayment>();
+        await foreach (
+            var payment in client.ListOutgoingPaymentsAllAsync(
+                Args(),
+                new ListOutgoingPaymentQuery
+                {
+                    WalletAddress = "https://host-a.example/alice",
+                    Cursor = "cursor-1",
+                    First = 25,
+                }
+            )
+        )
+        {
+            payments.Add(payment);
+        }
+
+        payments.Should().HaveCount(1);
+        requests.Should().HaveCount(1);
+        GetQueryValue(requests[0], "cursor").Should().Be("cursor-1");
+        GetQueryValue(requests[0], "first").Should().Be("25");
+    }
+
+    [Fact]
+    public async Task ListOutgoingPaymentsAllAsync_ServerRepeatsCursor_Throws()
+    {
+        var (httpClient, _) = CreateClient(_ => new ListOutgoingPaymentsResponse
+        {
+            Result = [MakeOutgoingPayment(1)],
+            Pagination = new PageInfo
+            {
+                EndCursor = "stuck",
+                HasNextPage = true,
+                HasPreviousPage = false,
+            },
+        });
+        var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
+
+        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+        {
+            await foreach (
+                var _ in client.ListOutgoingPaymentsAllAsync(
+                    Args(),
+                    new ListOutgoingPaymentQuery { WalletAddress = "https://host-a.example/alice" }
+                )
+            ) { }
+        });
+    }
+
+    [Fact]
     public async Task ListOutgoingPaymentsAllAsync_LastSet_ThrowsArgumentException()
     {
-        var (httpClient, requests) = CreateTwoPageClient();
+        var (httpClient, requests) = CreateTwoPageOutgoingClient();
         var client = new ResourceClientBase(httpClient, new Uri("https://client.example"));
 
         await Assert.ThrowsAsync<ArgumentException>(async () =>
