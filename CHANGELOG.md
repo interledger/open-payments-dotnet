@@ -13,6 +13,7 @@ Versions are derived from git tags (`vX.Y.Z`) via MinVer.
 
 ### Changed
 - **Breaking:** all namespaces renamed from `OpenPayments.Sdk.*` to `Interledger.OpenPayments.*`, matching the package ID.
+- **Breaking:** namespaces reverted from `Interledger.OpenPayments.*` back to `OpenPayments.Sdk.*`. The NuGet `PackageId`s (`Interledger.OpenPayments`, `Interledger.OpenPayments.HttpSignatureUtils`) are unchanged, so the namespace and package identity intentionally no longer match.
 - **Breaking:** all client errors now throw a single `OpenPaymentsApiException` (status code, error code, raw body) instead of per-namespace `ApiException` types.
 - **Breaking:** `CompleteIncomingPaymentsAsync` → `CompleteIncomingPaymentAsync`; `ListOutgoingPaymentAsync` → `ListOutgoingPaymentsAsync`.
 - Request signing moved to an async `SigningHttpMessageHandler` on the HTTP pipeline (no more sync-over-async blocking).
