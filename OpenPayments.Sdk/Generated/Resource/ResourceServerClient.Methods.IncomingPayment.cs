@@ -1,9 +1,9 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
-using Interledger.OpenPayments;
+using OpenPayments.Sdk;
 
-namespace Interledger.OpenPayments.Generated.Resource;
+namespace OpenPayments.Sdk.Generated.Resource;
 
 public partial class ResourceServerClient
 {
@@ -30,7 +30,7 @@ public partial class ResourceServerClient
     /// <br/>The `incomingAmount` must use the same `assetCode` and `assetScale` as the wallet address.</param>
     /// <param name="accessToken">Access Token.</param>
     /// <returns>Incoming Payment Created</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<IncomingPaymentResponse> PostIncomingPaymentAsync(
         Uri baseUri,
         Body body,
@@ -154,7 +154,7 @@ public partial class ResourceServerClient
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Incoming Payment Found</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
         Uri baseUri,
         string accessToken,
@@ -276,7 +276,7 @@ public partial class ResourceServerClient
     /// <param name="first">The number of items to return after the cursor.</param>
     /// <param name="last">The number of items to return before the cursor.</param>
     /// <returns>OK</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public virtual async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
         Uri baseUri,
         string accessToken,
@@ -452,7 +452,7 @@ public partial class ResourceServerClient
     /// <param name="accessToken"></param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>OK</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
         Uri baseUri,
         string accessToken,

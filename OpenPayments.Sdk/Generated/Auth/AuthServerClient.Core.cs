@@ -1,6 +1,6 @@
-using Interledger.OpenPayments.Serialization;
+using OpenPayments.Sdk.Serialization;
 
-namespace Interledger.OpenPayments.Generated.Auth;
+namespace OpenPayments.Sdk.Generated.Auth;
 
 public partial class AuthServerClient : GeneratedClientBase
 {

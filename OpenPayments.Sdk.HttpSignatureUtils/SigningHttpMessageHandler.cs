@@ -1,6 +1,6 @@
 using NSec.Cryptography;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <summary>
 /// A <see cref="DelegatingHandler"/> that signs every outgoing request using HTTP Message

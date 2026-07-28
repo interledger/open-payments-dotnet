@@ -5,10 +5,10 @@ using AwesomeAssertions;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using Interledger.OpenPayments.Clients;
-using Interledger.OpenPayments.Generated.Resource;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Generated.Resource;
 
-namespace Interledger.OpenPayments.Tests.Clients;
+namespace OpenPayments.Sdk.Tests.Clients;
 
 public class ResourceClientBase_ConcurrencyTests
 {

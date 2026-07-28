@@ -1,5 +1,5 @@
-using Interledger.OpenPayments.Clients;
-using Interledger.OpenPayments.Extensions;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using NSec.Cryptography;
 

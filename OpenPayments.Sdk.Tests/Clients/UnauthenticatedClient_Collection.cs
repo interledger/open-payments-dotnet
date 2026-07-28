@@ -1,4 +1,4 @@
-namespace Interledger.OpenPayments.Tests.Clients;
+namespace OpenPayments.Sdk.Tests.Clients;
 
 [CollectionDefinition("UnauthenticatedClient")]
 public class UnauthenticatedClientCollection : ICollectionFixture<UnauthenticatedClientFixture>

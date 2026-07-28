@@ -1,8 +1,8 @@
 using NSec.Cryptography;
-using Interledger.OpenPayments.Clients;
-using Interledger.OpenPayments.Extensions;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
 
-namespace Interledger.OpenPayments.Configuration;
+namespace OpenPayments.Sdk.Configuration;
 
 /// <summary>
 /// Configuration options for registering OpenPayments clients into the dependency injection container.

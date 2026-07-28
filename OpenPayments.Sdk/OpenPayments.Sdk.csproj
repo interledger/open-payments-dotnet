@@ -6,10 +6,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Interledger.OpenPayments</AssemblyName>
-    <RootNamespace>Interledger.OpenPayments</RootNamespace>
+    <AssemblyName>OpenPayments.Sdk</AssemblyName>
+    <RootNamespace>OpenPayments.Sdk</RootNamespace>
     <PackageTags>interledger openpayments</PackageTags>
-    <Product>Interledger.OpenPayments</Product>
+    <Product>OpenPayments.Sdk</Product>
     <LangVersion>12</LangVersion>
     <Title>OpenPayments SDK</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>

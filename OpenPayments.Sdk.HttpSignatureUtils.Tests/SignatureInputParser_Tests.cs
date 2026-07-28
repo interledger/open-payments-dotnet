@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
+namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
 
 public class SignatureInputParser_Tests
 {

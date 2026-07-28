@@ -1,7 +1,7 @@
-namespace Interledger.OpenPayments;
+namespace OpenPayments.Sdk;
 
 /// <summary>
-/// The single exception type thrown by every Interledger.OpenPayments client (authenticated,
+/// The single exception type thrown by every OpenPayments.Sdk client (authenticated,
 /// unauthenticated, auth-server, resource-server, wallet-address) when a request fails
 /// or returns an unexpected response. Replaces the per-generated-namespace
 /// <c>ApiException</c>/<c>ApiException&lt;T&gt;</c> types and the ad-hoc

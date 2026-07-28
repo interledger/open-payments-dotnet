@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Interledger.OpenPayments.Serialization;
+namespace OpenPayments.Sdk.Serialization;
 
 /// <summary>
 /// The single contract resolver used for all Open Payments payloads. It relaxes the generated

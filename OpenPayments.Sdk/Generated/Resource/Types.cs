@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Interledger.OpenPayments.Generated.Resource
+namespace OpenPayments.Sdk.Generated.Resource
 {
     public partial class IncomingPaymentBody : Body
     {

@@ -3,10 +3,10 @@ using System.Text;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using Interledger.OpenPayments.Generated.Resource;
-using Interledger.OpenPayments.Generated.Wallet;
+using OpenPayments.Sdk.Generated.Resource;
+using OpenPayments.Sdk.Generated.Wallet;
 
-namespace Interledger.OpenPayments.Tests.Clients;
+namespace OpenPayments.Sdk.Tests.Clients;
 
 public class UnauthenticatedClientFixture
 {

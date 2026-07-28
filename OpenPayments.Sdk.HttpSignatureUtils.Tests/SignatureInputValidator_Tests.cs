@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using Xunit;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
+namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
 
 public class SignatureInputValidator_Tests
 {

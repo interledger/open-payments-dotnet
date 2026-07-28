@@ -1,6 +1,6 @@
 using AwesomeAssertions;
 
-namespace Interledger.OpenPayments.Tests;
+namespace OpenPayments.Sdk.Tests;
 
 public class OpenPaymentsApiExceptionTests
 {

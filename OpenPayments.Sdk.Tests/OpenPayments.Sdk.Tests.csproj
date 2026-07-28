@@ -5,11 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Interledger.OpenPayments.Tests</RootNamespace>
-    <AssemblyName>Interledger.OpenPayments.Tests</AssemblyName>
+    <RootNamespace>OpenPayments.Sdk.Tests</RootNamespace>
+    <AssemblyName>OpenPayments.Sdk.Tests</AssemblyName>
     <Authors />
-    <Company>Interledger.OpenPayments.Tests</Company>
-    <Product>Interledger.OpenPayments.Tests</Product>
+    <Company>OpenPayments.Sdk.Tests</Company>
+    <Product>OpenPayments.Sdk.Tests</Product>
   </PropertyGroup>
 
   <ItemGroup>

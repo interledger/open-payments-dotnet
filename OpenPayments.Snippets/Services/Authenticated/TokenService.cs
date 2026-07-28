@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
-using Interledger.OpenPayments.Clients;
-using Interledger.OpenPayments.Generated.Auth;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Snippets.Services.Authenticated;
 

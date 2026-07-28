@@ -3,7 +3,7 @@ using System.IO;
 using NSec.Cryptography;
 using Xunit;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
+namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
 
 public class KeyUtils_GenerateKey_Tests
 {

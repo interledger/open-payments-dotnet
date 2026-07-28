@@ -1,4 +1,4 @@
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <summary>
 /// Provides extension methods for configuring and adding signature-based authentication

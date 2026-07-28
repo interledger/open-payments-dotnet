@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Interledger.OpenPayments.Generated.Auth;
-using Interledger.OpenPayments.Generated.Resource;
-using Interledger.OpenPayments.Generated.Wallet;
-using Interledger.OpenPayments.Serialization;
-using Amount = Interledger.OpenPayments.Generated.Resource.Amount;
+using OpenPayments.Sdk.Generated.Auth;
+using OpenPayments.Sdk.Generated.Resource;
+using OpenPayments.Sdk.Generated.Wallet;
+using OpenPayments.Sdk.Serialization;
+using Amount = OpenPayments.Sdk.Generated.Resource.Amount;
 
 namespace OpenPayments.Snippets.Tests.Infrastructure;
 
@@ -194,7 +194,7 @@ public sealed class FakeOpenPaymentsServer : IDisposable
             return;
         }
 
-        var body = await ReadBodyAsync<Interledger.OpenPayments.Generated.Resource.Body>(context.Request);
+        var body = await ReadBodyAsync<OpenPayments.Sdk.Generated.Resource.Body>(context.Request);
         var id = new Uri(BaseAddress, $"incoming-payments/{NewId()}");
         var receivedAmountCurrency = body.IncomingAmount ?? new Amount("0", "USD", 2);
 

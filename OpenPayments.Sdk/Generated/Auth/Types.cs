@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
-namespace Interledger.OpenPayments.Generated.Auth
+namespace OpenPayments.Sdk.Generated.Auth
 {
     public partial class GrantCreateBody
     {

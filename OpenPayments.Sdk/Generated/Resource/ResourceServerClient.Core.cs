@@ -1,6 +1,6 @@
-using Interledger.OpenPayments.Serialization;
+using OpenPayments.Sdk.Serialization;
 
-namespace Interledger.OpenPayments.Generated.Resource;
+namespace OpenPayments.Sdk.Generated.Resource;
 
 public partial class ResourceServerClient : GeneratedClientBase
 {

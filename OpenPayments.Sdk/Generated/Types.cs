@@ -1,4 +1,4 @@
-namespace Interledger.OpenPayments.Generated
+namespace OpenPayments.Sdk.Generated
 {
     public abstract partial class Anonymous
     {

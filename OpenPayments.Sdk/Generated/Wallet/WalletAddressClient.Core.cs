@@ -1,6 +1,6 @@
-using Interledger.OpenPayments.Serialization;
+using OpenPayments.Sdk.Serialization;
 
-namespace Interledger.OpenPayments.Generated.Wallet;
+namespace OpenPayments.Sdk.Generated.Wallet;
 
 public partial class WalletAddressClient : GeneratedClientBase
 {

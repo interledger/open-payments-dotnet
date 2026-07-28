@@ -3,9 +3,9 @@ using System.Text;
 using AwesomeAssertions;
 using Moq;
 using Moq.Protected;
-using Interledger.OpenPayments.Clients;
+using OpenPayments.Sdk.Clients;
 
-namespace Interledger.OpenPayments.Tests.Clients;
+namespace OpenPayments.Sdk.Tests.Clients;
 
 public class SerializationDrift_Tests
 {

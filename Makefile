@@ -7,21 +7,21 @@ tools:
 
 auth-server-generate: tools
 	npx swagger-cli bundle open-payments-specifications/openapi/auth-server.yaml -o OpenPayments.Sdk/tmp/auth-bundled.json -t json && \
-	dotnet nswag openapi2csclient /input:OpenPayments.Sdk/tmp/auth-bundled.json /output:OpenPayments.Sdk/Generated/Auth/AuthServerClient.g.cs /namespace:Interledger.OpenPayments.Generated.Auth /classname:AuthServerClient $(NSWAG_FLAGS) && \
+	dotnet nswag openapi2csclient /input:OpenPayments.Sdk/tmp/auth-bundled.json /output:OpenPayments.Sdk/Generated/Auth/AuthServerClient.g.cs /namespace:OpenPayments.Sdk.Generated.Auth /classname:AuthServerClient $(NSWAG_FLAGS) && \
 	rm -rf OpenPayments.Sdk/tmp/auth-bundled.json
 
 as-models: auth-server-generate
 
 resource-server-generate: tools
 	npx swagger-cli bundle open-payments-specifications/openapi/resource-server.yaml -o OpenPayments.Sdk/tmp/resource-bundled.json -t json && \
-	dotnet nswag openapi2csclient /input:OpenPayments.Sdk/tmp/resource-bundled.json /output:OpenPayments.Sdk/Generated/Resource/ResourceServerClient.g.cs /namespace:Interledger.OpenPayments.Generated.Resource /classname:ResourceServerClient $(NSWAG_FLAGS) && \
+	dotnet nswag openapi2csclient /input:OpenPayments.Sdk/tmp/resource-bundled.json /output:OpenPayments.Sdk/Generated/Resource/ResourceServerClient.g.cs /namespace:OpenPayments.Sdk.Generated.Resource /classname:ResourceServerClient $(NSWAG_FLAGS) && \
 	rm -rf OpenPayments.Sdk/tmp/resource-bundled.json
 
 rs-models: resource-server-generate
 
 wallet-address-models: tools
 	npx swagger-cli bundle open-payments-specifications/openapi/wallet-address-server.yaml -o OpenPayments.Sdk/tmp/wallet-bundled.json -t json && \
-	dotnet nswag openapi2csclient /input:OpenPayments.Sdk/tmp/wallet-bundled.json /output:OpenPayments.Sdk/Generated/Wallet/WalletAddressClient.g.cs /namespace:Interledger.OpenPayments.Generated.Wallet /classname:WalletAddressClient $(NSWAG_FLAGS) && \
+	dotnet nswag openapi2csclient /input:OpenPayments.Sdk/tmp/wallet-bundled.json /output:OpenPayments.Sdk/Generated/Wallet/WalletAddressClient.g.cs /namespace:OpenPayments.Sdk.Generated.Wallet /classname:WalletAddressClient $(NSWAG_FLAGS) && \
 	rm -rf OpenPayments.Sdk/tmp/wallet-bundled.json
 
 wa-models: wallet-address-models

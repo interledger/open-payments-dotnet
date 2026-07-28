@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using Interledger.OpenPayments;
+using OpenPayments.Sdk;
 
-namespace Interledger.OpenPayments.Generated.Auth;
+namespace OpenPayments.Sdk.Generated.Auth;
 
 public partial class AuthServerClient
 {
@@ -16,7 +16,7 @@ public partial class AuthServerClient
     /// Make a new grant request
     /// </remarks>
     /// <returns>OK</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<AuthResponse> CreateGrantAsync(
         Uri baseUri,
         GrantCreateBody body,
@@ -136,7 +136,7 @@ public partial class AuthServerClient
     /// Continue a grant request during or after user interaction.
     /// </remarks>
     /// <returns>Success</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<AuthResponse> ContinueGrantAsync(
         Uri continueUrl,
         string accessToken,
@@ -257,7 +257,7 @@ public partial class AuthServerClient
     /// Cancel a grant request or delete a grant client side.
     /// </remarks>
     /// <returns>No Content</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task CancelGrantAsync(
         Uri continueUrl,
         string accessToken,

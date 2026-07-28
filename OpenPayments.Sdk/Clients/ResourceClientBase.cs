@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
-using Interledger.OpenPayments.Generated.Resource;
+using OpenPayments.Sdk.Generated.Resource;
 
-namespace Interledger.OpenPayments.Clients;
+namespace OpenPayments.Sdk.Clients;
 
 /// <summary>Default <see cref="IResourceClientBase"/> implementation over <see cref="ResourceServerClient"/>.</summary>
 public class ResourceClientBase : IResourceClientBase

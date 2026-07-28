@@ -1,9 +1,9 @@
 using AwesomeAssertions;
 using Newtonsoft.Json;
-using Interledger.OpenPayments.Generated.Auth;
-using Interledger.OpenPayments.Serialization;
+using OpenPayments.Sdk.Generated.Auth;
+using OpenPayments.Sdk.Serialization;
 
-namespace Interledger.OpenPayments.Tests.Clients;
+namespace OpenPayments.Sdk.Tests.Clients;
 
 public class SerializationNullOmission_Tests
 {

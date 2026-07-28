@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using NSec.Cryptography;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <summary>
 /// Represents the arguments for generating a key, including optional directory and filename information.

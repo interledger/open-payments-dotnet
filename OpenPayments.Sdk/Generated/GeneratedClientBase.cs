@@ -1,7 +1,7 @@
 using System.Globalization;
 using Newtonsoft.Json;
 
-namespace Interledger.OpenPayments.Generated;
+namespace OpenPayments.Sdk.Generated;
 
 /// <summary>
 /// Shared HTTP and serialization plumbing for the hand-written API client partial classes

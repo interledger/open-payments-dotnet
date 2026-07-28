@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Interledger.OpenPayments.HttpSignatureUtils.Tests</RootNamespace>
-    <AssemblyName>Interledger.OpenPayments.HttpSignatureUtils.Tests</AssemblyName>
+    <RootNamespace>OpenPayments.Sdk.HttpSignatureUtils.Tests</RootNamespace>
+    <AssemblyName>OpenPayments.Sdk.HttpSignatureUtils.Tests</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.collector"/>

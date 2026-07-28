@@ -1,9 +1,9 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
-using Interledger.OpenPayments;
+using OpenPayments.Sdk;
 
-namespace Interledger.OpenPayments.Generated.Resource;
+namespace OpenPayments.Sdk.Generated.Resource;
 
 public partial class ResourceServerClient
 {
@@ -20,7 +20,7 @@ public partial class ResourceServerClient
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Quote Created</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<QuoteResponse> PostQuoteAsync(
         Uri baseUri,
         QuoteBody body,
@@ -145,7 +145,7 @@ public partial class ResourceServerClient
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Quote Found</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public virtual async Task<QuoteResponse> GetQuoteAsync(
         Uri baseUri,
         string accessToken,

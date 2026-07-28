@@ -1,8 +1,8 @@
-using Interledger.OpenPayments.Configuration;
-using Interledger.OpenPayments.Extensions;
+using OpenPayments.Sdk.Configuration;
+using OpenPayments.Sdk.Extensions;
 using Xunit;
 
-namespace Interledger.OpenPayments.Tests.Configuration;
+namespace OpenPayments.Sdk.Tests.Configuration;
 
 public class OpenPaymentsOptions_Tests
 {

@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using NSec.Cryptography;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 internal static class KeyExtensions
 {

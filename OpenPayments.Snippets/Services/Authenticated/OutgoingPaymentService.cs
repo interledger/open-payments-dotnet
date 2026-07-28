@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
-using Interledger.OpenPayments.Clients;
-using Interledger.OpenPayments.Generated.Auth;
-using Interledger.OpenPayments.Generated.Resource;
-using Amount = Interledger.OpenPayments.Generated.Auth.Amount;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Generated.Auth;
+using OpenPayments.Sdk.Generated.Resource;
+using Amount = OpenPayments.Sdk.Generated.Auth.Amount;
 
 namespace OpenPayments.Snippets.Services.Authenticated;
 
@@ -71,7 +71,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
             {
                 WalletAddress = waDetails.Id,
                 IncomingPayment = new Uri(incomingPaymentUrl),
-                DebitAmount = new Interledger.OpenPayments.Generated.Resource.Amount(debitAmount, "EUR"),
+                DebitAmount = new OpenPayments.Sdk.Generated.Resource.Amount(debitAmount, "EUR"),
             };
         else if (quoteUrl != null)
             body = new OutgoingPaymentBodyFromQuote()

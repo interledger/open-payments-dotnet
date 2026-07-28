@@ -1,8 +1,8 @@
 using System.Net;
 using AwesomeAssertions;
-using Interledger.OpenPayments.Clients;
+using OpenPayments.Sdk.Clients;
 
-namespace Interledger.OpenPayments.Tests.Clients;
+namespace OpenPayments.Sdk.Tests.Clients;
 
 public class UnauthenticatedClient_Tests
 {

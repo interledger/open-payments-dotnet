@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils.Tests;
+namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
 
 public class SignatureInputBuilder_Tests
 {

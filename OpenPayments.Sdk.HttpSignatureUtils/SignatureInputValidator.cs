@@ -1,6 +1,6 @@
-using Interledger.OpenPayments.HttpSignatureUtils;
+using OpenPayments.Sdk.HttpSignatureUtils;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <inheritdoc cref="ISignatureInputValidator"/>
 public class SignatureInputValidator : ISignatureInputValidator

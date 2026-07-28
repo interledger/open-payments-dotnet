@@ -1,4 +1,4 @@
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <summary>
 /// Minimal PKCS#8 (RFC 5208 / RFC 8410) encoding and decoding for Ed25519 private keys,

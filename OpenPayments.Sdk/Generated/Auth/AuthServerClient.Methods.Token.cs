@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
-using Interledger.OpenPayments;
+using OpenPayments.Sdk;
 
-namespace Interledger.OpenPayments.Generated.Auth;
+namespace OpenPayments.Sdk.Generated.Auth;
 
 public partial class AuthServerClient
 {
@@ -15,7 +15,7 @@ public partial class AuthServerClient
     /// Management endpoint to rotate access token.
     /// </remarks>
     /// <returns>OK</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task<RotateTokenResponse> RotateTokenAsync(
         Uri tokenUrl,
         string accessToken,
@@ -138,7 +138,7 @@ public partial class AuthServerClient
     /// Management endpoint to revoke access token.
     /// </remarks>
     /// <returns>No Content</returns>
-    /// <exception cref="Interledger.OpenPayments.OpenPaymentsApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.OpenPaymentsApiException">A server side error occurred.</exception>
     public async Task RevokeTokenAsync(
         Uri tokenUrl,
         string accessToken,

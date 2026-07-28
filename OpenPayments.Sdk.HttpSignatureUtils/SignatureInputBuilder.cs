@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Interledger.OpenPayments.HttpSignatureUtils;
+namespace OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <inheritdoc cref="ISignatureInputBuilder"/>
 public class SignatureInputBuilder : ISignatureInputBuilder

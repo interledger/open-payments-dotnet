@@ -1,8 +1,8 @@
-using Interledger.OpenPayments.Clients;
-using Interledger.OpenPayments.Generated.Auth;
-using Interledger.OpenPayments.Generated.Resource;
-using AuthAmount = Interledger.OpenPayments.Generated.Auth.Amount;
-using Amount = Interledger.OpenPayments.Generated.Resource.Amount;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Generated.Auth;
+using OpenPayments.Sdk.Generated.Resource;
+using AuthAmount = OpenPayments.Sdk.Generated.Auth.Amount;
+using Amount = OpenPayments.Sdk.Generated.Resource.Amount;
 
 namespace OpenPayments.Snippets.Guides;
 

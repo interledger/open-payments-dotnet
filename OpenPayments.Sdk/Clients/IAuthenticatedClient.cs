@@ -1,7 +1,7 @@
-using Interledger.OpenPayments.Generated.Auth;
-using Interledger.OpenPayments.Generated.Resource;
+using OpenPayments.Sdk.Generated.Auth;
+using OpenPayments.Sdk.Generated.Resource;
 
-namespace Interledger.OpenPayments.Clients;
+namespace OpenPayments.Sdk.Clients;
 
 /// <summary>
 /// Represents a client used to interact with Open Payments endpoints
