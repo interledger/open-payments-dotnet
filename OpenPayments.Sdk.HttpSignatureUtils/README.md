@@ -12,7 +12,7 @@ the Open Payments .NET SDK — install that package instead if you want the full
 directly when you only need key management or HTTP signature primitives.
 
 ```csharp
-using Interledger.OpenPayments.HttpSignatureUtils;
+using OpenPayments.Sdk.HttpSignatureUtils;
 
 var key = KeyUtils.LoadOrGenerateKey("private-key.pem");
 var jwk = KeyUtils.GenerateJwk("my-key-id", key);
