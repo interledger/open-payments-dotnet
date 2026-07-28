@@ -60,7 +60,7 @@ jobs:
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Generate coverage report
-        run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:"Html;TextSummary" -classfilters:"-Interledger.OpenPayments.Generated.*"
+        run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:"Html;TextSummary" -classfilters:"-OpenPayments.Sdk.Generated.*"
 
       - name: Enforce per-assembly coverage floors
         run: |
@@ -77,8 +77,8 @@ jobs:
               exit 1
             fi
           }
-          check_assembly "Interledger.OpenPayments" 60
-          check_assembly "Interledger.OpenPayments.HttpSignatureUtils" 60
+          check_assembly "OpenPayments.Sdk" 60
+          check_assembly "OpenPayments.Sdk.HttpSignatureUtils" 60
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
