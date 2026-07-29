@@ -245,4 +245,18 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
             .Should()
             .Be("https://host-a.example/outgoing-payments");
     }
+
+    [Fact]
+    public async Task RequestGrantAsync_RequestsThePathfulAuthServerUrlVerbatim()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(_fixture.ApprovedGrantResponse);
+        var client = CreateClient(http);
+
+        await client.RequestGrantAsync(
+            new RequestArgs { Url = new Uri("https://auth-a.example/gnap") },
+            _fixture.RequestGrantBody
+        );
+
+        handler.LastRequestUri.AbsoluteUri.Should().Be("https://auth-a.example/gnap");
+    }
 }
