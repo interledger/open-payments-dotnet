@@ -26,6 +26,13 @@ jobs:
         with:
           submodules: true
 
+      - name: Check for shared mutable BaseUrl
+        run: |
+          if grep -rn "BaseUrl =" OpenPayments.Sdk/Clients/; then
+            echo "::error::Writes to BaseUrl in OpenPayments.Sdk/Clients/ reintroduce the singleton race from issue #16. Pass the target URL per call instead."
+            exit 1
+          fi
+
       - name: Setup .NET 9.0 SDK
         uses: actions/setup-dotnet@v4
         with:
