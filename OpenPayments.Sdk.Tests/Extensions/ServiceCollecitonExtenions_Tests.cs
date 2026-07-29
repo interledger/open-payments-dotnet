@@ -1,12 +1,32 @@
+using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Configuration;
 using OpenPayments.Sdk.Extensions;
 
 namespace OpenPayments.Sdk.Tests.Extensions;
 
 public class ServiceCollectionExtensions_Tests
 {
+    /// <summary>
+    /// Captures the request as the inner handler sees it, so tests can inspect the headers
+    /// that actually reach the end of the pipeline for a given named client.
+    /// </summary>
+    private sealed class SpyHandler : HttpMessageHandler
+    {
+        public HttpRequestMessage? Request { get; private set; }
+
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
+        {
+            Request = request;
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+        }
+    }
+
     [Fact]
     public void UseOpenPayments_WithUseUnauthenticatedClient_RegistersServices()
     {
@@ -52,14 +72,64 @@ public class ServiceCollectionExtensions_Tests
     }
 
     [Fact]
-    public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsException()
+    public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsAtRegistration()
     {
         var services = new ServiceCollection();
 
-        services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; });
-        var provider = services.BuildServiceProvider();
+        Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; })
+        );
+    }
 
-        Assert.Throws<InvalidOperationException>(() => provider.GetService<IAuthenticatedClient>());
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutPrivateKey_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("https://example.com");
+                options.KeyId = "1234";
+            })
+        );
+
+        Assert.Contains("PrivateKey", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutKeyId_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("https://example.com");
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            })
+        );
+
+        Assert.Contains("KeyId", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutClientUrl_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.KeyId = "1234";
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            })
+        );
+
+        Assert.Contains("ClientUrl", ex.Message);
     }
 
     [Fact]
@@ -84,5 +154,61 @@ public class ServiceCollectionExtensions_Tests
 
         var factory = provider.GetService<IHttpClientFactory>();
         Assert.NotNull(factory);
+    }
+
+    [Fact]
+    public async Task UseOpenPayments_SignedNamedClient_AddsSignatureHeaders()
+    {
+        var services = new ServiceCollection();
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+
+        var spy = new SpyHandler();
+        services
+            .AddHttpClient(OpenPaymentsHttpClients.Signed)
+            .ConfigurePrimaryHttpMessageHandler(() => spy);
+
+        var provider = services.BuildServiceProvider();
+        var factory = provider.GetRequiredService<IHttpClientFactory>();
+        var client = factory.CreateClient(OpenPaymentsHttpClients.Signed);
+
+        await client.GetAsync("https://example.com/resource");
+
+        Assert.NotNull(spy.Request);
+        Assert.True(spy.Request!.Headers.Contains("Signature"));
+        Assert.True(spy.Request.Headers.Contains("Signature-Input"));
+    }
+
+    [Fact]
+    public async Task UseOpenPayments_UnsignedNamedClient_DoesNotAddSignatureHeaders()
+    {
+        var services = new ServiceCollection();
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+
+        var spy = new SpyHandler();
+        services
+            .AddHttpClient(OpenPaymentsHttpClients.Unsigned)
+            .ConfigurePrimaryHttpMessageHandler(() => spy);
+
+        var provider = services.BuildServiceProvider();
+        var factory = provider.GetRequiredService<IHttpClientFactory>();
+        var client = factory.CreateClient(OpenPaymentsHttpClients.Unsigned);
+
+        await client.GetAsync("https://example.com/wallet-address");
+
+        Assert.NotNull(spy.Request);
+        Assert.False(spy.Request!.Headers.Contains("Signature"));
+        Assert.False(spy.Request.Headers.Contains("Signature-Input"));
     }
 }
