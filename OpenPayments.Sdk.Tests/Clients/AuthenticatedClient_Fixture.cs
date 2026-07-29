@@ -271,4 +271,18 @@ public class AuthenticatedClientFixture
 
         return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
     }
+
+    /// <summary>
+    /// Builds a client whose handler records request URIs. Deliberately leaves
+    /// <see cref="HttpClient.BaseAddress"/> unset: every SDK request must carry an absolute URI,
+    /// and a relative one should fail loudly rather than be silently resolved.
+    /// </summary>
+    public (HttpClient Client, RecordingHandler Handler) CreateRecordingHttpClient(
+        object? responseObject = null,
+        HttpStatusCode? code = null
+    )
+    {
+        var handler = new RecordingHandler(responseObject, code);
+        return (new HttpClient(handler), handler);
+    }
 }
