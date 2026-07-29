@@ -99,9 +99,12 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.PostOutgoingPaymentAsync(body, requestArgs.AccessToken, cancellationToken);
+        return _client.PostOutgoingPaymentAsync(
+            requestArgs.Url,
+            body,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     public Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(
@@ -109,9 +112,11 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.GetOutgoingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.GetOutgoingPaymentAsync(
+            requestArgs.Url,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
@@ -120,9 +125,8 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
         return _client.ListOutgoingPaymentsAsync(
+            requestArgs.Url,
             requestArgs.AccessToken,
             query.WalletAddress,
             query.Cursor,

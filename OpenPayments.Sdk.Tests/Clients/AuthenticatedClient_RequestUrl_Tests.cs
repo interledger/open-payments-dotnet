@@ -178,4 +178,71 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
 
         handler.LastRequestUri.AbsoluteUri.Should().Be("https://host-a.example/quotes/1");
     }
+
+    [Fact]
+    public async Task CreateOutgoingPaymentAsync_AppendsOutgoingPaymentsToTheResourceServer()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateOutgoingPaymentResponse,
+            HttpStatusCode.Created
+        );
+        var client = CreateClient(http);
+
+        await client.CreateOutgoingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example"),
+                AccessToken = "token",
+            },
+            _fixture.CreateOutgoingPaymentBodyFromQuote
+        );
+
+        handler
+            .LastRequestUri.AbsoluteUri.Should()
+            .Be("https://host-a.example/outgoing-payments");
+    }
+
+    [Fact]
+    public async Task GetOutgoingPaymentAsync_RequestsTheResourceUrlVerbatim()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.GetOutgoingPaymentResponse
+        );
+        var client = CreateClient(http);
+
+        await client.GetOutgoingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example/outgoing-payments/1"),
+                AccessToken = "token",
+            }
+        );
+
+        handler
+            .LastRequestUri.AbsoluteUri.Should()
+            .Be("https://host-a.example/outgoing-payments/1");
+    }
+
+    [Fact]
+    public async Task ListOutgoingPaymentsAsync_AppendsOutgoingPaymentsToTheResourceServer()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.ListOutgoingPaymentsResponse
+        );
+        var client = CreateClient(http);
+
+        await client.ListOutgoingPaymentsAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example"),
+                AccessToken = "token",
+            },
+            new ListOutgoingPaymentQuery { WalletAddress = "https://host-a.example/wallet/1" }
+        );
+
+        handler
+            .LastRequestUri.GetLeftPart(UriPartial.Path)
+            .Should()
+            .Be("https://host-a.example/outgoing-payments");
+    }
 }

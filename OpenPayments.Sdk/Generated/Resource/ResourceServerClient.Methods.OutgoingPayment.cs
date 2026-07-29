@@ -24,6 +24,7 @@ public partial class ResourceServerClient
     /// <returns>Outgoing Payment Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<OutgoingPaymentWithSpentAmountsResponse> PostOutgoingPaymentAsync(
+        Uri resourceServerUrl,
         OutgoingPaymentBody body,
         string accessToken,
         CancellationToken cancellationToken
@@ -40,10 +41,7 @@ public partial class ResourceServerClient
         request.Method = new HttpMethod("POST");
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("outgoing-payments");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "outgoing-payments"));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -147,6 +145,7 @@ public partial class ResourceServerClient
     /// <returns>Outgoing Payment Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<OutgoingPaymentResponse> GetOutgoingPaymentAsync(
+        Uri outgoingPaymentUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -159,7 +158,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(outgoingPaymentUrl.ToString());
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -267,6 +266,7 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
+        Uri resourceServerUrl,
         string accessToken,
         string walletAddress,
         string? cursor,
@@ -284,10 +284,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("outgoing-payments");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "outgoing-payments"));
         urlBuilder.Append('?');
         urlBuilder
             .Append(Uri.EscapeDataString("wallet-address"))
