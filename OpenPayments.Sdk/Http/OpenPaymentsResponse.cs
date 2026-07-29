@@ -76,15 +76,10 @@ internal static class OpenPaymentsResponse
     private static async Task<string> ReadBodyAsync(
         HttpResponseMessage response,
         CancellationToken cancellationToken
-    )
-    {
-        if (response.Content is null)
-            return string.Empty;
-
-        return await response
+    ) =>
+        await response
             .Content.ReadAsStringAsync(cancellationToken)
             .ConfigureAwait(false);
-    }
 
     /// <summary>
     /// Best-effort probe for the Open Payments error shape. Never throws: a body that is not JSON,
@@ -118,29 +113,11 @@ internal static class OpenPaymentsResponse
     }
 
     /// <summary>
-    /// Safely extracts a string value from a JToken, returning null if the token is not a string
-    /// or if the cast throws (e.g., when the token is an object or array).
+    /// Extracts a string value from a JToken, returning null unless the token is a JSON string
+    /// (e.g., when the token is null, a number, a boolean, an object, or an array).
     /// </summary>
-    private static string? TryGetStringValue(JToken? token)
-    {
-        if (token is null)
-            return null;
-
-        try
-        {
-            // Only attempt conversion if the token is a scalar type.
-            if (token.Type == JTokenType.String)
-                return (string?)token;
-
-            // For other scalar types (Null, Boolean, etc.), return null.
-            return null;
-        }
-        catch (ArgumentException)
-        {
-            // If conversion fails for any reason, return null.
-            return null;
-        }
-    }
+    private static string? TryGetStringValue(JToken? token) =>
+        token?.Type == JTokenType.String ? (string?)token : null;
 
     /// <summary>
     /// Reads <c>Retry-After</c> in either permitted form. A date already in the past is clamped to
