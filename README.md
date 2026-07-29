@@ -37,6 +37,55 @@ Never heard of Interledger before? Or would you like to learn more? Here are som
 - [Open Payments](https://openpayments.dev/)
 - [Web monetization](https://webmonetization.org/)
 
+## Error handling
+
+Every client method throws a single exception type, `OpenPaymentsApiException`, whenever a request
+fails — on any non-2xx response, and on a 2xx whose body is empty or cannot be deserialized.
+
+```csharp
+using OpenPayments.Sdk.Exceptions;
+
+try
+{
+    var quote = await client.CreateQuoteAsync(requestArgs, quoteBody);
+}
+catch (OpenPaymentsApiException ex) when (ex.StatusCode == 429)
+{
+    // The server asked us to slow down. RetryAfter is null if it sent no usable hint.
+    await Task.Delay(ex.RetryAfter ?? TimeSpan.FromSeconds(5));
+}
+catch (OpenPaymentsApiException ex)
+{
+    logger.LogError(
+        "Open Payments call failed: {Status} {Code} {Description}. Body: {Body}",
+        ex.StatusCode,
+        ex.ErrorCode,
+        ex.Description,
+        ex.ResponseBody
+    );
+    throw;
+}
+```
+
+| Property | Type | Notes |
+|---|---|---|
+| `StatusCode` | `int` | The status the server returned. On a malformed success response this is the 2xx it sent. |
+| `ErrorCode` | `string?` | The machine-readable code from the body, e.g. `invalid_request`, `too_fast`, `unauthorized`. |
+| `Description` | `string?` | The human-readable description from the body. |
+| `ResponseBody` | `string?` | The raw body, verbatim and untruncated. |
+| `Headers` | `IReadOnlyDictionary<string, IEnumerable<string>>` | Response headers. Never null. |
+| `RetryAfter` | `TimeSpan?` | Parsed from `Retry-After`. Commonly present on 429 and 503. |
+
+`ErrorCode` and `Description` are `null` when the server returns something other than the Open
+Payments error shape — an HTML page from a gateway, an empty body, a rate-limit response with no
+payload. `ResponseBody` is always the place to look in that case. The SDK never retries on your
+behalf; `RetryAfter` is provided so you can.
+
+> **Breaking change.** `OpenPaymentsApiException` replaces the generated `ApiException` and
+> `ApiException<ErrorResponse>` types, as well as the `HttpRequestException` and
+> `InvalidOperationException` that unauthenticated calls used to throw. None of those escape client
+> methods any more.
+
 ## Contributing
 
 Please read the [contribution guidelines](.github/contributing.md) before submitting contributions. All contributions must adhere to our [code of conduct](.github/code_of_conduct.md).
