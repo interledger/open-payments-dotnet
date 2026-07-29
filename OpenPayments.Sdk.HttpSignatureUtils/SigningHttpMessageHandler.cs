@@ -17,7 +17,7 @@ public sealed class SigningHttpMessageHandler : DelegatingHandler
     /// </summary>
     /// <param name="privateKey">
     /// Private key used to sign. Not owned by this handler and never disposed by it:
-    /// <see cref="IHttpClientFactory"/> rotates handler instances, and a disposed key would
+    /// <c>IHttpClientFactory</c> rotates handler instances, and a disposed key would
     /// break every request after the first rotation.
     /// </param>
     /// <param name="keyId">Key ID advertised in the <c>Signature-Input</c> header.</param>
