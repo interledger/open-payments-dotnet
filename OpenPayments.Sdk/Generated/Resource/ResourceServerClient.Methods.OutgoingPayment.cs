@@ -14,6 +14,7 @@ public partial class ResourceServerClient
     /// <br/>
     /// <br/>Once created, it is already authorized and SHOULD be processed immediately. If payment fails, the Account Servicing Entity must mark the **outgoing payment** as `failed`.
     /// </remarks>
+    /// <param name="resourceServerUrl">The resource server URL to which the outgoing-payments segment will be appended.</param>
     /// <param name="body">A subset of the outgoing payments schema is accepted as input to create a new outgoing payment.
     /// <br/>
     /// <br/>The `debitAmount` must use the same `assetCode` and `assetScale` as the wallet address.
@@ -140,6 +141,7 @@ public partial class ResourceServerClient
     /// <remarks>
     /// A client can fetch the latest state of an outgoing payment.
     /// </remarks>
+    /// <param name="outgoingPaymentUrl">The absolute URL of the outgoing payment to retrieve.</param>
     /// <param name="accessToken">Access Token</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Outgoing Payment Found</returns>
@@ -257,6 +259,7 @@ public partial class ResourceServerClient
     /// <remarks>
     /// List all outgoing payments on the wallet address
     /// </remarks>
+    /// <param name="resourceServerUrl">The resource server URL to which the outgoing-payments segment will be appended.</param>
     /// <param name="accessToken">Access Token</param>
     /// <param name="walletAddress">URL of a wallet address hosted by a Rafiki instance.</param>
     /// <param name="cursor">The cursor key to list from.</param>
