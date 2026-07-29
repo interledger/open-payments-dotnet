@@ -34,10 +34,12 @@ internal static class OpenPaymentsResponse
     /// <see cref="OpenPaymentsApiException"/> — carrying the 2xx status the server actually returned
     /// and the raw body — when the body is empty, deserializes to null, or is malformed.
     /// </summary>
+    /// <param name="response">The HTTP response to read.</param>
     /// <param name="settings">
     /// The calling client's serializer settings, or <see langword="null"/> to use the
     /// <see cref="JsonConvert"/> defaults.
     /// </param>
+    /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     public static async Task<T> ReadRequiredAsync<T>(
         HttpResponseMessage response,
         JsonSerializerSettings? settings,
