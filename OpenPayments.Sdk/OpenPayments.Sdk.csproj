@@ -8,7 +8,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1591</NoWarn>
     <AssemblyName>Interledger.OpenPayments</AssemblyName>
     <RootNamespace>Interledger.OpenPayments</RootNamespace>
     <RepositoryUrl>https://github.com/interledger/open-payments-dotnet</RepositoryUrl>
