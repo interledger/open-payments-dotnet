@@ -17,11 +17,26 @@ public class OpenPaymentsOptions
     /// </summary>
     public bool UseUnauthenticatedClient { get; set; }
 
+    /// <summary>
+    /// Indicates whether the authenticated client (<c>IAuthenticatedClient</c>) should be registered.
+    /// </summary>
     public bool UseAuthenticatedClient { get; set; }
 
+    /// <summary>
+    /// Key identifier (<c>kid</c>) associated with <see cref="PrivateKey"/>, sent alongside signed
+    /// requests. Required when <see cref="UseAuthenticatedClient"/> is <c>true</c>.
+    /// </summary>
     public string? KeyId { get; set; }
 
+    /// <summary>
+    /// Private key used to sign requests made by the authenticated client. Required when
+    /// <see cref="UseAuthenticatedClient"/> is <c>true</c>.
+    /// </summary>
     public Key? PrivateKey { get; set; }
 
+    /// <summary>
+    /// The client's own wallet address, used to identify the client making grant requests. Required when
+    /// <see cref="UseAuthenticatedClient"/> is <c>true</c>.
+    /// </summary>
     public Uri? ClientUrl { get; set; }
 }
