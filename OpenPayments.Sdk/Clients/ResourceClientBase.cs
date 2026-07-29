@@ -6,7 +6,7 @@ namespace OpenPayments.Sdk.Clients;
 /// <summary>
 /// Default <see cref="IResourceClientBase"/> implementation. Wraps a signed
 /// <see cref="ResourceServerClient"/>, rewriting its base URL on every call from
-/// <see cref="AuthRequestArgs.Url"/> since a single resource server client is shared across requests to
+/// <see cref="RequestArgs.Url"/> since a single resource server client is shared across requests to
 /// different resource servers.
 /// </summary>
 public class ResourceClientBase : IResourceClientBase
