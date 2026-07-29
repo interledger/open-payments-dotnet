@@ -1,6 +1,6 @@
+using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
-using System.Net;
 using OpenPayments.Sdk.Exceptions;
 
 namespace OpenPayments.Sdk.Tests.Clients;
