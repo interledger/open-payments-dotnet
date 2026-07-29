@@ -1,5 +1,6 @@
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -26,5 +27,116 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
         );
 
         handler.LastRequestUri.AbsoluteUri.Should().Be("https://auth-a.example/token/abc");
+    }
+
+    [Fact]
+    public async Task CreateIncomingPaymentAsync_AppendsIncomingPaymentsToTheResourceServer()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateIncomingPaymentResponse,
+            System.Net.HttpStatusCode.Created
+        );
+        var client = CreateClient(http);
+
+        await client.CreateIncomingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example"),
+                AccessToken = "token",
+            },
+            _fixture.CreateIncomingPaymentBody
+        );
+
+        handler
+            .LastRequestUri.AbsoluteUri.Should()
+            .Be("https://host-a.example/incoming-payments");
+    }
+
+    [Fact]
+    public async Task CreateIncomingPaymentAsync_DoesNotDoubleSlashWhenResourceServerHasTrailingSlash()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateIncomingPaymentResponse,
+            System.Net.HttpStatusCode.Created
+        );
+        var client = CreateClient(http);
+
+        await client.CreateIncomingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example/resource/"),
+                AccessToken = "token",
+            },
+            _fixture.CreateIncomingPaymentBody
+        );
+
+        handler
+            .LastRequestUri.AbsoluteUri.Should()
+            .Be("https://host-a.example/resource/incoming-payments");
+    }
+
+    [Fact]
+    public async Task GetIncomingPaymentAsync_RequestsTheResourceUrlVerbatim()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateIncomingPaymentResponse
+        );
+        var client = CreateClient(http);
+
+        await client.GetIncomingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example/incoming-payments/1"),
+                AccessToken = "token",
+            }
+        );
+
+        handler
+            .LastRequestUri.AbsoluteUri.Should()
+            .Be("https://host-a.example/incoming-payments/1");
+    }
+
+    [Fact]
+    public async Task CompleteIncomingPaymentsAsync_AppendsASingleCompleteSegment()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateIncomingPaymentResponse
+        );
+        var client = CreateClient(http);
+
+        await client.CompleteIncomingPaymentsAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example/incoming-payments/1"),
+                AccessToken = "token",
+            }
+        );
+
+        handler
+            .LastRequestUri.AbsoluteUri.Should()
+            .Be("https://host-a.example/incoming-payments/1/complete");
+    }
+
+    [Fact]
+    public async Task ListIncomingPaymentsAsync_AppendsIncomingPaymentsToTheResourceServer()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.ListIncomingPaymentsResponse
+        );
+        var client = CreateClient(http);
+
+        await client.ListIncomingPaymentsAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example"),
+                AccessToken = "token",
+            },
+            new ListIncomingPaymentQuery { WalletAddress = "https://host-a.example/wallet/1" }
+        );
+
+        handler
+            .LastRequestUri.GetLeftPart(UriPartial.Path)
+            .Should()
+            .Be("https://host-a.example/incoming-payments");
     }
 }

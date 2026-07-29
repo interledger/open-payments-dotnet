@@ -30,6 +30,7 @@ public partial class ResourceServerClient
     /// <returns>Incoming Payment Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<IncomingPaymentResponse> PostIncomingPaymentAsync(
+        Uri resourceServerUrl,
         Body body,
         string accessToken,
         CancellationToken cancellationToken
@@ -48,10 +49,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("incoming-payments");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "incoming-payments"));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -154,6 +152,7 @@ public partial class ResourceServerClient
     /// <returns>Incoming Payment Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        Uri incomingPaymentUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -166,7 +165,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(incomingPaymentUrl.ToString());
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -274,6 +273,7 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
+        Uri resourceServerUrl,
         string accessToken,
         string walletAddress,
         string? cursor,
@@ -291,10 +291,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("incoming-payments");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "incoming-payments"));
         urlBuilder.Append('?');
         urlBuilder
             .Append(Uri.EscapeDataString("wallet-address"))
@@ -450,6 +447,7 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
+        Uri incomingPaymentUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -463,8 +461,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
-        urlBuilder.Append("/complete");
+        var urlBuilder = new StringBuilder(AppendPath(incomingPaymentUrl, "complete"));
 
         PrepareRequest(client, request, urlBuilder);
 

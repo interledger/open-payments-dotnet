@@ -238,6 +238,18 @@ public class AuthenticatedClientFixture
         ],
     };
 
+    public ListIncomingPaymentsResponse ListIncomingPaymentsResponse = new()
+    {
+        Pagination = new PageInfo
+        {
+            StartCursor = "1234",
+            EndCursor = "1234",
+            HasNextPage = false,
+            HasPreviousPage = false,
+        },
+        Result = [],
+    };
+
     public HttpClient CreateHttpClientMock(
         object? responseObject = null,
         HttpStatusCode? code = null

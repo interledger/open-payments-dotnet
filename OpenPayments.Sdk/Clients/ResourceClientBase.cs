@@ -22,9 +22,12 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.PostIncomingPaymentAsync(body, requestArgs.AccessToken, cancellationToken);
+        return _client.PostIncomingPaymentAsync(
+            requestArgs.Url,
+            body,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     public Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
@@ -32,9 +35,11 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.GetIncomingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.GetIncomingPaymentAsync(
+            requestArgs.Url,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     public Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
@@ -42,9 +47,11 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.CompleteIncomingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.CompleteIncomingPaymentAsync(
+            requestArgs.Url,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     public Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
@@ -53,9 +60,8 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
         return _client.ListIncomingPaymentsAsync(
+            requestArgs.Url,
             requestArgs.AccessToken,
             query.WalletAddress,
             query.Cursor,
