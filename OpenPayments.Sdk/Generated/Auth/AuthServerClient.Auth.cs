@@ -3,12 +3,26 @@ using NSec.Cryptography;
 
 namespace OpenPayments.Sdk.Generated.Auth;
 
+/// <summary>
+/// Hand-written extensions to the generated <see cref="AuthServerClient"/> that add HTTP Message
+/// Signature support and route requests through the client-configured contract resolver.
+/// </summary>
 public partial class AuthServerClient
 {
     private Key? _privateKey;
     private string? _keyId;
+
+    /// <summary>
+    /// The authorization server URL that requests are sent to. Set before each call via <c>BaseUrl</c>,
+    /// since a single client instance is reused across requests to different authorization servers.
+    /// </summary>
     public Uri ClientUrl { get; set; }
 
+    /// <summary>
+    /// Sets the key used to sign every subsequent request made by this client.
+    /// </summary>
+    /// <param name="privateKey">Private key used to sign requests.</param>
+    /// <param name="keyId">Key ID sent alongside the signature.</param>
     public void AddSigningKey(Key privateKey, string keyId)
     {
         _privateKey = privateKey;
