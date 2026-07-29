@@ -259,4 +259,95 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
 
         handler.LastRequestUri.AbsoluteUri.Should().Be("https://auth-a.example/gnap");
     }
+
+    [Fact]
+    public async Task GetIncomingPaymentAsync_SequentialCallsAcrossHosts_EachReachesItsOwnHost()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateIncomingPaymentResponse
+        );
+        var client = CreateClient(http);
+
+        await client.GetIncomingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example/incoming-payments/1"),
+                AccessToken = "token",
+            }
+        );
+        await client.GetIncomingPaymentAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-b.example/incoming-payments/2"),
+                AccessToken = "token",
+            }
+        );
+
+        handler
+            .RequestUris.Select(u => u.AbsoluteUri)
+            .Should()
+            .Equal(
+                "https://host-a.example/incoming-payments/1",
+                "https://host-b.example/incoming-payments/2"
+            );
+    }
+
+    [Fact]
+    public async Task GetIncomingPaymentAsync_ParallelCallsAcrossHosts_EachReachesItsOwnHost()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateIncomingPaymentResponse
+        );
+        var client = CreateClient(http);
+
+        var targets = Enumerable
+            .Range(0, 200)
+            .Select(i => new Uri($"https://host-{i % 2}.example/incoming-payments/{i}"))
+            .ToArray();
+
+        await Parallel.ForEachAsync(
+            targets,
+            async (target, ct) =>
+            {
+                await client.GetIncomingPaymentAsync(
+                    new AuthRequestArgs { Url = target, AccessToken = "token" },
+                    ct
+                );
+            }
+        );
+
+        handler
+            .RequestUris.Select(u => u.AbsoluteUri)
+            .Should()
+            .BeEquivalentTo(targets.Select(t => t.AbsoluteUri));
+    }
+
+    [Fact]
+    public async Task RequestGrantAsync_ParallelCallsAcrossAuthServers_EachReachesItsOwnHost()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(_fixture.ApprovedGrantResponse);
+        var client = CreateClient(http);
+
+        var targets = Enumerable
+            .Range(0, 200)
+            .Select(i => new Uri($"https://auth-{i % 2}.example/gnap/{i}"))
+            .ToArray();
+
+        await Parallel.ForEachAsync(
+            targets,
+            async (target, ct) =>
+            {
+                await client.RequestGrantAsync(
+                    new RequestArgs { Url = target },
+                    _fixture.RequestGrantBody,
+                    ct
+                );
+            }
+        );
+
+        handler
+            .RequestUris.Select(u => u.AbsoluteUri)
+            .Should()
+            .BeEquivalentTo(targets.Select(t => t.AbsoluteUri));
+    }
 }
