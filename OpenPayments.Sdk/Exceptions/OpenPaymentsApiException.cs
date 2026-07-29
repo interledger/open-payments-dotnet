@@ -1,13 +1,17 @@
 namespace OpenPayments.Sdk.Exceptions;
 
 /// <summary>
-/// The single exception thrown by every Open Payments client method when a request fails.
+/// The single exception thrown by every Open Payments client method when the server reports a
+/// failure.
 /// </summary>
 /// <remarks>
 /// A request "fails" when the server returns a non-2xx status, or when it returns a 2xx whose body
 /// is empty, null, or cannot be deserialized into the expected model. In both cases
 /// <see cref="StatusCode"/> is the status the server actually returned and <see cref="ResponseBody"/>
-/// holds the body verbatim.
+/// holds the body verbatim. Transport-level failures that occur before a response arrives (DNS,
+/// connection, TLS, timeout) are not wrapped by this type — they still surface as
+/// <see cref="HttpRequestException"/> or <see cref="TaskCanceledException"/> from
+/// <see cref="HttpClient"/>.
 /// </remarks>
 public sealed class OpenPaymentsApiException : Exception
 {

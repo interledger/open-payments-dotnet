@@ -81,10 +81,15 @@ Payments error shape — an HTML page from a gateway, an empty body, a rate-limi
 payload. `ResponseBody` is always the place to look in that case. The SDK never retries on your
 behalf; `RetryAfter` is provided so you can.
 
+`OpenPaymentsApiException` covers every failure the *server* reports. Transport-level failures
+before a response arrives (DNS, connection, TLS, timeout) still surface as `HttpRequestException` /
+`TaskCanceledException` from `HttpClient`.
+
 > **Breaking change.** `OpenPaymentsApiException` replaces the generated `ApiException` and
-> `ApiException<ErrorResponse>` types, as well as the `HttpRequestException` and
-> `InvalidOperationException` that unauthenticated calls used to throw. None of those escape client
-> methods any more.
+> `ApiException<ErrorResponse>` types, the `HttpRequestException` that `EnsureSuccessStatusCode` used
+> to throw on non-2xx responses, and the `InvalidOperationException` that unauthenticated calls used
+> to throw. None of those escape client methods any more — transport-level failures (see above) are
+> a separate case and still propagate as-is.
 
 ## Contributing
 
