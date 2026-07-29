@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using OpenPayments.Sdk.Http;
 
 namespace OpenPayments.Sdk.Generated.Auth;
 
@@ -14,7 +15,7 @@ public partial class AuthServerClient
     /// Management endpoint to rotate access token.
     /// </remarks>
     /// <returns>OK</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.Exceptions.OpenPaymentsApiException">The request failed.</exception>
     public async Task<RotateTokenResponse> RotateTokenAsync(
         Uri tokenUrl,
         string accessToken,
@@ -49,78 +50,17 @@ public partial class AuthServerClient
 
         try
         {
-            var headers = Helpers.ExtractHeaders(response);
+            await OpenPaymentsResponse
+                .ThrowIfErrorAsync(response, cancellationToken)
+                .ConfigureAwait(false);
 
-            ProcessResponse(client, response);
-
-            var status = (int)response.StatusCode;
-            switch (status)
-            {
-                case 200:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<RotateTokenResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    return objectResponse.Object;
-                }
-                case 400:
-                case 401:
-                case 404:
-                case 500:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    throw new ApiException<ErrorResponse>(
-                        objectResponse.Object.Error.Description,
-                        status,
-                        objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
-                    );
-                }
-                default:
-                {
-                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
-                        .ConfigureAwait(false);
-                    throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").",
-                        status,
-                        responseData,
-                        headers,
-                        null
-                    );
-                }
-            }
+            return await OpenPaymentsResponse
+                .ReadRequiredAsync<RotateTokenResponse>(
+                    response,
+                    JsonSerializerSettings,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
         }
         finally
         {
@@ -138,7 +78,7 @@ public partial class AuthServerClient
     /// Management endpoint to revoke access token.
     /// </remarks>
     /// <returns>No Content</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.Exceptions.OpenPaymentsApiException">The request failed.</exception>
     public async Task RevokeTokenAsync(
         Uri tokenUrl,
         string accessToken,
@@ -166,57 +106,9 @@ public partial class AuthServerClient
 
         try
         {
-            var headers = Helpers.ExtractHeaders(response);
-
-            ProcessResponse(client, response);
-
-            var status = (int)response.StatusCode;
-            switch (status)
-            {
-                case 204:
-                    return;
-                case 401:
-                case 500:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    throw new ApiException<ErrorResponse>(
-                        objectResponse.Object.Error.Description,
-                        status,
-                        objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
-                    );
-                }
-                default:
-                {
-                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
-                        .ConfigureAwait(false);
-                    throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").",
-                        status,
-                        responseData,
-                        headers,
-                        null
-                    );
-                }
-            }
+            await OpenPaymentsResponse
+                .ThrowIfErrorAsync(response, cancellationToken)
+                .ConfigureAwait(false);
         }
         finally
         {

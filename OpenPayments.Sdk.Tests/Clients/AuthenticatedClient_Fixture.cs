@@ -285,6 +285,41 @@ public class AuthenticatedClientFixture
     }
 
     /// <summary>
+    /// Builds a client that returns <paramref name="body"/> verbatim with the given status and
+    /// headers. Use this for error-path tests, where the body is deliberately not a serialized DTO.
+    /// </summary>
+    public HttpClient CreateHttpClientMock(
+        HttpStatusCode status,
+        string body,
+        params (string Name, string Value)[] headers
+    )
+    {
+        var handler = new Mock<HttpMessageHandler>();
+        handler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(() =>
+            {
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = status,
+                    Content = new StringContent(body, Encoding.UTF8, "application/json"),
+                };
+
+                foreach (var (name, value) in headers)
+                    response.Headers.TryAddWithoutValidation(name, value);
+
+                return response;
+            });
+
+        return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
+    }
+
+    /// <summary>
     /// Builds a client whose handler records request URIs. Deliberately leaves
     /// <see cref="HttpClient.BaseAddress"/> unset: every SDK request must carry an absolute URI,
     /// and a relative one should fail loudly rather than be silently resolved.

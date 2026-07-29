@@ -1,6 +1,7 @@
 using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Exceptions;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -303,6 +304,105 @@ public class AuthenticatedClient_Tests
             );
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.ListOutgoingPaymentsResponse);
+        }
+    }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_AuthServerErrors_Tests
+    {
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_AuthServerErrors_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        private AuthenticatedClient ClientReturning(
+            HttpStatusCode status,
+            string body,
+            params (string Name, string Value)[] headers
+        )
+        {
+            var httpClient = _fixture.CreateHttpClientMock(status, body, headers);
+            return new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_On500_ThrowsWithStatusCodeAndRawBody()
+        {
+            var body =
+                """{"error":{"code":"invalid_client","description":"Client is not valid"}}""";
+            var client = ClientReturning(HttpStatusCode.InternalServerError, body);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.RequestGrantAsync(_fixture.RequestGrantArgs, _fixture.RequestGrantBody)
+            );
+
+            exception.StatusCode.Should().Be(500);
+            exception.ErrorCode.Should().Be("invalid_client");
+            exception.Description.Should().Be("Client is not valid");
+            exception.ResponseBody.Should().Be(body);
+        }
+
+        [Fact]
+        public async Task ContinueGrantAsync_On429_ThrowsWithRetryAfter()
+        {
+            var body = """{"error":{"code":"too_fast","description":"Slow down"}}""";
+            var client = ClientReturning(
+                HttpStatusCode.TooManyRequests,
+                body,
+                ("Retry-After", "30")
+            );
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.ContinueGrantAsync(_fixture.GrantWithTokenArgs, _fixture.ContinueGrantBody)
+            );
+
+            exception.StatusCode.Should().Be(429);
+            exception.ErrorCode.Should().Be("too_fast");
+            exception.RetryAfter.Should().Be(TimeSpan.FromSeconds(30));
+            exception.ResponseBody.Should().Be(body);
+        }
+
+        [Fact]
+        public async Task CancelGrantAsync_On404_Throws()
+        {
+            var body = """{"error":{"code":"invalid_continuation","description":"Unknown grant"}}""";
+            var client = ClientReturning(HttpStatusCode.NotFound, body);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.CancelGrantAsync(_fixture.GrantWithTokenArgs)
+            );
+
+            exception.StatusCode.Should().Be(404);
+            exception.ErrorCode.Should().Be("invalid_continuation");
+            exception.ResponseBody.Should().Be(body);
+        }
+
+        [Fact]
+        public async Task RotateTokenAsync_On200WithUnusableBody_ThrowsCarryingThe200()
+        {
+            var client = ClientReturning(HttpStatusCode.OK, "");
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.RotateTokenAsync(_fixture.GrantWithTokenArgs)
+            );
+
+            exception.StatusCode.Should().Be(200);
+            exception.ErrorCode.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task RevokeTokenAsync_On401_Throws()
+        {
+            var client = ClientReturning(HttpStatusCode.Unauthorized, """{"error":"invalid_client"}""");
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.RevokeTokenAsync(_fixture.GrantWithTokenArgs)
+            );
+
+            exception.StatusCode.Should().Be(401);
+            exception.ErrorCode.Should().Be("invalid_client");
         }
     }
 }
