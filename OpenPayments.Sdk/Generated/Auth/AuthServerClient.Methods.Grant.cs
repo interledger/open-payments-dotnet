@@ -22,7 +22,6 @@ public partial class AuthServerClient
         CancellationToken cancellationToken = default
     )
     {
-        ArgumentNullException.ThrowIfNull(authServerUrl);
         ArgumentNullException.ThrowIfNull(body);
 
         var client = _httpClient;
