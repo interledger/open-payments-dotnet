@@ -9,7 +9,8 @@ namespace OpenPayments.Sdk.Configuration;
 /// </summary>
 /// <remarks>
 /// Used with <see cref="ServiceCollectionExtensions.UseOpenPayments"/> to select between
-/// authenticated and unauthenticated client setups./// </remarks>
+/// authenticated and unauthenticated client setups.
+/// </remarks>
 public class OpenPaymentsOptions
 {
     /// <summary>
@@ -18,7 +19,7 @@ public class OpenPaymentsOptions
     public bool UseUnauthenticatedClient { get; set; }
 
     /// <summary>
-    /// Indicates whether the authenticated client (<c>IAuthenticatedClient</c>) should be registered.
+    /// Indicates whether the authenticated client (<see cref="IAuthenticatedClient"/>) should be registered.
     /// </summary>
     public bool UseAuthenticatedClient { get; set; }
 

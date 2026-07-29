@@ -13,8 +13,8 @@ public partial class AuthServerClient
     private string? _keyId;
 
     /// <summary>
-    /// The authorization server URL that requests are sent to. Set before each call via <c>BaseUrl</c>,
-    /// since a single client instance is reused across requests to different authorization servers.
+    /// The client's own wallet address, sent as the <c>client</c> field of grant requests to identify the
+    /// requesting client. This is not the server URL — that is set per-call via <c>BaseUrl</c>.
     /// </summary>
     public Uri ClientUrl { get; set; }
 

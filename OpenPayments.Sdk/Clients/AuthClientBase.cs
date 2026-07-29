@@ -6,8 +6,9 @@ namespace OpenPayments.Sdk.Clients;
 
 /// <summary>
 /// Default <see cref="IAuthClientBase"/> implementation. Wraps a signed <see cref="AuthServerClient"/>,
-/// rewriting its base URL on every call from <see cref="RequestArgs.Url"/> since a single auth server
-/// client is shared across requests to different authorization servers.
+/// passing the target URL from <see cref="RequestArgs.Url"/> on each call (rewriting <c>BaseUrl</c> for
+/// the initial grant request) since a single auth server client is shared across requests to different
+/// authorization servers.
 /// </summary>
 public class AuthClientBase : IAuthClientBase
 {
