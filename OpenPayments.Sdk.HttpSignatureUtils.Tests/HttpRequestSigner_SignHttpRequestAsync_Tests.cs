@@ -1,5 +1,8 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -77,5 +80,26 @@ public class HttpRequestSignerTests
         await Assert.ThrowsAsync<ArgumentException>(async () =>
             await HttpRequestSigner.SignHttpRequestAsync(request, key, "")
         );
+    }
+
+    [Fact]
+    public async Task SignHttpRequestAsync_WithStreamContent_ComputesDigestAndLeavesBodyReadable()
+    {
+        var key = KeyUtils.GenerateKey();
+        var json = "{\"amount\":100}";
+        var bytes = Encoding.UTF8.GetBytes(json);
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new StreamContent(new MemoryStream(bytes)),
+        };
+
+        var headers = await HttpRequestSigner.SignHttpRequestAsync(request, key, "stream-key");
+
+        var expectedDigest = Convert.ToBase64String(SHA512.HashData(bytes));
+        var digest = request.Content.Headers.GetValues("Content-Digest").Single();
+        Assert.Equal($"sha-512=:{expectedDigest}:", digest);
+
+        Assert.Contains("\"content-digest\"", headers.SignatureInput);
+        Assert.Equal(json, await request.Content.ReadAsStringAsync());
     }
 }
