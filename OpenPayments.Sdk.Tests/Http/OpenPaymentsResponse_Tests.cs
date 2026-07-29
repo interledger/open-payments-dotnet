@@ -86,6 +86,12 @@ public class OpenPaymentsResponse_ThrowIfError_Tests
     [InlineData("""{"error":{"code":"only_code"}}""", "only_code", null)]
     [InlineData("""{"error":{"description":"only description"}}""", null, "only description")]
     [InlineData("""{"unexpected":"shape"}""", null, null)]
+    [InlineData("""{"error":{"code":{"nested":"object"}}}""", null, null)]
+    [InlineData("""{"error":{"code":[1,2,3]}}""", null, null)]
+    [InlineData("""{"error":{"description":{"nested":"object"}}}""", null, null)]
+    [InlineData("""{"error":{"description":[1,2,3]}}""", null, null)]
+    [InlineData("""{"error":{"code":123}}""", null, null)]
+    [InlineData("""{"error":{"description":true}}""", null, null)]
     public async Task ThrowIfErrorAsync_WithPartialBody_MapsWhatIsPresent(
         string body,
         string? expectedCode,

@@ -61,8 +61,8 @@ internal static class OpenPaymentsResponse
                 // GNAP permits a bare string in place of the error object.
                 JValue { Type: JTokenType.String } value => ((string?)value, null),
                 JObject errorObject => (
-                    (string?)errorObject["code"],
-                    (string?)errorObject["description"]
+                    TryGetStringValue(errorObject["code"]),
+                    TryGetStringValue(errorObject["description"])
                 ),
                 _ => (null, null),
             };
@@ -70,6 +70,31 @@ internal static class OpenPaymentsResponse
         catch (JsonException)
         {
             return (null, null);
+        }
+    }
+
+    /// <summary>
+    /// Safely extracts a string value from a JToken, returning null if the token is not a string
+    /// or if the cast throws (e.g., when the token is an object or array).
+    /// </summary>
+    private static string? TryGetStringValue(JToken? token)
+    {
+        if (token is null)
+            return null;
+
+        try
+        {
+            // Only attempt conversion if the token is a scalar type.
+            if (token.Type == JTokenType.String)
+                return (string?)token;
+
+            // For other scalar types (Null, Boolean, etc.), return null.
+            return null;
+        }
+        catch (ArgumentException)
+        {
+            // If conversion fails for any reason, return null.
+            return null;
         }
     }
 
