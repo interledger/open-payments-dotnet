@@ -60,7 +60,7 @@ jobs:
             echo "::error::No *.Methods*.cs files found under OpenPayments.Sdk/Generated/. Did they move or get renamed? Update this guard's path so it can't silently pass."
             exit 1
           fi
-          legacy=$(grep -rnw "ApiException" OpenPayments.Sdk/Generated/*/*.Methods*.cs || true)
+          legacy=$(grep -rnw "ApiException" OpenPayments.Sdk/Generated/*/*.Methods*.cs OpenPayments.Sdk/Clients/ || true)
           if [ -n "$legacy" ]; then
             echo "$legacy"
             echo "::error::The generated ApiException types must not escape client methods (issue #18). Throw OpenPaymentsApiException via OpenPaymentsResponse instead."
