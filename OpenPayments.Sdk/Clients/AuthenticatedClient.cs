@@ -205,12 +205,24 @@ internal sealed class AuthenticatedClient(
     }
 }
 
+/// <summary>
+/// Arguments identifying the target URL for an unauthenticated request (e.g. an initial grant request).
+/// </summary>
 public class RequestArgs
 {
+    /// <summary>
+    /// The absolute URL to send the request to.
+    /// </summary>
     public required Uri Url { get; set; }
 }
 
+/// <summary>
+/// Arguments identifying the target URL and access token for an authenticated request.
+/// </summary>
 public class AuthRequestArgs : RequestArgs
 {
+    /// <summary>
+    /// The access token to present with the request.
+    /// </summary>
     public required string AccessToken { get; set; }
 }

@@ -9,7 +9,8 @@ namespace OpenPayments.Sdk.Configuration;
 /// </summary>
 /// <remarks>
 /// Used with <see cref="ServiceCollectionExtensions.UseOpenPayments"/> to select between
-/// authenticated and unauthenticated client setups./// </remarks>
+/// authenticated and unauthenticated client setups.
+/// </remarks>
 public class OpenPaymentsOptions
 {
     /// <summary>
@@ -17,11 +18,26 @@ public class OpenPaymentsOptions
     /// </summary>
     public bool UseUnauthenticatedClient { get; set; }
 
+    /// <summary>
+    /// Indicates whether the authenticated client (<see cref="IAuthenticatedClient"/>) should be registered.
+    /// </summary>
     public bool UseAuthenticatedClient { get; set; }
 
+    /// <summary>
+    /// Key identifier (<c>kid</c>) associated with <see cref="PrivateKey"/>, sent alongside signed
+    /// requests. Required when <see cref="UseAuthenticatedClient"/> is <c>true</c>.
+    /// </summary>
     public string? KeyId { get; set; }
 
+    /// <summary>
+    /// Private key used to sign requests made by the authenticated client. Required when
+    /// <see cref="UseAuthenticatedClient"/> is <c>true</c>.
+    /// </summary>
     public Key? PrivateKey { get; set; }
 
+    /// <summary>
+    /// The client's own wallet address, used to identify the client making grant requests. Required when
+    /// <see cref="UseAuthenticatedClient"/> is <c>true</c>.
+    /// </summary>
     public Uri? ClientUrl { get; set; }
 }
