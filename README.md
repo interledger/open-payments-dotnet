@@ -5,7 +5,7 @@
 </p>
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/kylelobo/open-payments-dotnet/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/pulls)
 
 ## What is Open Payments?
@@ -65,7 +65,7 @@ git submodule update --init
 Alternatively, clone the repository with submodules in one step:
 
 ```bash
-git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
+git clone --recurse-submodules git@github.com:interledger/open-payments-dotnet.git
 ```
 
 ### Prerequisites
@@ -96,35 +96,16 @@ dotnet test
 
 ## 🎈 Usage
 
-To use in your project, just add the package using the command line
+This repository publishes two NuGet packages, each with its own install/quickstart instructions:
 
-```bash
-dotnet add package Interledger.OpenPayments
-```
+- [`Interledger.OpenPayments`](OpenPayments.Sdk/README.md) — the main SDK: authenticated/unauthenticated
+  clients for the wallet address, resource, and authorization servers.
+- [`Interledger.OpenPayments.HttpSignatureUtils`](OpenPayments.Sdk.HttpSignatureUtils/README.md) — HTTP
+  Message Signatures (RFC 9421), usable standalone.
 
-Then add it to your project code
-
-```csharp
-// Import dependencies
-using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Extensions;
-using OpenPayments.Sdk.HttpSignatureUtils;
-
-// Initialize client
-var client = new ServiceCollection()
-    .UseOpenPayments(opts =>
-    {
-        opts.UseAuthenticatedClient = true;
-        opts.KeyId = CLIENT_ID;
-        opts.PrivateKey = KeyUtils.LoadPem(CLIENT_SECRET);
-        opts.ClientUrl = new Uri(CLIENT_WALLET_ADDRESS);
-    })
-    .BuildServiceProvider()
-    .GetRequiredService<IAuthenticatedClient>();
-```
-
-Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
+For complete end-to-end flows, see the runnable guides in
+[`OpenPayments.Snippets/Guides`](OpenPayments.Snippets/Guides), or visit
+[openpayments.dev](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
 
 ## ✍️ Authors
 
