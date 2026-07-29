@@ -52,14 +52,64 @@ public class ServiceCollectionExtensions_Tests
     }
 
     [Fact]
-    public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsException()
+    public void UseOpenPayments_AuthenticatedClient_WithoutOptions_ThrowsAtRegistration()
     {
         var services = new ServiceCollection();
 
-        services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; });
-        var provider = services.BuildServiceProvider();
+        Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options => { options.UseAuthenticatedClient = true; })
+        );
+    }
 
-        Assert.Throws<InvalidOperationException>(() => provider.GetService<IAuthenticatedClient>());
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutPrivateKey_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("https://example.com");
+                options.KeyId = "1234";
+            })
+        );
+
+        Assert.Contains("PrivateKey", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutKeyId_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("https://example.com");
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            })
+        );
+
+        Assert.Contains("KeyId", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_WithoutClientUrl_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.KeyId = "1234";
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            })
+        );
+
+        Assert.Contains("ClientUrl", ex.Message);
     }
 
     [Fact]
