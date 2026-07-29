@@ -77,9 +77,12 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.PostQuoteAsync(body, requestArgs.AccessToken, cancellationToken);
+        return _client.PostQuoteAsync(
+            requestArgs.Url,
+            body,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     public Task<QuoteResponse> GetQuoteAsync(
@@ -87,9 +90,7 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.GetQuoteAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.GetQuoteAsync(requestArgs.Url, requestArgs.AccessToken, cancellationToken);
     }
 
     public Task<OutgoingPaymentWithSpentAmountsResponse> CreateOutgoingPaymentAsync(

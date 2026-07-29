@@ -139,4 +139,42 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
             .Should()
             .Be("https://host-a.example/incoming-payments");
     }
+
+    [Fact]
+    public async Task CreateQuoteAsync_AppendsQuotesToTheResourceServer()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(
+            _fixture.CreateQuoteResponse,
+            System.Net.HttpStatusCode.Created
+        );
+        var client = CreateClient(http);
+
+        await client.CreateQuoteAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example"),
+                AccessToken = "token",
+            },
+            _fixture.CreateQuoteBody
+        );
+
+        handler.LastRequestUri.AbsoluteUri.Should().Be("https://host-a.example/quotes");
+    }
+
+    [Fact]
+    public async Task GetQuoteAsync_RequestsTheResourceUrlVerbatim()
+    {
+        var (http, handler) = _fixture.CreateRecordingHttpClient(_fixture.CreateQuoteResponse);
+        var client = CreateClient(http);
+
+        await client.GetQuoteAsync(
+            new AuthRequestArgs
+            {
+                Url = new Uri("https://host-a.example/quotes/1"),
+                AccessToken = "token",
+            }
+        );
+
+        handler.LastRequestUri.AbsoluteUri.Should().Be("https://host-a.example/quotes/1");
+    }
 }
