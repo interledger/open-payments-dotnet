@@ -2,6 +2,7 @@ using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Exceptions;
+using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -403,6 +404,112 @@ public class AuthenticatedClient_Tests
 
             exception.StatusCode.Should().Be(401);
             exception.ErrorCode.Should().Be("invalid_client");
+        }
+    }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_ResourceServerErrors_Tests
+    {
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_ResourceServerErrors_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        private AuthenticatedClient ClientReturning(
+            HttpStatusCode status,
+            string body,
+            params (string Name, string Value)[] headers
+        )
+        {
+            var httpClient = _fixture.CreateHttpClientMock(status, body, headers);
+            return new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
+        }
+
+        [Fact]
+        public async Task CreateIncomingPaymentAsync_On401_ThrowsWithStatusCodeAndRawBody()
+        {
+            var body =
+                """{"error":{"code":"unauthorized","description":"Access token is invalid"}}""";
+            var client = ClientReturning(HttpStatusCode.Unauthorized, body);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.CreateIncomingPaymentAsync(
+                    _fixture.GrantWithTokenArgs,
+                    _fixture.CreateIncomingPaymentBody
+                )
+            );
+
+            exception.StatusCode.Should().Be(401);
+            exception.ErrorCode.Should().Be("unauthorized");
+            exception.Description.Should().Be("Access token is invalid");
+            exception.ResponseBody.Should().Be(body);
+        }
+
+        [Fact]
+        public async Task GetQuoteAsync_On429WithHtmlBody_ThrowsWithRetryAfterAndRawBody()
+        {
+            var body = "<html><body>Too Many Requests</body></html>";
+            var client = ClientReturning(
+                HttpStatusCode.TooManyRequests,
+                body,
+                ("Retry-After", "120")
+            );
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.GetQuoteAsync(_fixture.GrantWithTokenArgs)
+            );
+
+            exception.StatusCode.Should().Be(429);
+            exception.ErrorCode.Should().BeNull();
+            exception.ResponseBody.Should().Be(body);
+            exception.RetryAfter.Should().Be(TimeSpan.FromMinutes(2));
+        }
+
+        [Fact]
+        public async Task GetOutgoingPaymentAsync_On500_Throws()
+        {
+            var body = """{"error":{"code":"internal","description":"Server error"}}""";
+            var client = ClientReturning(HttpStatusCode.InternalServerError, body);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.GetOutgoingPaymentAsync(_fixture.GrantWithTokenArgs)
+            );
+
+            exception.StatusCode.Should().Be(500);
+            exception.ErrorCode.Should().Be("internal");
+            exception.ResponseBody.Should().Be(body);
+        }
+
+        [Fact]
+        public async Task ListIncomingPaymentsAsync_On403_Throws()
+        {
+            var body = """{"error":{"code":"forbidden","description":"Not permitted"}}""";
+            var client = ClientReturning(HttpStatusCode.Forbidden, body);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.ListIncomingPaymentsAsync(
+                    _fixture.GrantWithTokenArgs,
+                    new ListIncomingPaymentQuery { WalletAddress = "https://example.com/wallet/1234" }
+                )
+            );
+
+            exception.StatusCode.Should().Be(403);
+            exception.ErrorCode.Should().Be("forbidden");
+        }
+
+        [Fact]
+        public async Task CreateQuoteAsync_On201WithMalformedBody_ThrowsCarryingThe201()
+        {
+            var client = ClientReturning(HttpStatusCode.Created, "{not json");
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.CreateQuoteAsync(_fixture.GrantWithTokenArgs, _fixture.CreateQuoteBody)
+            );
+
+            exception.StatusCode.Should().Be(201);
+            exception.ResponseBody.Should().Be("{not json");
         }
     }
 }
