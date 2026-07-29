@@ -1,3 +1,4 @@
+using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Generated.Resource;
@@ -34,7 +35,7 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
     {
         var (http, handler) = _fixture.CreateRecordingHttpClient(
             _fixture.CreateIncomingPaymentResponse,
-            System.Net.HttpStatusCode.Created
+            HttpStatusCode.Created
         );
         var client = CreateClient(http);
 
@@ -57,7 +58,7 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
     {
         var (http, handler) = _fixture.CreateRecordingHttpClient(
             _fixture.CreateIncomingPaymentResponse,
-            System.Net.HttpStatusCode.Created
+            HttpStatusCode.Created
         );
         var client = CreateClient(http);
 
@@ -145,7 +146,7 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
     {
         var (http, handler) = _fixture.CreateRecordingHttpClient(
             _fixture.CreateQuoteResponse,
-            System.Net.HttpStatusCode.Created
+            HttpStatusCode.Created
         );
         var client = CreateClient(http);
 
