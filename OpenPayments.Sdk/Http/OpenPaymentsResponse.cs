@@ -29,6 +29,48 @@ internal static class OpenPaymentsResponse
         throw Build(response, code, description, body);
     }
 
+    /// <summary>
+    /// Deserializes a success response into <typeparamref name="T"/>. Throws
+    /// <see cref="OpenPaymentsApiException"/> — carrying the 2xx status the server actually returned
+    /// and the raw body — when the body is empty, deserializes to null, or is malformed.
+    /// </summary>
+    /// <param name="settings">
+    /// The calling client's serializer settings, or <see langword="null"/> to use the
+    /// <see cref="JsonConvert"/> defaults.
+    /// </param>
+    public static async Task<T> ReadRequiredAsync<T>(
+        HttpResponseMessage response,
+        JsonSerializerSettings? settings,
+        CancellationToken cancellationToken
+    )
+    {
+        var body = await ReadBodyAsync(response, cancellationToken).ConfigureAwait(false);
+
+        T? model;
+        try
+        {
+            model = JsonConvert.DeserializeObject<T>(body, settings);
+        }
+        catch (JsonException exception)
+        {
+            throw Build(
+                response,
+                null,
+                $"Could not deserialize the response body as {typeof(T).FullName}.",
+                body,
+                exception
+            );
+        }
+
+        return model
+            ?? throw Build(
+                response,
+                null,
+                "The server returned an empty or null response body.",
+                body
+            );
+    }
+
     private static async Task<string> ReadBodyAsync(
         HttpResponseMessage response,
         CancellationToken cancellationToken

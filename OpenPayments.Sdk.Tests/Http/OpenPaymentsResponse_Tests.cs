@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using FluentAssertions;
+using Newtonsoft.Json;
 using OpenPayments.Sdk.Exceptions;
 using OpenPayments.Sdk.Http;
 
@@ -225,5 +226,85 @@ public class OpenPaymentsResponse_ThrowIfError_Tests
 
         exception.Headers.Should().ContainKey("X-Request-ID");
         exception.Headers["X-Request-ID"].Should().ContainSingle().Which.Should().Be("abc-123");
+    }
+}
+
+public class OpenPaymentsResponse_ReadRequired_Tests
+{
+    private sealed class Model
+    {
+        public string? Name { get; set; }
+    }
+
+    private static HttpResponseMessage Response(HttpStatusCode status, string body) =>
+        new(status) { Content = new StringContent(body, Encoding.UTF8, "application/json") };
+
+    [Fact]
+    public async Task ReadRequiredAsync_WithValidBody_ReturnsTheModel()
+    {
+        using var response = Response(HttpStatusCode.OK, """{"Name":"alice"}""");
+
+        var model = await OpenPaymentsResponse.ReadRequiredAsync<Model>(
+            response,
+            null,
+            CancellationToken.None
+        );
+
+        model.Name.Should().Be("alice");
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("null")]
+    public async Task ReadRequiredAsync_WithEmptyOrNullBody_ThrowsCarryingTheSuccessStatus(
+        string body
+    )
+    {
+        using var response = Response(HttpStatusCode.Created, body);
+
+        var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+            OpenPaymentsResponse.ReadRequiredAsync<Model>(response, null, CancellationToken.None)
+        );
+
+        exception.StatusCode.Should().Be(201);
+        exception.ErrorCode.Should().BeNull();
+        exception.ResponseBody.Should().Be(body);
+        exception.Description.Should().Be("The server returned an empty or null response body.");
+    }
+
+    [Fact]
+    public async Task ReadRequiredAsync_WithMalformedBody_ThrowsAndPreservesTheRawBody()
+    {
+        using var response = Response(HttpStatusCode.OK, "{not json");
+
+        var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+            OpenPaymentsResponse.ReadRequiredAsync<Model>(response, null, CancellationToken.None)
+        );
+
+        exception.StatusCode.Should().Be(200);
+        exception.ResponseBody.Should().Be("{not json");
+        exception.Description.Should().Contain("Could not deserialize");
+        exception.InnerException.Should().BeAssignableTo<JsonException>();
+    }
+
+    [Fact]
+    public async Task ReadRequiredAsync_HonoursTheSuppliedSerializerSettings()
+    {
+        using var response = Response(HttpStatusCode.OK, """{"name":"alice","extra":1}""");
+        var settings = new JsonSerializerSettings
+        {
+            MissingMemberHandling = MissingMemberHandling.Error,
+        };
+
+        var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+            OpenPaymentsResponse.ReadRequiredAsync<Model>(
+                response,
+                settings,
+                CancellationToken.None
+            )
+        );
+
+        exception.Description.Should().Contain("Could not deserialize");
     }
 }
