@@ -4,6 +4,13 @@ namespace OpenPayments.Sdk.Generated.Wallet
 {
     public partial class WalletAddressClient
     {
+        /// <summary>
+        /// Retrieves the public information of a wallet address.
+        /// </summary>
+        /// <param name="walletAddress">The absolute wallet address URL.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>The wallet address's public information.</returns>
+        /// <exception cref="ApiException">A server-side error occurred.</exception>
         public async Task<WalletAddress> GetWalletAddressAsync(
             string walletAddress,
             CancellationToken cancellationToken
@@ -139,6 +146,13 @@ namespace OpenPayments.Sdk.Generated.Wallet
             }
         }
 
+        /// <summary>
+        /// Retrieves the JSON Web Key Set (JWKS) bound to a wallet address.
+        /// </summary>
+        /// <param name="walletAddress">The absolute wallet address URL.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>The wallet address's public keys.</returns>
+        /// <exception cref="ApiException">A server-side error occurred.</exception>
         public async Task<JsonWebKeySet> GetWalletAddressKeysAsync(
             string walletAddress,
             CancellationToken cancellationToken
