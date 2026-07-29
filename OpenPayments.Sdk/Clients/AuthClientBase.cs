@@ -1,5 +1,3 @@
-using System.Globalization;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Sdk.Clients;
@@ -7,14 +5,14 @@ namespace OpenPayments.Sdk.Clients;
 public class AuthClientBase : IAuthClientBase
 {
     private readonly AuthServerClient _client;
-    private readonly HttpClient _httpClient;
+    private readonly Uri _clientUrl;
 
-    public AuthClientBase(HttpClient http, Key privateKey, string keyId, Uri clientUrl)
+    public AuthClientBase(HttpClient http, Uri clientUrl)
     {
-        _httpClient = http;
+        ArgumentNullException.ThrowIfNull(clientUrl);
+
         _client = new AuthServerClient(http);
-        _client.AddSigningKey(privateKey, keyId);
-        _client.ClientUrl = clientUrl;
+        _clientUrl = clientUrl;
     }
 
     public async Task<AuthResponse> RequestGrantAsync(
@@ -23,10 +21,11 @@ public class AuthClientBase : IAuthClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-        body.Client = _client.ClientUrl;
+        body.Client = _clientUrl;
 
-        return await _client.CreateGrantAsync(body, cancellationToken).ConfigureAwait(false);
+        return await _client
+            .CreateGrantAsync(requestArgs.Url, body, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     public async Task<AuthResponse> ContinueGrantAsync(
