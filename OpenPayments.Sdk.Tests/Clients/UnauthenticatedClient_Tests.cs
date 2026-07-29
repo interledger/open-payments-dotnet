@@ -1,5 +1,7 @@
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
+using System.Net;
+using OpenPayments.Sdk.Exceptions;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -108,6 +110,64 @@ public class UnauthenticatedClient_Tests
         public async Task GetIncomingPaymentAsync_InvalidInput_Throws(string url)
         {
             await Assert.ThrowsAsync<ArgumentException>(() => _client.GetIncomingPaymentAsync(url));
+        }
+    }
+
+    [Collection("UnauthenticatedClient")]
+    public class UnauthenticatedClient_WalletAddressErrors_Tests
+    {
+        private readonly UnauthenticatedClientFixture _fixture;
+
+        public UnauthenticatedClient_WalletAddressErrors_Tests(UnauthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        [Fact]
+        public async Task GetWalletAddressAsync_On404_Throws()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(HttpStatusCode.NotFound, "");
+            var client = new UnauthenticatedClient(httpClient);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.GetWalletAddressAsync("https://example.com/alice")
+            );
+
+            exception.StatusCode.Should().Be(404);
+            exception.ErrorCode.Should().BeNull();
+            exception.ResponseBody.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task GetWalletAddressKeysAsync_On429_ThrowsWithRetryAfter()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(
+                HttpStatusCode.TooManyRequests,
+                "rate limited",
+                ("Retry-After", "60")
+            );
+            var client = new UnauthenticatedClient(httpClient);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.GetWalletAddressKeysAsync("https://example.com/alice")
+            );
+
+            exception.StatusCode.Should().Be(429);
+            exception.RetryAfter.Should().Be(TimeSpan.FromSeconds(60));
+            exception.ResponseBody.Should().Be("rate limited");
+        }
+
+        [Fact]
+        public async Task GetWalletAddressAsync_On200WithEmptyBody_ThrowsCarryingThe200()
+        {
+            var httpClient = _fixture.CreateHttpClientMock(HttpStatusCode.OK, "");
+            var client = new UnauthenticatedClient(httpClient);
+
+            var exception = await Assert.ThrowsAsync<OpenPaymentsApiException>(() =>
+                client.GetWalletAddressAsync("https://example.com/alice")
+            );
+
+            exception.StatusCode.Should().Be(200);
         }
     }
 }
