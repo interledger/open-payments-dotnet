@@ -124,23 +124,24 @@ git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
 
 ### Prerequisites
 
-- [NVM](https://github.com/nvm-sh/nvm)
 - [.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 ### Environment Setup
 
-```bash
-npm install -g swagger-cli && \
-dotnet tool install --global NSwag.ConsoleCore
-```
+Generated DTOs are committed, so you can build and test with nothing but the
+.NET SDK. Regenerating them (only needed when the OpenAPI specs change)
+requires the pinned NSwag CLI:
 
-Now generate models from the OpenAPI specs. You can generate all of them by running the command below:
+```bash
+dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
+```
 
 ```bash
 make models
 ```
 
-However, you can generate them one by one (please check the `Makefile` for all supported commands).
+CI regenerates with the same pinned version and fails on any diff against the
+committed output.
 
 ## 🔧 Running the tests
 
