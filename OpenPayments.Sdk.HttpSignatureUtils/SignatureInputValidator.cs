@@ -6,7 +6,9 @@ public class SignatureInputValidator : ISignatureInputValidator
     /// <inheritdoc cref="ISignatureInputValidator"/>
     public bool Validate(List<string> components, HttpRequestMessage request)
     {
-        if (components.Any(c => !c.Equals(c, StringComparison.CurrentCultureIgnoreCase)))
+        // RFC 9421 section 2.1: component names are lowercase. Comparing ordinally against the
+        // lowercased form is the check that was intended; comparing c to itself always passed.
+        if (components.Any(c => !string.Equals(c, c.ToLowerInvariant(), StringComparison.Ordinal)))
             return false;
 
         var hasMethod = components.Contains("@method");
