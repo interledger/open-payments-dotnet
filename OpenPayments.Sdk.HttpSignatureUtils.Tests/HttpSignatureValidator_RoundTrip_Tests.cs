@@ -127,4 +127,52 @@ public class HttpSignatureValidatorRoundTripTests
 
         Assert.False(await NewValidator().ValidateSignatureAsync(request, jwk));
     }
+
+    [Fact]
+    public async Task ValidateSignatureAsync_BodySwappedWithReplayedContentHeaders_IsInvalid()
+    {
+        var key = KeyUtils.GenerateKey();
+        var jwk = KeyUtils.GenerateJwk("round-trip-key", key);
+        var signed = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new StringContent("{\"amount\":100}", Encoding.UTF8, "application/json"),
+        };
+        var headers = await HttpRequestSigner.SignHttpRequestAsync(signed, key, "round-trip-key");
+
+        // An attacker body carrying the ORIGINAL signed content headers. The base string is
+        // byte-identical, so only a digest-versus-body check can reject this.
+        var tampered = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new StringContent("{\"amount\":999}", Encoding.UTF8, "application/json"),
+        };
+        tampered.Content.Headers.Clear();
+        foreach (var header in signed.Content!.Headers)
+            tampered.Content.Headers.TryAddWithoutValidation(header.Key, header.Value);
+
+        tampered.Headers.TryAddWithoutValidation("Signature", headers.Signature);
+        tampered.Headers.TryAddWithoutValidation("Signature-Input", headers.SignatureInput);
+
+        Assert.False(await NewValidator().ValidateSignatureAsync(tampered, jwk));
+    }
+
+    [Fact]
+    public async Task ValidateSignatureAsync_ContentReplacedAfterSigning_IsInvalid()
+    {
+        var key = KeyUtils.GenerateKey();
+        var jwk = KeyUtils.GenerateJwk("round-trip-key", key);
+        var request = await SignAsync(
+            new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+            {
+                Content = new StringContent("{\"amount\":100}", Encoding.UTF8, "application/json"),
+            },
+            key,
+            "round-trip-key"
+        );
+
+        // A distinct rejection path from the test above: the replacement content has no
+        // Content-Digest header, so SignatureInputValidator rejects it before any digest check.
+        request.Content = new StringContent("{\"amount\":999}", Encoding.UTF8, "application/json");
+
+        Assert.False(await NewValidator().ValidateSignatureAsync(request, jwk));
+    }
 }

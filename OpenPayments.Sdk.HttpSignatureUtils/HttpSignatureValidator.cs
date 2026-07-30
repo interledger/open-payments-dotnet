@@ -41,6 +41,14 @@ public class HttpSignatureValidator : IHttpSignatureValidator
         if (!_validator.Validate(components, request))
             return false;
 
+        // Checked before the Ed25519 verification so a tampered payload is rejected without doing
+        // asymmetric crypto. The signed digest is worthless unless it is compared to the body.
+        if (
+            components.Contains("content-digest")
+            && !await ContentDigestVerifier.MatchesBodyAsync(request).ConfigureAwait(false)
+        )
+            return false;
+
         var challenge = await _builder.BuildBaseAsync(components, request, sigInput);
         if (challenge is null)
             return false;
