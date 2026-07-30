@@ -4,6 +4,7 @@ using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Configuration;
 using OpenPayments.Sdk.Extensions;
+using OpenPayments.Sdk.HttpSignatureUtils;
 
 namespace OpenPayments.Sdk.Tests.Extensions;
 
@@ -26,6 +27,24 @@ public class ServiceCollectionExtensions_Tests
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
         }
     }
+
+    /// <summary>
+    /// Writes a fresh Ed25519 key to a PEM file in a new temporary directory and returns its path.
+    /// Every call gets its own directory so tests never share key material.
+    /// </summary>
+    private static string CreateKeyPemFile()
+    {
+        var dir = Directory.CreateTempSubdirectory("op-sdk-tests");
+        using var key = KeyUtils.GenerateKey(
+            new GenerateKeyArgs { Dir = dir.FullName, Filename = "key.pem" }
+        );
+        return Path.Combine(dir.FullName, "key.pem");
+    }
+
+    /// <summary>
+    /// Returns the PEM text of a fresh Ed25519 key.
+    /// </summary>
+    private static string CreateKeyPem() => File.ReadAllText(CreateKeyPemFile());
 
     [Fact]
     public void UseOpenPayments_WithUseUnauthenticatedClient_RegistersServices()
@@ -210,5 +229,78 @@ public class ServiceCollectionExtensions_Tests
         Assert.NotNull(spy.Request);
         Assert.False(spy.Request!.Headers.Contains("Signature"));
         Assert.False(spy.Request.Headers.Contains("Signature-Input"));
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithPrivateKeyPem_RegistersAuthenticatedClient()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKeyPem = CreateKeyPem();
+        });
+        var provider = services.BuildServiceProvider();
+
+        Assert.NotNull(provider.GetService<IAuthenticatedClient>());
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithPrivateKeyPath_RegistersAuthenticatedClient()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKeyPath = CreateKeyPemFile();
+        });
+        var provider = services.BuildServiceProvider();
+
+        Assert.NotNull(provider.GetService<IAuthenticatedClient>());
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithTwoKeySources_ThrowsNamingBoth()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("https://example.com");
+                options.KeyId = "1234";
+                options.PrivateKeyPem = CreateKeyPem();
+                options.PrivateKeyPath = CreateKeyPemFile();
+            })
+        );
+
+        Assert.Contains("PrivateKeyPem", ex.Message);
+        Assert.Contains("PrivateKeyPath", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithNoKeySource_ThrowsNamingAllThree()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("https://example.com");
+                options.KeyId = "1234";
+            })
+        );
+
+        Assert.Contains("PrivateKey,", ex.Message);
+        Assert.Contains("PrivateKeyPem", ex.Message);
+        Assert.Contains("PrivateKeyPath", ex.Message);
     }
 }

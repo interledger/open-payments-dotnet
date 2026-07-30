@@ -47,17 +47,14 @@ public static class ServiceCollectionExtensions
             // never be built.
             if (string.IsNullOrWhiteSpace(options.KeyId))
                 throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
-            if (options.PrivateKey is null)
-                throw new InvalidOperationException(
-                    "OpenPaymentsOptions.PrivateKey must be provided."
-                );
             if (options.ClientUrl is null)
                 throw new InvalidOperationException(
                     "OpenPaymentsOptions.ClientUrl must be provided."
                 );
 
+            var privateKey = SigningKeyResolver.Resolve(options);
+
             // Captured into locals so the closures below do not hold the mutable options object.
-            var privateKey = options.PrivateKey;
             var keyId = options.KeyId;
             var clientUrl = options.ClientUrl;
 
