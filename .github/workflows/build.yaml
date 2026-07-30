@@ -8,13 +8,18 @@ on:
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
-      - '.github/workflows/dotnet.yml'
+      - 'Makefile'
+      - 'open-payments-specifications/**'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - 'OpenPayments.Sdk/**'
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+      - 'Makefile'
+      - 'open-payments-specifications/**'
+      - '.github/workflows/**'
 
 jobs:
   build-and-test:

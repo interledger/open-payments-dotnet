@@ -21,25 +21,11 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install swagger-cli
-        run: npm install -g swagger-cli
-
-      - name: Install NSwag CLI
-        run: dotnet tool install --global NSwag.ConsoleCore
-
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Build models
-        run: make models
 
       - name: Restore dependencies
         run: dotnet restore

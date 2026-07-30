@@ -3,9 +3,6 @@ bin/
 obj/
 coveragereport/
 **/TestResults/
-**/Generated/AuthServerClient.cs*
-**/Generated/WalletAddressClient.cs*
-**/Generated/ResourceServerClient.cs*
 nupkg/
 
 .env
