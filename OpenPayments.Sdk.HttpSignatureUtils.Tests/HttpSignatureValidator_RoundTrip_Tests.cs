@@ -107,4 +107,24 @@ public class HttpSignatureValidatorRoundTripTests
 
         Assert.False(NewValidator().AreSignatureHeadersPresent(request));
     }
+
+    [Theory]
+    [InlineData("sig1=:not-valid-base64!!:")]
+    [InlineData("sig1=:")]
+    [InlineData("sig1=no-colons-at-all")]
+    [InlineData("garbage")]
+    public async Task ValidateSignatureAsync_MalformedSignatureHeader_ReturnsFalseWithoutThrowing(
+        string malformedSignature
+    )
+    {
+        var key = KeyUtils.GenerateKey();
+        var jwk = KeyUtils.GenerateJwk("round-trip-key", key);
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com/resource");
+        var headers = await HttpRequestSigner.SignHttpRequestAsync(request, key, "round-trip-key");
+
+        request.Headers.TryAddWithoutValidation("Signature", malformedSignature);
+        request.Headers.TryAddWithoutValidation("Signature-Input", headers.SignatureInput);
+
+        Assert.False(await NewValidator().ValidateSignatureAsync(request, jwk));
+    }
 }

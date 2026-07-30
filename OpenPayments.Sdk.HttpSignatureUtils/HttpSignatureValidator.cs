@@ -45,7 +45,9 @@ public class HttpSignatureValidator : IHttpSignatureValidator
         if (challenge is null)
             return false;
 
-        var signatureBytes = Convert.FromBase64String(sig.Replace("sig1=", "").Replace(":", ""));
+        var signatureBytes = TryParseSignature(sig);
+        if (signatureBytes is null)
+            return false;
         var publicKey = PublicKey.Import(
             SignatureAlgorithm.Ed25519,
             Base64UrlDecode(clientKey.X),
@@ -66,6 +68,32 @@ public class HttpSignatureValidator : IHttpSignatureValidator
         if (request.Content?.Headers.TryGetValues(name, out var cvalues) == true)
             return cvalues.FirstOrDefault();
         return null;
+    }
+
+    /// <summary>
+    /// Extracts the raw signature from a <c>sig1=:&lt;base64&gt;:</c> header value. Returns null for
+    /// anything malformed: the header is attacker-controlled, so a bad value is a failed validation
+    /// rather than an exception.
+    /// </summary>
+    private static byte[]? TryParseSignature(string signatureHeader)
+    {
+        const string label = "sig1=:";
+
+        var labelIndex = signatureHeader.IndexOf(label, StringComparison.Ordinal);
+        if (labelIndex < 0)
+            return null;
+
+        var remainder = signatureHeader[(labelIndex + label.Length)..];
+        var end = remainder.IndexOf(':');
+        if (end <= 0)
+            return null;
+
+        var encoded = remainder[..end];
+        var buffer = new byte[(encoded.Length * 3 / 4) + 3];
+
+        return Convert.TryFromBase64String(encoded, buffer, out var written)
+            ? buffer[..written]
+            : null;
     }
 
     private static byte[] Base64UrlDecode(string input)
