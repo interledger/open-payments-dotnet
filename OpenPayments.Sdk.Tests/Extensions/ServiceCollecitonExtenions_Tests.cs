@@ -303,4 +303,70 @@ public class ServiceCollectionExtensions_Tests
         Assert.Contains("PrivateKeyPem", ex.Message);
         Assert.Contains("PrivateKeyPath", ex.Message);
     }
+
+    [Fact]
+    public void UseOpenPayments_UnauthenticatedClient_IsRegisteredTransient()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options => options.UseUnauthenticatedClient = true);
+
+        var descriptor = Assert.Single(
+            services.Where(d => d.ServiceType == typeof(IUnauthenticatedClient))
+        );
+        Assert.Equal(ServiceLifetime.Transient, descriptor.Lifetime);
+    }
+
+    [Fact]
+    public void UseOpenPayments_AuthenticatedClient_IsRegisteredTransient()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+
+        var descriptor = Assert.Single(
+            services.Where(d => d.ServiceType == typeof(IAuthenticatedClient))
+        );
+        Assert.Equal(ServiceLifetime.Transient, descriptor.Lifetime);
+    }
+
+    [Fact]
+    public void UseOpenPayments_ResolvingAuthenticatedClientTwice_ReturnsDistinctInstances()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+        var provider = services.BuildServiceProvider();
+
+        var first = provider.GetRequiredService<IAuthenticatedClient>();
+        var second = provider.GetRequiredService<IAuthenticatedClient>();
+
+        Assert.NotSame(first, second);
+    }
+
+    [Fact]
+    public void UseOpenPayments_ResolvingUnauthenticatedClientTwice_ReturnsDistinctInstances()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options => options.UseUnauthenticatedClient = true);
+        var provider = services.BuildServiceProvider();
+
+        var first = provider.GetRequiredService<IUnauthenticatedClient>();
+        var second = provider.GetRequiredService<IUnauthenticatedClient>();
+
+        Assert.NotSame(first, second);
+    }
 }
