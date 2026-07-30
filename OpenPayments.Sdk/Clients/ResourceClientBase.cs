@@ -1,4 +1,5 @@
 using OpenPayments.Sdk.Generated.Resource;
+using OpenPayments.Sdk.Http;
 
 namespace OpenPayments.Sdk.Clients;
 
