@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
     /// <param name="section">
-    /// The configuration section holding the options, for example
+    /// The configuration holding the options, for example
     /// <c>configuration.GetSection("OpenPayments")</c>. Note that
     /// <see cref="OpenPaymentsOptions.PrivateKey"/> cannot be bound from configuration — supply the
     /// key through <see cref="OpenPaymentsOptions.PrivateKeyPem"/> or
@@ -49,7 +49,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
     public static IServiceCollection UseOpenPayments(
         this IServiceCollection services,
-        IConfigurationSection section
+        IConfiguration section
     )
     {
         ArgumentNullException.ThrowIfNull(services);
@@ -58,9 +58,9 @@ public static class ServiceCollectionExtensions
         // A missing or misspelled section name binds every property to its default, silently
         // registering nothing (both Use*Client flags stay false). Fail fast instead of letting
         // that surface later as an opaque DI resolution error.
-        if (!section.Exists())
+        if (section is IConfigurationSection configSection && !configSection.Exists())
             throw new InvalidOperationException(
-                $"Configuration section '{section.Path}' is missing or empty."
+                "The configuration section is missing or empty."
             );
 
         // Bound eagerly rather than through IOptions so the same validation runs at registration

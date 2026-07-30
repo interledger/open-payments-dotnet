@@ -411,7 +411,7 @@ public class ServiceCollectionExtensions_Tests : IDisposable
         var services = new ServiceCollection();
 
         Assert.Throws<ArgumentNullException>(() =>
-            services.UseOpenPayments((IConfigurationSection)null!)
+            services.UseOpenPayments((IConfiguration)null!)
         );
     }
 
@@ -560,7 +560,7 @@ public class ServiceCollectionExtensions_Tests : IDisposable
             services.UseOpenPayments(configuration.GetSection("SomeMissingSection"))
         );
 
-        Assert.Contains("SomeMissingSection", ex.Message);
+        Assert.Contains("missing", ex.Message, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
