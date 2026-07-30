@@ -1,4 +1,4 @@
-.PHONY: as-models rs-models wallet-address-models wa-models models
+.PHONY: as-models rs-models wa-models models
 
 # Generated output is committed. CI regenerates with the pinned toolchain and fails on drift.
 # Regeneration needs only: dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
@@ -11,11 +11,7 @@ as-models:
 rs-models:
 	nswag openapi2csclient /input:open-payments-specifications/openapi/resource-server.yaml /output:OpenPayments.Sdk/Generated/Resource/ResourceModels.g.cs /namespace:OpenPayments.Sdk.Generated.Resource /classname:ResourceClient $(GENERATE_FLAGS)
 
-wallet-address-models:
-	npx swagger-cli bundle open-payments-specifications/openapi/wallet-address-server.yaml -o OpenPayments.Sdk/tmp/wallet-bundled.json -t json && \
-	nswag openapi2csclient /input:OpenPayments.Sdk/tmp/wallet-bundled.json /output:OpenPayments.Sdk/Generated/Wallet/WalletAddressClient.g.cs /namespace:OpenPayments.Sdk.Generated.Wallet /classname:WalletAddressClient /injectHttpClient:true && \
-	rm -rf OpenPayments.Sdk/tmp/wallet-bundled.json
-
-wa-models: wallet-address-models
+wa-models:
+	nswag openapi2csclient /input:open-payments-specifications/openapi/wallet-address-server.yaml /output:OpenPayments.Sdk/Generated/Wallet/WalletModels.g.cs /namespace:OpenPayments.Sdk.Generated.Wallet /classname:WalletClient $(GENERATE_FLAGS)
 
 models: as-models rs-models wa-models
