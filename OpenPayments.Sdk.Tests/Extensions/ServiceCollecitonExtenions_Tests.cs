@@ -4,13 +4,21 @@ using Microsoft.Extensions.DependencyInjection;
 using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Configuration;
+using OpenPayments.Sdk.Exceptions;
 using OpenPayments.Sdk.Extensions;
+using OpenPayments.Sdk.Generated.Auth;
 using OpenPayments.Sdk.HttpSignatureUtils;
 
 namespace OpenPayments.Sdk.Tests.Extensions;
 
-public class ServiceCollectionExtensions_Tests
+public class ServiceCollectionExtensions_Tests : IDisposable
 {
+    /// <summary>
+    /// Temp directories created by <see cref="CreateKeyPemFile"/>, deleted in <see cref="Dispose"/>
+    /// so test key material does not accumulate on disk across runs.
+    /// </summary>
+    private readonly List<string> _tempKeyDirectories = [];
+
     /// <summary>
     /// Captures the request as the inner handler sees it, so tests can inspect the headers
     /// that actually reach the end of the pipeline for a given named client.
@@ -33,9 +41,10 @@ public class ServiceCollectionExtensions_Tests
     /// Writes a fresh Ed25519 key to a PEM file in a new temporary directory and returns its path.
     /// Every call gets its own directory so tests never share key material.
     /// </summary>
-    private static string CreateKeyPemFile()
+    private string CreateKeyPemFile()
     {
         var dir = Directory.CreateTempSubdirectory("op-sdk-tests");
+        _tempKeyDirectories.Add(dir.FullName);
         using var key = KeyUtils.GenerateKey(
             new GenerateKeyArgs { Dir = dir.FullName, Filename = "key.pem" }
         );
@@ -45,7 +54,20 @@ public class ServiceCollectionExtensions_Tests
     /// <summary>
     /// Returns the PEM text of a fresh Ed25519 key.
     /// </summary>
-    private static string CreateKeyPem() => File.ReadAllText(CreateKeyPemFile());
+    private string CreateKeyPem() => File.ReadAllText(CreateKeyPemFile());
+
+    /// <summary>
+    /// Deletes every temp directory created by <see cref="CreateKeyPemFile"/> during this test
+    /// instance's run.
+    /// </summary>
+    public void Dispose()
+    {
+        foreach (var dir in _tempKeyDirectories)
+        {
+            if (Directory.Exists(dir))
+                Directory.Delete(dir, recursive: true);
+        }
+    }
 
     [Fact]
     public void UseOpenPayments_WithUseUnauthenticatedClient_RegistersServices()
@@ -313,7 +335,8 @@ public class ServiceCollectionExtensions_Tests
         services.UseOpenPayments(options => options.UseUnauthenticatedClient = true);
 
         var descriptor = Assert.Single(
-            services.Where(d => d.ServiceType == typeof(IUnauthenticatedClient))
+            services,
+            d => d.ServiceType == typeof(IUnauthenticatedClient)
         );
         Assert.Equal(ServiceLifetime.Transient, descriptor.Lifetime);
     }
@@ -332,7 +355,8 @@ public class ServiceCollectionExtensions_Tests
         });
 
         var descriptor = Assert.Single(
-            services.Where(d => d.ServiceType == typeof(IAuthenticatedClient))
+            services,
+            d => d.ServiceType == typeof(IAuthenticatedClient)
         );
         Assert.Equal(ServiceLifetime.Transient, descriptor.Lifetime);
     }
@@ -387,7 +411,7 @@ public class ServiceCollectionExtensions_Tests
         var services = new ServiceCollection();
 
         Assert.Throws<ArgumentNullException>(() =>
-            services.UseOpenPayments((IConfiguration)null!)
+            services.UseOpenPayments((IConfigurationSection)null!)
         );
     }
 
@@ -476,5 +500,124 @@ public class ServiceCollectionExtensions_Tests
         );
 
         Assert.Contains("KeyId", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_BoundFromConfigurationWithRelativeClientUrl_ThrowsAtRegistration()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["OpenPayments:UseAuthenticatedClient"] = "true",
+                    ["OpenPayments:KeyId"] = "1234",
+                    // Missing the scheme. ConfigurationBinder's UriTypeConverter parses this as a
+                    // valid *relative* Uri rather than failing to bind, so the guard in
+                    // AddOpenPaymentsCore has to reject it explicitly.
+                    ["OpenPayments:ClientUrl"] = "wallet.example",
+                    ["OpenPayments:PrivateKeyPem"] = CreateKeyPem(),
+                }
+            )
+            .Build();
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(configuration.GetSection("OpenPayments"))
+        );
+
+        Assert.Contains("ClientUrl", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithRelativeClientUrl_Throws()
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri("wallet.example", UriKind.Relative);
+                options.KeyId = "1234";
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            })
+        );
+
+        Assert.Contains("ClientUrl", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_MissingConfigurationSection_ThrowsAtRegistration()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(
+                new Dictionary<string, string?> { ["SomeOtherSection:Foo"] = "bar" }
+            )
+            .Build();
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(configuration.GetSection("SomeMissingSection"))
+        );
+
+        Assert.Contains("SomeMissingSection", ex.Message);
+    }
+
+    [Fact]
+    public async Task UseOpenPayments_ResolvedAuthenticatedClient_SignsOnlySignedPipeline()
+    {
+        var services = new ServiceCollection();
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("https://example.com");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+
+        // Registered after UseOpenPayments, same pattern as the named-client signature tests:
+        // this swaps only the primary (innermost) handler, so the signing handler that
+        // UseOpenPayments already wired onto the signed pipeline is still in the chain.
+        var signedSpy = new SpyHandler();
+        services
+            .AddHttpClient(OpenPaymentsHttpClients.Signed)
+            .ConfigurePrimaryHttpMessageHandler(() => signedSpy);
+
+        var unsignedSpy = new SpyHandler();
+        services
+            .AddHttpClient(OpenPaymentsHttpClients.Unsigned)
+            .ConfigurePrimaryHttpMessageHandler(() => unsignedSpy);
+
+        var provider = services.BuildServiceProvider();
+
+        // Resolved from the container, not built via IHttpClientFactory.CreateClient directly, so
+        // this exercises the same instance a consuming application would inject.
+        var client = provider.GetRequiredService<IAuthenticatedClient>();
+
+        // Drives the unsigned pipeline: GetWalletAddressAsync is inherited from
+        // UnauthenticatedClient, which AuthenticatedClient wraps around the unsigned HttpClient.
+        // The spy returns an empty 200 response, so deserializing it into a WalletAddress fails;
+        // that's expected and irrelevant here, only the request the spy captured matters.
+        await Assert.ThrowsAsync<OpenPaymentsApiException>(
+            () => client.GetWalletAddressAsync("https://example.com/alice")
+        );
+
+        // Drives the signed pipeline via the auth-server client, which is built over the signed
+        // HttpClient. Same story: the spy's empty response fails to deserialize as AuthResponse.
+        await Assert.ThrowsAsync<OpenPaymentsApiException>(
+            () =>
+                client.RequestGrantAsync(
+                    new RequestArgs { Url = new Uri("https://example.com/grant") },
+                    new GrantCreateBody()
+                )
+        );
+
+        Assert.NotNull(unsignedSpy.Request);
+        Assert.False(unsignedSpy.Request!.Headers.Contains("Signature"));
+        Assert.False(unsignedSpy.Request.Headers.Contains("Signature-Input"));
+
+        Assert.NotNull(signedSpy.Request);
+        Assert.True(signedSpy.Request!.Headers.Contains("Signature"));
+        Assert.True(signedSpy.Request.Headers.Contains("Signature-Input"));
     }
 }

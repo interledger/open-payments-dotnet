@@ -49,11 +49,19 @@ public static class ServiceCollectionExtensions
     /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
     public static IServiceCollection UseOpenPayments(
         this IServiceCollection services,
-        IConfiguration section
+        IConfigurationSection section
     )
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(section);
+
+        // A missing or misspelled section name binds every property to its default, silently
+        // registering nothing (both Use*Client flags stay false). Fail fast instead of letting
+        // that surface later as an opaque DI resolution error.
+        if (!section.Exists())
+            throw new InvalidOperationException(
+                $"Configuration section '{section.Path}' is missing or empty."
+            );
 
         // Bound eagerly rather than through IOptions so the same validation runs at registration
         // time on both overloads. Deferred binding would push a misconfiguration to first use.
@@ -90,9 +98,10 @@ public static class ServiceCollectionExtensions
             // never be built.
             if (string.IsNullOrWhiteSpace(options.KeyId))
                 throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
-            if (options.ClientUrl is null)
+            if (options.ClientUrl is null || !options.ClientUrl.IsAbsoluteUri)
                 throw new InvalidOperationException(
-                    "OpenPaymentsOptions.ClientUrl must be provided."
+                    "OpenPaymentsOptions.ClientUrl must be provided as an absolute URL, "
+                        + $"for example https://wallet.example. Got: '{options.ClientUrl}'."
                 );
 
             var privateKey = SigningKeyResolver.Resolve(options);
