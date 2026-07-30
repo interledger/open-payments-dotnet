@@ -178,6 +178,43 @@ var client = new ServiceCollection()
     .GetRequiredService<IAuthenticatedClient>();
 ```
 
+Or bind the options from configuration instead of a delegate:
+
+```csharp
+// Import dependencies
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
+
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+var client = new ServiceCollection()
+    .UseOpenPayments(configuration.GetSection("OpenPayments"))
+    .BuildServiceProvider()
+    .GetRequiredService<IAuthenticatedClient>();
+```
+
+```json
+{
+  "OpenPayments": {
+    "UseAuthenticatedClient": true,
+    "KeyId": "your-key-id",
+    "ClientUrl": "https://wallet.example",
+    "PrivateKeyPath": "/run/secrets/private-key.pem"
+  }
+}
+```
+
+Exactly one signing key source must be set. `PrivateKey` takes an `NSec.Cryptography.Key` and is
+only reachable from the delegate overload; `PrivateKeyPem` takes PEM-encoded PKCS#8 text, and
+`PrivateKeyPath` takes a path to a PEM or raw key file. Options are validated when
+`UseOpenPayments` is called, so a missing or ambiguous setting fails at startup rather than on the
+first request.
+
 Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
 
 ## ✍️ Authors

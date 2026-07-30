@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Configuration;
@@ -24,8 +25,40 @@ public static class ServiceCollectionExtensions
         Action<OpenPaymentsOptions> configure
     )
     {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configure);
+
         var options = new OpenPaymentsOptions();
         configure(options);
+
+        return AddOpenPaymentsCore(services, options);
+    }
+
+    /// <summary>
+    /// Registers OpenPayments services by binding <see cref="OpenPaymentsOptions"/> from a
+    /// configuration section.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
+    /// <param name="section">
+    /// The configuration section holding the options, for example
+    /// <c>configuration.GetSection("OpenPayments")</c>. Note that
+    /// <see cref="OpenPaymentsOptions.PrivateKey"/> cannot be bound from configuration — supply the
+    /// key through <see cref="OpenPaymentsOptions.PrivateKeyPem"/> or
+    /// <see cref="OpenPaymentsOptions.PrivateKeyPath"/> instead.
+    /// </param>
+    /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
+    public static IServiceCollection UseOpenPayments(
+        this IServiceCollection services,
+        IConfiguration section
+    )
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(section);
+
+        // Bound eagerly rather than through IOptions so the same validation runs at registration
+        // time on both overloads. Deferred binding would push a misconfiguration to first use.
+        var options = new OpenPaymentsOptions();
+        section.Bind(options);
 
         return AddOpenPaymentsCore(services, options);
     }

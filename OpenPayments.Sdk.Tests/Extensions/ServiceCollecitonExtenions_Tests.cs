@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSec.Cryptography;
 using OpenPayments.Sdk.Clients;
@@ -368,5 +369,112 @@ public class ServiceCollectionExtensions_Tests
         var second = provider.GetRequiredService<IUnauthenticatedClient>();
 
         Assert.NotSame(first, second);
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithNullConfigureDelegate_Throws()
+    {
+        var services = new ServiceCollection();
+
+        Assert.Throws<ArgumentNullException>(() =>
+            services.UseOpenPayments((Action<OpenPaymentsOptions>)null!)
+        );
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithNullConfigurationSection_Throws()
+    {
+        var services = new ServiceCollection();
+
+        Assert.Throws<ArgumentNullException>(() =>
+            services.UseOpenPayments((IConfiguration)null!)
+        );
+    }
+
+    [Fact]
+    public void UseOpenPayments_BoundFromConfigurationWithPem_RegistersAuthenticatedClient()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["OpenPayments:UseAuthenticatedClient"] = "true",
+                    ["OpenPayments:KeyId"] = "1234",
+                    ["OpenPayments:ClientUrl"] = "https://example.com",
+                    ["OpenPayments:PrivateKeyPem"] = CreateKeyPem(),
+                }
+            )
+            .Build();
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(configuration.GetSection("OpenPayments"));
+        var provider = services.BuildServiceProvider();
+
+        var client = provider.GetService<IAuthenticatedClient>();
+        Assert.NotNull(client);
+        Assert.IsType<AuthenticatedClient>(client);
+    }
+
+    [Fact]
+    public void UseOpenPayments_BoundFromConfigurationWithKeyPath_RegistersAuthenticatedClient()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["OpenPayments:UseAuthenticatedClient"] = "true",
+                    ["OpenPayments:KeyId"] = "1234",
+                    ["OpenPayments:ClientUrl"] = "https://example.com",
+                    ["OpenPayments:PrivateKeyPath"] = CreateKeyPemFile(),
+                }
+            )
+            .Build();
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(configuration.GetSection("OpenPayments"));
+        var provider = services.BuildServiceProvider();
+
+        Assert.NotNull(provider.GetService<IAuthenticatedClient>());
+    }
+
+    [Fact]
+    public void UseOpenPayments_BoundFromConfigurationWithUnauthenticatedOnly_RegistersClient()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["OpenPayments:UseUnauthenticatedClient"] = "true",
+                }
+            )
+            .Build();
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(configuration.GetSection("OpenPayments"));
+        var provider = services.BuildServiceProvider();
+
+        Assert.NotNull(provider.GetService<IUnauthenticatedClient>());
+    }
+
+    [Fact]
+    public void UseOpenPayments_BoundFromConfigurationWithoutKeyId_ThrowsAtRegistration()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["OpenPayments:UseAuthenticatedClient"] = "true",
+                    ["OpenPayments:ClientUrl"] = "https://example.com",
+                    ["OpenPayments:PrivateKeyPem"] = CreateKeyPem(),
+                }
+            )
+            .Build();
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(configuration.GetSection("OpenPayments"))
+        );
+
+        Assert.Contains("KeyId", ex.Message);
     }
 }
