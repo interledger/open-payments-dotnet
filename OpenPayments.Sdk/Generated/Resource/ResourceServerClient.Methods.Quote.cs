@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
+using OpenPayments.Sdk.Http;
 
 namespace OpenPayments.Sdk.Generated.Resource;
 
@@ -12,14 +13,16 @@ public partial class ResourceServerClient
     /// <remarks>
     /// A **quote** is a sub-resource of a wallet address. It represents a quote for a payment from the wallet address.
     /// </remarks>
+    /// <param name="resourceServerUrl">The resource server URL to which the quotes segment will be appended.</param>
     /// <param name="body">A subset of the quotes schema is accepted as input to create a new quote.
     /// <br/>
     /// <br/>The quote must be created with a (`debitAmount` xor `receiveAmount`) unless the `receiver` is an Incoming Payment which has an `incomingAmount`.</param>
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Quote Created</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.Exceptions.OpenPaymentsApiException">The request failed.</exception>
     public async Task<QuoteResponse> PostQuoteAsync(
+        Uri resourceServerUrl,
         QuoteBody body,
         string accessToken,
         CancellationToken cancellationToken
@@ -38,10 +41,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("quotes");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "quotes"));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -56,77 +56,17 @@ public partial class ResourceServerClient
 
         try
         {
-            var headers = Helpers.ExtractHeaders(response);
+            await OpenPaymentsResponse
+                .ThrowIfErrorAsync(response, cancellationToken)
+                .ConfigureAwait(false);
 
-            ProcessResponse(client, response);
-
-            var status = (int)response.StatusCode;
-            switch (status)
-            {
-                case 201:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<QuoteResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    return objectResponse.Object;
-                }
-                case 400:
-                case 401:
-                case 403:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    throw new ApiException<ErrorResponse>(
-                        objectResponse.Object.Error.Description,
-                        status,
-                        objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
-                    );
-                }
-                default:
-                {
-                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
-                        .ConfigureAwait(false);
-                    throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").",
-                        status,
-                        responseData,
-                        headers,
-                        null
-                    );
-                }
-            }
+            return await OpenPaymentsResponse
+                .ReadRequiredAsync<QuoteResponse>(
+                    response,
+                    JsonSerializerSettings,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
         }
         finally
         {
@@ -140,11 +80,13 @@ public partial class ResourceServerClient
     /// <remarks>
     /// A client can fetch the latest state of a quote.
     /// </remarks>
+    /// <param name="quoteUrl">The absolute URL of the quote to retrieve.</param>
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Quote Found</returns>
-    /// <exception cref="ApiException">A server side error occurred.</exception>
+    /// <exception cref="OpenPayments.Sdk.Exceptions.OpenPaymentsApiException">The request failed.</exception>
     public virtual async Task<QuoteResponse> GetQuoteAsync(
+        Uri quoteUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -157,7 +99,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(quoteUrl.ToString());
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -172,77 +114,17 @@ public partial class ResourceServerClient
 
         try
         {
-            var headers = Helpers.ExtractHeaders(response);
+            await OpenPaymentsResponse
+                .ThrowIfErrorAsync(response, cancellationToken)
+                .ConfigureAwait(false);
 
-            ProcessResponse(client, response);
-
-            var status = (int)response.StatusCode;
-            switch (status)
-            {
-                case 200:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<QuoteResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    return objectResponse.Object;
-                }
-                case 401:
-                case 403:
-                case 404:
-                {
-                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
-                            response,
-                            headers,
-                            cancellationToken
-                        )
-                        .ConfigureAwait(false);
-                    if (objectResponse.Object == null)
-                    {
-                        throw new ApiException(
-                            "Response was null which was not expected.",
-                            status,
-                            objectResponse.Text,
-                            headers,
-                            null
-                        );
-                    }
-
-                    throw new ApiException<ErrorResponse>(
-                        objectResponse.Object.Error.Description,
-                        status,
-                        objectResponse.Text,
-                        headers,
-                        objectResponse.Object,
-                        null
-                    );
-                }
-                default:
-                {
-                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
-                        .ConfigureAwait(false);
-                    throw new ApiException(
-                        "The HTTP status code of the response was not expected (" + status + ").",
-                        status,
-                        responseData,
-                        headers,
-                        null
-                    );
-                }
-            }
+            return await OpenPaymentsResponse
+                .ReadRequiredAsync<QuoteResponse>(
+                    response,
+                    JsonSerializerSettings,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
         }
         finally
         {

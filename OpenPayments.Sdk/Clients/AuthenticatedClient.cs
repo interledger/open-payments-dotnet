@@ -1,37 +1,28 @@
-using Newtonsoft.Json;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Clients;
 
 /// <remarks>
-/// Create a new AuthenticatedClient wrapping an existing <see cref="UnauthenticatedClient"/> instance.
+/// Create a new AuthenticatedClient over a signed and an unsigned HTTP pipeline.
 /// </remarks>
-/// <param name="http">Pre-configured <see cref="HttpClient"/> instance. It's <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-/// <param name="privateKey">Private key used to sign requests.</param>
-/// <param name="keyId">Key ID used to sign requests.</param>
+/// <param name="signed">
+/// <see cref="HttpClient"/> whose pipeline includes the signing handler. Used for auth-server and
+/// resource-server calls. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request
+/// URIs are used instead.
+/// </param>
+/// <param name="unsigned">
+/// <see cref="HttpClient"/> without the signing handler. Used for wallet-address lookups and
+/// public incoming-payment reads, which are unauthenticated and must not carry the client's key id.
+/// </param>
 /// <param name="clientUrl">Client Wallet URL Address (e.g. <c>https://wallet.example</c>).</param>
-internal sealed class AuthenticatedClient(
-    HttpClient http,
-    Key privateKey,
-    string keyId,
-    Uri clientUrl
-) : UnauthenticatedClient(http), IAuthenticatedClient
+internal sealed class AuthenticatedClient(HttpClient signed, HttpClient unsigned, Uri clientUrl)
+    : UnauthenticatedClient(unsigned),
+        IAuthenticatedClient
 {
-    private readonly IAuthClientBase _authClient = new AuthClientBase(
-        http,
-        privateKey,
-        keyId,
-        clientUrl
-    );
+    private readonly IAuthClientBase _authClient = new AuthClientBase(signed, clientUrl);
 
-    private readonly IResourceClientBase _resClient = new ResourceClientBase(
-        http,
-        privateKey,
-        keyId,
-        clientUrl
-    );
+    private readonly IResourceClientBase _resClient = new ResourceClientBase(signed);
 
     /// <inheritdoc/>
     public Task<AuthResponse> RequestGrantAsync(

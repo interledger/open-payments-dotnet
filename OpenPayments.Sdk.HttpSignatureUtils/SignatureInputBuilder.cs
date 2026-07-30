@@ -1,53 +1,27 @@
-using System.Security.Cryptography;
-using System.Text;
+using OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <inheritdoc cref="ISignatureInputBuilder"/>
 public class SignatureInputBuilder : ISignatureInputBuilder
 {
+    private const string Label = "sig1=";
+
     /// <inheritdoc cref="ISignatureInputBuilder"/>
-    public async Task<string?> BuildBaseAsync(
+    public Task<string?> BuildBaseAsync(
         List<string> components,
         HttpRequestMessage request,
         string sigInput
     )
     {
-        var sb = new StringBuilder();
+        // RFC 9421 requires the received parameters verbatim, so they are echoed rather than
+        // rebuilt. Only the sig1= label is stripped.
+        var signatureParams = sigInput.StartsWith(Label, StringComparison.Ordinal)
+            ? sigInput[Label.Length..]
+            : sigInput;
 
-        foreach (var component in components)
-        {
-            switch (component)
-            {
-                case "@method":
-                    sb.AppendLine($"\"@method\": {request.Method.Method.ToLower()}");
-                    break;
-                case "@target-uri":
-                    sb.AppendLine($"\"@target-uri\": {request.RequestUri}");
-                    break;
-                default:
-                    var value = await GetHeaderValueAsync(request, component);
-                    sb.AppendLine($"\"{component}\": {value}");
-                    break;
-            }
-        }
-
-        sb.Append($"\"@signature-params\": {sigInput.Replace("sig1=", "")}");
-        return sb.ToString();
-    }
-
-    private static async Task<string> GetHeaderValueAsync(HttpRequestMessage request, string name)
-    {
-        if (request.Headers.TryGetValues(name, out var values))
-            return string.Join(", ", values);
-        if (request.Content?.Headers.TryGetValues(name, out var cvalues) == true)
-            return string.Join(", ", cvalues);
-
-        if (name == "content-digest" && request.Content != null)
-        {
-            var body = await request.Content.ReadAsStringAsync();
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(body));
-            return $"sha-256=:{Convert.ToBase64String(hash)}:";
-        }
-
-        return "";
+        // Not async: the shared builder reads headers only, so there is nothing to await. The
+        // Task-returning signature is kept because it is public API.
+        return Task.FromResult<string?>(
+            SignatureBaseBuilder.Build(components, signatureParams, request)
+        );
     }
 }
