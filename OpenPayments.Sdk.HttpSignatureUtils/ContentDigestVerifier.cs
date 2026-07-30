@@ -21,7 +21,14 @@ internal static class ContentDigestVerifier
         if (request.Content is null)
             return false;
 
-        if (!request.Content.Headers.TryGetValues("Content-Digest", out var values))
+        // Resolved the same way SignatureBaseBuilder resolves it for the signed base string (request
+        // headers first, content headers second). Reading content headers directly here let an
+        // attacker put the original digest on a request header (satisfying the signature, since that
+        // is what the base string sees) and a digest for a different body on the content header
+        // (satisfying a verifier that only looked there), forging an arbitrary body under a valid
+        // signature. An empty string means the header is absent either way; fail closed.
+        var headerValue = SignatureBaseBuilder.GetHeaderValue(request, "content-digest");
+        if (string.IsNullOrEmpty(headerValue))
             return false;
 
         // Hashes the UTF-8 bytes of the decoded body to mirror HttpRequestSigner.ComputeContentDigest
@@ -33,7 +40,7 @@ internal static class ContentDigestVerifier
         var recognised = 0;
 
         foreach (
-            var entry in string.Join(", ", values).Split(',', StringSplitOptions.RemoveEmptyEntries)
+            var entry in headerValue.Split(',', StringSplitOptions.RemoveEmptyEntries)
         )
         {
             var trimmed = entry.Trim();

@@ -57,7 +57,14 @@ internal static class SignatureBaseBuilder
         return string.Join("\n", lines);
     }
 
-    private static string GetHeaderValue(HttpRequestMessage request, string name)
+    /// <summary>
+    /// Resolves the value a covered component name maps to: request headers first, falling back to
+    /// content headers. This is the single source of truth for what a signature commits to for a
+    /// given header name, so anything checking that same header (e.g.
+    /// <see cref="ContentDigestVerifier"/>) must resolve it the same way, or the two checks can be
+    /// satisfied by two different values on the same request.
+    /// </summary>
+    internal static string GetHeaderValue(HttpRequestMessage request, string name)
     {
         if (request.Headers.TryGetValues(name, out var values))
             return string.Join(", ", values);

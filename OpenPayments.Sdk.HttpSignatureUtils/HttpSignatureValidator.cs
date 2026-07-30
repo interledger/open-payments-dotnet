@@ -31,8 +31,10 @@ public class HttpSignatureValidator : IHttpSignatureValidator
     /// <inheritdoc cref="HttpSignatureValidator"/>
     public async Task<bool> ValidateSignatureAsync(HttpRequestMessage request, Jwk clientKey)
     {
-        var sig = TryGetHeader(request, "signature")!;
-        var sigInput = TryGetHeader(request, "signature-input")!;
+        var sig = TryGetHeader(request, "signature");
+        var sigInput = TryGetHeader(request, "signature-input");
+        if (sig is null || sigInput is null)
+            return false;
 
         var components = _parser.GetComponents(sigInput);
         if (components is null)
@@ -40,6 +42,18 @@ public class HttpSignatureValidator : IHttpSignatureValidator
 
         if (!_validator.Validate(components, request))
             return false;
+
+        // Mirrors HttpRequestSigner's own condition (HttpRequestSigner.cs:77): it only adds
+        // content-digest to the covered components when the body is non-empty. Without this check, a
+        // signature produced for a bodyless request (covering only @method/@target-uri) validates
+        // successfully against any body an attacker attaches afterward, since nothing ever commits to
+        // it.
+        if (request.Content != null)
+        {
+            var requestBody = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (!string.IsNullOrEmpty(requestBody) && !components.Contains("content-digest"))
+                return false;
+        }
 
         // Checked before the Ed25519 verification so a tampered payload is rejected without doing
         // asymmetric crypto. The signed digest is worthless unless it is compared to the body.
