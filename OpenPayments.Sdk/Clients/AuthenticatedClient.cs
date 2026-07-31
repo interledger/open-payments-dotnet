@@ -111,7 +111,7 @@ internal sealed class AuthenticatedClient(HttpClient signed, HttpClient unsigned
     }
 
     /// <inheritdoc/>
-    public Task<IncomingPaymentResponse> CompleteIncomingPaymentsAsync(
+    public Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
         AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default
     )
