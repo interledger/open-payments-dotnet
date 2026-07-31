@@ -1,4 +1,4 @@
-.PHONY: as-models rs-models wa-models models
+.PHONY: as-models rs-models wa-models models promote-api
 
 # Generated output is committed. CI regenerates with the pinned toolchain and fails on drift.
 # Regeneration needs only: dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
@@ -15,3 +15,8 @@ wa-models:
 	nswag openapi2csclient /input:open-payments-specifications/openapi/wallet-address-server.yaml /output:OpenPayments.Sdk/Generated/Wallet/WalletModels.g.cs /namespace:OpenPayments.Sdk.Generated.Wallet /classname:WalletClient $(GENERATE_FLAGS)
 
 models: as-models rs-models wa-models
+
+# Folds PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt for every package.
+# Run at release time, before tagging, and commit the result.
+promote-api:
+	scripts/promote-public-api.sh
