@@ -8,13 +8,20 @@ on:
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
-      - '.github/workflows/dotnet.yml'
+      - 'Makefile'
+      - 'scripts/**'
+      - 'open-payments-specifications/**'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - 'OpenPayments.Sdk/**'
       - 'OpenPayments.Sdk.Tests/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils/**'
       - 'OpenPayments.Sdk.HttpSignatureUtils.Tests/**'
+      - 'Makefile'
+      - 'scripts/**'
+      - 'open-payments-specifications/**'
+      - '.github/workflows/**'
 
 jobs:
   build-and-test:
@@ -26,30 +33,25 @@ jobs:
         with:
           submodules: true
 
+      - name: Check for shared mutable BaseUrl
+        run: .github/workflows/scripts/check-shared-baseurl.sh
+
+      - name: Check for bypassed error handling
+        run: .github/workflows/scripts/check-bypassed-error-handling.sh
+
+      - name: Test the public API promote script
+        run: scripts/promote-public-api.test.sh
+
       - name: Setup .NET 9.0 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install swagger-cli
-        run: npm install -g swagger-cli
-
-      - name: Install NSwag CLI
-        run: dotnet tool install --global NSwag.ConsoleCore
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Build models
-        run: make models
 
       - name: Restore dependencies
         run: dotnet restore
@@ -70,3 +72,29 @@ jobs:
         with:
           name: coverage-report
           path: coverage-report
+
+  check-generated-drift:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup .NET 9.0 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install NSwag CLI (pinned)
+        run: dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
+
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Regenerate models
+        run: make models
+
+      - name: Fail on generated-output drift
+        run: .github/workflows/scripts/check-generated-drift.sh

@@ -161,7 +161,7 @@ public class OutgoingPaymentService(IAuthenticatedClient client)
         Console.WriteLine("Debit Amount: {0}", outgoing.DebitAmount.Value);
     }
 
-    public async Task ListOutgoingPaymentAsync(string senderWalletAddress)
+    public async Task ListOutgoingPaymentsAsync(string senderWalletAddress)
     {
         var waDetails = await client.GetWalletAddressAsync(senderWalletAddress);
 

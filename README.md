@@ -37,6 +37,60 @@ Never heard of Interledger before? Or would you like to learn more? Here are som
 - [Open Payments](https://openpayments.dev/)
 - [Web monetization](https://webmonetization.org/)
 
+## Error handling
+
+Every client method throws a single exception type, `OpenPaymentsApiException`, whenever a request
+fails — on any non-2xx response, and on a 2xx whose body is empty or cannot be deserialized.
+
+```csharp
+using OpenPayments.Sdk.Exceptions;
+
+try
+{
+    var quote = await client.CreateQuoteAsync(requestArgs, quoteBody);
+}
+catch (OpenPaymentsApiException ex) when (ex.StatusCode == 429)
+{
+    // The server asked us to slow down. RetryAfter is null if it sent no usable hint.
+    await Task.Delay(ex.RetryAfter ?? TimeSpan.FromSeconds(5));
+}
+catch (OpenPaymentsApiException ex)
+{
+    logger.LogError(
+        "Open Payments call failed: {Status} {Code} {Description}. Body: {Body}",
+        ex.StatusCode,
+        ex.ErrorCode,
+        ex.Description,
+        ex.ResponseBody
+    );
+    throw;
+}
+```
+
+| Property | Type | Notes |
+|---|---|---|
+| `StatusCode` | `int` | The status the server returned. On a malformed success response this is the 2xx it sent. |
+| `ErrorCode` | `string?` | The machine-readable code from the body, e.g. `invalid_request`, `too_fast`, `unauthorized`. |
+| `Description` | `string?` | The human-readable description from the body. |
+| `ResponseBody` | `string?` | The raw body, verbatim and untruncated. |
+| `Headers` | `IReadOnlyDictionary<string, IEnumerable<string>>` | Response headers. Never null. |
+| `RetryAfter` | `TimeSpan?` | Parsed from `Retry-After`. Commonly present on 429 and 503. |
+
+`ErrorCode` and `Description` are `null` when the server returns something other than the Open
+Payments error shape — an HTML page from a gateway, an empty body, a rate-limit response with no
+payload. `ResponseBody` is always the place to look in that case. The SDK never retries on your
+behalf; `RetryAfter` is provided so you can.
+
+`OpenPaymentsApiException` covers every failure the *server* reports. Transport-level failures
+before a response arrives (DNS, connection, TLS, timeout) still surface as `HttpRequestException` /
+`TaskCanceledException` from `HttpClient`.
+
+> **Breaking change.** `OpenPaymentsApiException` replaces the generated `ApiException` and
+> `ApiException<ErrorResponse>` types, the `HttpRequestException` that `EnsureSuccessStatusCode` used
+> to throw on non-2xx responses, and the `InvalidOperationException` that unauthenticated calls used
+> to throw. None of those escape client methods any more — transport-level failures (see above) are
+> a separate case and still propagate as-is.
+
 ## Contributing
 
 Please read the [contribution guidelines](.github/contributing.md) before submitting contributions. All contributions must adhere to our [code of conduct](.github/code_of_conduct.md).
@@ -70,23 +124,24 @@ git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
 
 ### Prerequisites
 
-- [NVM](https://github.com/nvm-sh/nvm)
 - [.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 ### Environment Setup
 
-```bash
-npm install -g swagger-cli && \
-dotnet tool install --global NSwag.ConsoleCore
-```
+Generated DTOs are committed, so you can build and test with nothing but the
+.NET SDK. Regenerating them (only needed when the OpenAPI specs change)
+requires the pinned NSwag CLI:
 
-Now generate models from the OpenAPI specs. You can generate all of them by running the command below:
+```bash
+dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
+```
 
 ```bash
 make models
 ```
 
-However, you can generate them one by one (please check the `Makefile` for all supported commands).
+CI regenerates with the same pinned version and fails on any diff against the
+committed output.
 
 ## 🔧 Running the tests
 
@@ -124,7 +179,72 @@ var client = new ServiceCollection()
     .GetRequiredService<IAuthenticatedClient>();
 ```
 
+Or bind the options from configuration instead of a delegate:
+
+```csharp
+// Import dependencies
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
+
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+var client = new ServiceCollection()
+    .UseOpenPayments(configuration.GetSection("OpenPayments"))
+    .BuildServiceProvider()
+    .GetRequiredService<IAuthenticatedClient>();
+```
+
+```json
+{
+  "OpenPayments": {
+    "UseAuthenticatedClient": true,
+    "KeyId": "your-key-id",
+    "ClientUrl": "https://wallet.example",
+    "PrivateKeyPath": "/run/secrets/private-key.pem"
+  }
+}
+```
+
+Exactly one signing key source must be set. `PrivateKey` takes an `NSec.Cryptography.Key` and is
+only reachable from the delegate overload; `PrivateKeyPem` takes PEM-encoded PKCS#8 text, and
+`PrivateKeyPath` takes a path to a PEM or raw key file. Options are validated when
+`UseOpenPayments` is called, so a missing or ambiguous setting fails at startup rather than on the
+first request.
+
 Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
+
+## Releasing
+
+The public API surface of both packages is tracked in `PublicAPI.Shipped.txt` and
+`PublicAPI.Unshipped.txt` baselines, enforced at build time. New or changed public API
+accumulates in `PublicAPI.Unshipped.txt` during development.
+
+Before tagging a release:
+
+1. Promote the accumulated entries into the shipped baselines:
+
+   ```bash
+   make promote-api
+   ```
+
+2. Review and commit the result — `PublicAPI.Unshipped.txt` should be back to its
+   `#nullable enable` header, and the promoted entries should appear in
+   `PublicAPI.Shipped.txt`.
+3. Move the `## [Unreleased]` section of [CHANGELOG.md](CHANGELOG.md) under the new version
+   heading.
+4. Tag with `vX.Y.Z` to trigger the release workflow.
+
+If `make promote-api` reports that a `*REMOVED*` entry is missing from the shipped baseline,
+the two files have drifted. Reconcile them by hand rather than editing the script.
+
+> **Note:** the release workflow currently auto-generates the GitHub release body separately
+> from this file, so `CHANGELOG.md` is the durable, reviewable record but is not yet what ends
+> up in the release notes verbatim — reconciling the two is tracked by issue #25.
 
 ## ✍️ Authors
 

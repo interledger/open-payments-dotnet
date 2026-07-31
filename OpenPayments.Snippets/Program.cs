@@ -204,7 +204,7 @@ listOutgoingPaymentsCommand.SetAction(async result =>
     var sender = result.GetValue(senderWalletAddressOption)!;
 
     var service = provider.GetRequiredService<OutgoingPaymentService>();
-    await service.ListOutgoingPaymentAsync(sender);
+    await service.ListOutgoingPaymentsAsync(sender);
 });
 manageTokenCommand.SetAction(async result =>
 {
