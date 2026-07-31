@@ -37,6 +37,9 @@ jobs:
       - name: Check for bypassed error handling
         run: .github/workflows/scripts/check-bypassed-error-handling.sh
 
+      - name: Test the public API promote script
+        run: scripts/promote-public-api.test.sh
+
       - name: Setup .NET 9.0 SDK
         uses: actions/setup-dotnet@v4
         with:
