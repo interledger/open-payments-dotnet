@@ -242,6 +242,10 @@ Before tagging a release:
 If `make promote-api` reports that a `*REMOVED*` entry is missing from the shipped baseline,
 the two files have drifted. Reconcile them by hand rather than editing the script.
 
+> **Note:** the release workflow currently auto-generates the GitHub release body separately
+> from this file, so `CHANGELOG.md` is the durable, reviewable record but is not yet what ends
+> up in the release notes verbatim — reconciling the two is tracked by issue #25.
+
 ## ✍️ Authors
 
 - [@golobitch](https://github.com/golobitch) - Initial work

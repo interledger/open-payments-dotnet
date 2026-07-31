@@ -9,8 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **BREAKING:** `IAuthenticatedClient.CompleteIncomingPaymentsAsync` and
-  `AuthenticatedClient.CompleteIncomingPaymentsAsync` are renamed to
+- **BREAKING:** `IAuthenticatedClient.CompleteIncomingPaymentsAsync` is renamed to
   `CompleteIncomingPaymentAsync`. The method completes a single incoming payment, and the
   resource layer already used the singular name. Callers must rename the call.
 - **BREAKING:** `IResourceClientBase.ListOutgoingPaymentAsync` and

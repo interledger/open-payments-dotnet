@@ -57,7 +57,7 @@ while IFS= read -r unshipped; do
 
   echo "Promoted $(printf '%s\n' "$entries" | wc -l | tr -d ' ') entr(y|ies) into $shipped"
   promoted=$((promoted + 1))
-done < <(find . -name 'PublicAPI.Unshipped.txt' -not -path './bin/*' -not -path './obj/*' | LC_ALL=C sort)
+done < <(find . -name 'PublicAPI.Unshipped.txt' -not -path '*/bin/*' -not -path '*/obj/*' | LC_ALL=C sort)
 
 if [ "$promoted" -eq 0 ]; then
   echo "No unshipped public API entries to promote."
