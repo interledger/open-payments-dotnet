@@ -192,7 +192,7 @@ internal sealed class AuthenticatedClient(HttpClient signed, HttpClient unsigned
         CancellationToken cancellationToken = default
     )
     {
-        return _resClient.ListOutgoingPaymentAsync(requestArgs, query, cancellationToken);
+        return _resClient.ListOutgoingPaymentsAsync(requestArgs, query, cancellationToken);
     }
 }
 

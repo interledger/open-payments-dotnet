@@ -115,7 +115,7 @@ public class ResourceClientBase : IResourceClientBase
         );
     }
 
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default
@@ -179,7 +179,7 @@ public interface IResourceClientBase
         CancellationToken cancellationToken = default
     );
 
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default
