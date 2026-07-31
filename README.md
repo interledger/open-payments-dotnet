@@ -218,6 +218,30 @@ first request.
 
 Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
 
+## Releasing
+
+The public API surface of both packages is tracked in `PublicAPI.Shipped.txt` and
+`PublicAPI.Unshipped.txt` baselines, enforced at build time. New or changed public API
+accumulates in `PublicAPI.Unshipped.txt` during development.
+
+Before tagging a release:
+
+1. Promote the accumulated entries into the shipped baselines:
+
+   ```bash
+   make promote-api
+   ```
+
+2. Review and commit the result — `PublicAPI.Unshipped.txt` should be back to its
+   `#nullable enable` header, and the promoted entries should appear in
+   `PublicAPI.Shipped.txt`.
+3. Move the `## [Unreleased]` section of [CHANGELOG.md](CHANGELOG.md) under the new version
+   heading.
+4. Tag with `vX.Y.Z` to trigger the release workflow.
+
+If `make promote-api` reports that a `*REMOVED*` entry is missing from the shipped baseline,
+the two files have drifted. Reconcile them by hand rather than editing the script.
+
 ## ✍️ Authors
 
 - [@golobitch](https://github.com/golobitch) - Initial work
