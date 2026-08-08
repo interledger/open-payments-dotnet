@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net.Http;
 using OpenPayments.Sdk.HttpSignatureUtils;
 using Xunit;
 

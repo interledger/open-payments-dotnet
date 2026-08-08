@@ -41,6 +41,15 @@ public class HttpSignatureValidator : IHttpSignatureValidator
         if (!_validator.Validate(components, request))
             return false;
 
+        // Open Payments / GNAP: when content-digest is covered, the header MUST match
+        // the request body (parity with open-payments-go / rust). Signature verification
+        // alone does not bind the body if Content-Digest is stale after a swap.
+        if (
+            components.Contains("content-digest")
+            && !await ContentDigest.MatchesRequestAsync(request)
+        )
+            return false;
+
         var challenge = await _builder.BuildBaseAsync(components, request, sigInput);
         if (challenge is null)
             return false;
