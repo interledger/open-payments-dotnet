@@ -104,4 +104,41 @@ public class HttpSignatureValidator_ValidateSignatureAsync_Tests
         );
         Assert.False(await ContentDigest.MatchesRequestAsync(request));
     }
+
+    [Fact]
+    public async Task ContentDigest_RequestHeaderWinsOverContentHeader()
+    {
+        var original = """{"amount":"1"}""";
+        var swapped = """{"amount":"2"}""";
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new StringContent(swapped, Encoding.UTF8, "application/json"),
+        };
+        request.Headers.TryAddWithoutValidation("Content-Digest", ContentDigest.ForBody(original));
+        request.Content.Headers.TryAddWithoutValidation("Content-Digest", ContentDigest.ForBody(swapped));
+
+        Assert.False(await ContentDigest.MatchesRequestAsync(request));
+    }
+
+    [Fact]
+    public async Task ContentDigest_HashesRawBytesAndComparesBase64AsWritten()
+    {
+        var bytes = Encoding.UTF8.GetBytes("""{"amount":"1"}""");
+        var content = new ByteArrayContent(bytes);
+        content.Headers.TryAddWithoutValidation("Content-Type", "application/json; charset=bogus");
+        content.Headers.TryAddWithoutValidation("Content-Digest", ContentDigest.ForBody(bytes));
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = content,
+        };
+
+        Assert.True(await ContentDigest.MatchesRequestAsync(request));
+
+        var digest = ContentDigest.ForBody(bytes);
+        var flipped = digest.Contains('A') ? digest.Replace('A', 'a') : digest.Replace('a', 'A');
+        Assert.NotEqual(digest, flipped);
+        content.Headers.Remove("Content-Digest");
+        content.Headers.TryAddWithoutValidation("Content-Digest", flipped);
+        Assert.False(await ContentDigest.MatchesRequestAsync(request));
+    }
 }
