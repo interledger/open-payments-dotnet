@@ -1,5 +1,5 @@
-using System.Security.Cryptography;
 using System.Text;
+using OpenPayments.Sdk.HttpSignatureUtils;
 
 /// <inheritdoc cref="ISignatureInputBuilder"/>
 public class SignatureInputBuilder : ISignatureInputBuilder
@@ -18,7 +18,8 @@ public class SignatureInputBuilder : ISignatureInputBuilder
             switch (component)
             {
                 case "@method":
-                    sb.AppendLine($"\"@method\": {request.Method.Method.ToLower()}");
+                    // RFC 9421: @method is case-normalized to uppercase (matches HttpRequestSigner).
+                    sb.AppendLine($"\"@method\": {request.Method.Method.ToUpperInvariant()}");
                     break;
                 case "@target-uri":
                     sb.AppendLine($"\"@target-uri\": {request.RequestUri}");
@@ -44,8 +45,7 @@ public class SignatureInputBuilder : ISignatureInputBuilder
         if (name == "content-digest" && request.Content != null)
         {
             var body = await request.Content.ReadAsStringAsync();
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(body));
-            return $"sha-256=:{Convert.ToBase64String(hash)}:";
+            return ContentDigest.ForBody(body);
         }
 
         return "";
