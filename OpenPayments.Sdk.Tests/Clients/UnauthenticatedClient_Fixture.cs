@@ -116,4 +116,13 @@ public class UnauthenticatedClientFixture
 
         return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
     }
+
+    public (HttpClient Client, RecordingHandler Handler) CreateRecordingHttpClient(
+        object? responseObject = null,
+        HttpStatusCode? code = null
+    )
+    {
+        var handler = new RecordingHandler(responseObject, code);
+        return (new HttpClient(handler), handler);
+    }
 }

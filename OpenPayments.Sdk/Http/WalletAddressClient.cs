@@ -37,7 +37,7 @@ public class WalletAddressClient : OpenPaymentsClientBase
     {
         return await SendAsync<JsonWebKeySet>(
                 HttpMethod.Get,
-                new Uri(walletAddress + "jwks.json", UriKind.RelativeOrAbsolute),
+                new Uri(walletAddress.TrimEnd('/') + "/jwks.json", UriKind.RelativeOrAbsolute),
                 body: null,
                 accessToken: null,
                 cancellationToken)
