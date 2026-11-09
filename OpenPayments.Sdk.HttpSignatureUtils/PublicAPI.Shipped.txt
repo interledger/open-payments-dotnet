@@ -1,0 +1,61 @@
+#nullable enable
+HttpClientSignatureExtensions
+HttpRequestSigner
+HttpSignatureValidator
+HttpSignatureValidator.AreSignatureHeadersPresent(System.Net.Http.HttpRequestMessage! request) -> bool
+HttpSignatureValidator.HttpSignatureValidator(ISignatureInputParser! parser, ISignatureInputValidator! validator, ISignatureInputBuilder! builder) -> void
+HttpSignatureValidator.ValidateSignatureAsync(System.Net.Http.HttpRequestMessage! request, OpenPayments.Sdk.HttpSignatureUtils.Jwk! clientKey) -> System.Threading.Tasks.Task<bool>!
+IHttpSignatureValidator
+IHttpSignatureValidator.AreSignatureHeadersPresent(System.Net.Http.HttpRequestMessage! request) -> bool
+IHttpSignatureValidator.ValidateSignatureAsync(System.Net.Http.HttpRequestMessage! request, OpenPayments.Sdk.HttpSignatureUtils.Jwk! clientKey) -> System.Threading.Tasks.Task<bool>!
+ISignatureInputBuilder
+ISignatureInputBuilder.BuildBaseAsync(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request, string! sigInput) -> System.Threading.Tasks.Task<string?>!
+ISignatureInputParser
+ISignatureInputParser.GetComponents(string! sigInput) -> System.Collections.Generic.List<string!>?
+ISignatureInputValidator
+ISignatureInputValidator.Validate(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request) -> bool
+OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs
+OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs.Dir.get -> string?
+OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs.Dir.set -> void
+OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs.Filename.get -> string?
+OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs.Filename.set -> void
+OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs.GenerateKeyArgs() -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Alg.get -> string!
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Alg.init -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Crv.get -> string!
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Crv.init -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.D.get -> string?
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.D.init -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Jwk() -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Kid.get -> string!
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Kid.init -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Kty.get -> string!
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.Kty.init -> void
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.X.get -> string!
+OpenPayments.Sdk.HttpSignatureUtils.Jwk.X.init -> void
+OpenPayments.Sdk.HttpSignatureUtils.KeyUtils
+OpenPayments.Sdk.HttpSignatureUtils.SigningHttpMessageHandler
+OpenPayments.Sdk.HttpSignatureUtils.SigningHttpMessageHandler.SigningHttpMessageHandler(NSec.Cryptography.Key! privateKey, string! keyId) -> void
+SignatureHeaders
+SignatureHeaders.Signature.get -> string!
+SignatureHeaders.Signature.set -> void
+SignatureHeaders.SignatureHeaders() -> void
+SignatureHeaders.SignatureInput.get -> string!
+SignatureHeaders.SignatureInput.set -> void
+SignatureInputBuilder
+SignatureInputBuilder.BuildBaseAsync(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request, string! sigInput) -> System.Threading.Tasks.Task<string?>!
+SignatureInputBuilder.SignatureInputBuilder() -> void
+SignatureInputParser
+SignatureInputParser.GetComponents(string! sigInput) -> System.Collections.Generic.List<string!>?
+SignatureInputParser.SignatureInputParser() -> void
+SignatureInputValidator
+SignatureInputValidator.SignatureInputValidator() -> void
+SignatureInputValidator.Validate(System.Collections.Generic.List<string!>! components, System.Net.Http.HttpRequestMessage! request) -> bool
+static HttpRequestSigner.SignHttpRequestAsync(System.Net.Http.HttpRequestMessage! request, NSec.Cryptography.Key! privateKey, string! keyId) -> System.Threading.Tasks.Task<SignatureHeaders!>!
+static OpenPayments.Sdk.HttpSignatureUtils.KeyUtils.GenerateJwk(string! keyId, NSec.Cryptography.Key? privateKey = null) -> OpenPayments.Sdk.HttpSignatureUtils.Jwk!
+static OpenPayments.Sdk.HttpSignatureUtils.KeyUtils.GenerateKey(OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs? args = null) -> NSec.Cryptography.Key!
+static OpenPayments.Sdk.HttpSignatureUtils.KeyUtils.LoadBase64Key(string! base64Key) -> NSec.Cryptography.Key!
+static OpenPayments.Sdk.HttpSignatureUtils.KeyUtils.LoadKey(string! keyFilePath) -> NSec.Cryptography.Key!
+static OpenPayments.Sdk.HttpSignatureUtils.KeyUtils.LoadOrGenerateKey(string? keyFilePath = null, OpenPayments.Sdk.HttpSignatureUtils.GenerateKeyArgs? generateKeyArgs = null) -> NSec.Cryptography.Key!
+static OpenPayments.Sdk.HttpSignatureUtils.KeyUtils.LoadPem(string! pem) -> NSec.Cryptography.Key!

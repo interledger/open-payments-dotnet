@@ -98,14 +98,14 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
     }
 
     [Fact]
-    public async Task CompleteIncomingPaymentsAsync_AppendsASingleCompleteSegment()
+    public async Task CompleteIncomingPaymentAsync_AppendsASingleCompleteSegment()
     {
         var (http, handler) = _fixture.CreateRecordingHttpClient(
             _fixture.CreateIncomingPaymentResponse
         );
         var client = CreateClient(http);
 
-        await client.CompleteIncomingPaymentsAsync(
+        await client.CompleteIncomingPaymentAsync(
             new AuthRequestArgs
             {
                 Url = new Uri("https://host-a.example/incoming-payments/1"),

@@ -11,6 +11,7 @@
     <Company>Interledger</Company>
     <Product>OpenPayments.HttpSignatureUtils</Product>
     <AssemblyName>Interledger.OpenPayments.HttpSignatureUtils</AssemblyName>
+    <WarningsAsErrors>$(WarningsAsErrors);RS0016;RS0017;RS0022;RS0024;RS0025;RS0036;RS0037;RS0041</WarningsAsErrors>
     <Description>HTTP Message Signatures (RFC 9421) utilities for Open Payments — Ed25519 request signing and verification. Usable standalone.</Description>
     <RepositoryUrl>https://github.com/interledger/open-payments-dotnet</RepositoryUrl>
     <PackageTags>interledger openpayments http-message-signatures rfc9421</PackageTags>
@@ -26,5 +27,10 @@
     <InternalsVisibleTo Include="../OpenPayments.Sdk.HttpSignatureUtils.Tests"/>
     <None Include="../LICENSE" Pack="true" PackagePath=""/>
     <None Include="README.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" PrivateAssets="all" />
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
 </Project>

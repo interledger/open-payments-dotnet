@@ -93,7 +93,7 @@ public class IncomingPaymentService(IAuthenticatedClient client)
 
     public async Task CompleteIncomingPaymentAsync(string incomingPaymentUrl, string accessToken)
     {
-        await client.CompleteIncomingPaymentsAsync(
+        await client.CompleteIncomingPaymentAsync(
             new AuthRequestArgs() { Url = new Uri(incomingPaymentUrl), AccessToken = accessToken }
         );
     }

@@ -1,4 +1,5 @@
 using OpenPayments.Sdk.Generated.Resource;
+using OpenPayments.Sdk.Http;
 
 namespace OpenPayments.Sdk.Clients;
 
@@ -132,7 +133,7 @@ internal sealed class ResourceClientBase : IResourceClientBase
     }
 
     /// <inheritdoc/>
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default
@@ -259,7 +260,7 @@ internal interface IResourceClientBase
     /// <param name="query">Filtering and pagination parameters for the list.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>A page of matching outgoing payments.</returns>
-    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
+    public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentsAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default

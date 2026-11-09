@@ -1,0 +1,823 @@
+#nullable enable
+OpenPayments.Sdk.Clients.AuthClientBase
+OpenPayments.Sdk.Clients.AuthClientBase.AuthClientBase(System.Net.Http.HttpClient! http, System.Uri! clientUrl) -> void
+OpenPayments.Sdk.Clients.AuthClientBase.CancelGrantAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Clients.AuthClientBase.ContinueGrantAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Auth.GrantContinueBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Clients.AuthClientBase.RequestGrantAsync(OpenPayments.Sdk.Clients.RequestArgs! requestArgs, OpenPayments.Sdk.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Clients.AuthClientBase.RevokeTokenAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Clients.AuthClientBase.RotateTokenAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.RotateTokenResponse!>!
+OpenPayments.Sdk.Clients.AuthRequestArgs
+OpenPayments.Sdk.Clients.AuthRequestArgs.AccessToken.get -> string!
+OpenPayments.Sdk.Clients.AuthRequestArgs.AccessToken.set -> void
+OpenPayments.Sdk.Clients.AuthRequestArgs.AuthRequestArgs() -> void
+OpenPayments.Sdk.Clients.IAuthClientBase
+OpenPayments.Sdk.Clients.IAuthClientBase.CancelGrantAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Clients.IAuthClientBase.ContinueGrantAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Auth.GrantContinueBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Clients.IAuthClientBase.RequestGrantAsync(OpenPayments.Sdk.Clients.RequestArgs! requestArgs, OpenPayments.Sdk.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Clients.IAuthClientBase.RevokeTokenAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Clients.IAuthClientBase.RotateTokenAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.RotateTokenResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CancelGrantAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CompleteIncomingPaymentsAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.ContinueGrantAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Auth.GrantContinueBody? body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CreateIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CreateOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CreateOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromQuote! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CreateQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.QuoteBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CreateQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.QuoteBodyWithDebitAmount! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.CreateQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.QuoteBodyWithReceiveAmount! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.GetIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.GetOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.GetPublicIncomingPaymentAsync(OpenPayments.Sdk.Clients.RequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.GetQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.ListIncomingPaymentsAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentsResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.ListOutgoingPaymentsAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.RequestGrantAsync(OpenPayments.Sdk.Clients.RequestArgs! requestArgs, OpenPayments.Sdk.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.RevokeTokenAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Clients.IAuthenticatedClient.RotateTokenAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.RotateTokenResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase
+OpenPayments.Sdk.Clients.IResourceClientBase.CompleteIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.CreateIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.Body! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.CreateOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.CreateQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.QuoteBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.GetIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.GetOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.GetQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.ListIncomingPaymentsAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentsResponse!>!
+OpenPayments.Sdk.Clients.IResourceClientBase.ListOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse!>!
+OpenPayments.Sdk.Clients.IUnauthenticatedClient
+OpenPayments.Sdk.Clients.IUnauthenticatedClient.GetIncomingPaymentAsync(string! incomingPaymentUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment!>!
+OpenPayments.Sdk.Clients.IUnauthenticatedClient.GetWalletAddressAsync(string! walletAddressOrPaymentPointer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Wallet.WalletAddress!>!
+OpenPayments.Sdk.Clients.IUnauthenticatedClient.GetWalletAddressKeysAsync(string! walletAddressOrPaymentPointer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Wallet.JsonWebKeySet!>!
+OpenPayments.Sdk.Clients.RequestArgs
+OpenPayments.Sdk.Clients.RequestArgs.RequestArgs() -> void
+OpenPayments.Sdk.Clients.RequestArgs.Url.get -> System.Uri!
+OpenPayments.Sdk.Clients.RequestArgs.Url.set -> void
+OpenPayments.Sdk.Clients.ResourceClientBase
+OpenPayments.Sdk.Clients.ResourceClientBase.CompleteIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.CreateIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.Body! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.CreateOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.CreateQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.QuoteBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.GetIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.GetOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.GetQuoteAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.ListIncomingPaymentsAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentsResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.ListOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse!>!
+OpenPayments.Sdk.Clients.ResourceClientBase.ResourceClientBase(System.Net.Http.HttpClient! http) -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.ClientUrl.get -> System.Uri?
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.ClientUrl.set -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.KeyId.get -> string?
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.KeyId.set -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.OpenPaymentsOptions() -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.PrivateKey.get -> NSec.Cryptography.Key?
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.PrivateKey.set -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.PrivateKeyPath.get -> string?
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.PrivateKeyPath.set -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.PrivateKeyPem.get -> string?
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.PrivateKeyPem.set -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.UseAuthenticatedClient.get -> bool
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.UseAuthenticatedClient.set -> void
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.UseUnauthenticatedClient.get -> bool
+OpenPayments.Sdk.Configuration.OpenPaymentsOptions.UseUnauthenticatedClient.set -> void
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.Description.get -> string?
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.ErrorCode.get -> string?
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.Headers.get -> System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>!
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.OpenPaymentsApiException(int statusCode, string? errorCode, string? description, string? responseBody, System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IEnumerable<string!>!>? headers = null, System.TimeSpan? retryAfter = null, System.Exception? innerException = null) -> void
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.ResponseBody.get -> string?
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.RetryAfter.get -> System.TimeSpan?
+OpenPayments.Sdk.Exceptions.OpenPaymentsApiException.StatusCode.get -> int
+OpenPayments.Sdk.Extensions.ServiceCollectionExtensions
+OpenPayments.Sdk.Generated.Anonymous
+OpenPayments.Sdk.Generated.Anonymous.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Anonymous.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Anonymous.Anonymous() -> void
+OpenPayments.Sdk.Generated.Auth.Access
+OpenPayments.Sdk.Generated.Auth.Access.Access() -> void
+OpenPayments.Sdk.Generated.Auth.AccessItem
+OpenPayments.Sdk.Generated.Auth.AccessItem.AccessItem() -> void
+OpenPayments.Sdk.Generated.Auth.AccessItem.Actions.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Auth.Actions>!
+OpenPayments.Sdk.Generated.Auth.AccessItem.Actions.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessItem.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.AccessItem.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessItem.Identifier.get -> System.Uri?
+OpenPayments.Sdk.Generated.Auth.AccessItem.Identifier.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessItem.Limits.get -> OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits?
+OpenPayments.Sdk.Generated.Auth.AccessItem.Limits.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessItem.Type.get -> OpenPayments.Sdk.Generated.Auth.AccessType
+OpenPayments.Sdk.Generated.Auth.AccessItem.Type.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessItemType
+OpenPayments.Sdk.Generated.Auth.AccessItemType.IncomingPayment = 0 -> OpenPayments.Sdk.Generated.Auth.AccessItemType
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.AccessOutgoing() -> void
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Actions.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Auth.Actions2>!
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Actions.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Identifier.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Identifier.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Limits.get -> OpenPayments.Sdk.Generated.Auth.LimitsOutgoing?
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Limits.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Type.get -> OpenPayments.Sdk.Generated.Auth.AccessOutgoingType
+OpenPayments.Sdk.Generated.Auth.AccessOutgoing.Type.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessOutgoingType
+OpenPayments.Sdk.Generated.Auth.AccessOutgoingType.OutgoingPayment = 0 -> OpenPayments.Sdk.Generated.Auth.AccessOutgoingType
+OpenPayments.Sdk.Generated.Auth.AccessQuote
+OpenPayments.Sdk.Generated.Auth.AccessQuote.AccessQuote() -> void
+OpenPayments.Sdk.Generated.Auth.AccessQuote.Actions.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Auth.Actions3>!
+OpenPayments.Sdk.Generated.Auth.AccessQuote.Actions.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessQuote.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.AccessQuote.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessQuote.Type.get -> OpenPayments.Sdk.Generated.Auth.AccessQuoteType
+OpenPayments.Sdk.Generated.Auth.AccessQuote.Type.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessQuoteType
+OpenPayments.Sdk.Generated.Auth.AccessQuoteType.Quote = 0 -> OpenPayments.Sdk.Generated.Auth.AccessQuoteType
+OpenPayments.Sdk.Generated.Auth.AccessToken
+OpenPayments.Sdk.Generated.Auth.AccessToken.Access.get -> System.Collections.ObjectModel.Collection<OpenPayments.Sdk.Generated.Auth.AccessItem!>!
+OpenPayments.Sdk.Generated.Auth.AccessToken.Access.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessToken.AccessToken() -> void
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.Access.get -> System.Collections.ObjectModel.Collection<OpenPayments.Sdk.Generated.Auth.AccessItem!>!
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.Access.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.AccessTokenResponse() -> void
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.ExpiresIn.get -> int?
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.ExpiresIn.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.Manage.get -> string!
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.Manage.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.Value.get -> string!
+OpenPayments.Sdk.Generated.Auth.AccessTokenResponse.Value.set -> void
+OpenPayments.Sdk.Generated.Auth.AccessType
+OpenPayments.Sdk.Generated.Auth.AccessType.IncomingPayment = 0 -> OpenPayments.Sdk.Generated.Auth.AccessType
+OpenPayments.Sdk.Generated.Auth.AccessType.OutgoingPayment = 1 -> OpenPayments.Sdk.Generated.Auth.AccessType
+OpenPayments.Sdk.Generated.Auth.AccessType.Quote = 2 -> OpenPayments.Sdk.Generated.Auth.AccessType
+OpenPayments.Sdk.Generated.Auth.Access_token
+OpenPayments.Sdk.Generated.Auth.Access_token.Access.get -> OpenPayments.Sdk.Generated.Auth.Access!
+OpenPayments.Sdk.Generated.Auth.Access_token.Access.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token.Access_token() -> void
+OpenPayments.Sdk.Generated.Auth.Access_token.Expires_in.get -> int?
+OpenPayments.Sdk.Generated.Auth.Access_token.Expires_in.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token.Manage.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.Access_token.Manage.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token.Value.get -> string!
+OpenPayments.Sdk.Generated.Auth.Access_token.Value.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token2
+OpenPayments.Sdk.Generated.Auth.Access_token2.Access_token2() -> void
+OpenPayments.Sdk.Generated.Auth.Access_token2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Access_token2.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token2.Value.get -> string!
+OpenPayments.Sdk.Generated.Auth.Access_token2.Value.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token3
+OpenPayments.Sdk.Generated.Auth.Access_token3.Access.get -> OpenPayments.Sdk.Generated.Auth.Access!
+OpenPayments.Sdk.Generated.Auth.Access_token3.Access.set -> void
+OpenPayments.Sdk.Generated.Auth.Access_token3.Access_token3() -> void
+OpenPayments.Sdk.Generated.Auth.Access_token3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Access_token3.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions.Complete = 1 -> OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions.Create = 0 -> OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions.List = 4 -> OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions.ListAll = 5 -> OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions.Read = 2 -> OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions.ReadAll = 3 -> OpenPayments.Sdk.Generated.Auth.Actions
+OpenPayments.Sdk.Generated.Auth.Actions2
+OpenPayments.Sdk.Generated.Auth.Actions2.Create = 0 -> OpenPayments.Sdk.Generated.Auth.Actions2
+OpenPayments.Sdk.Generated.Auth.Actions2.List = 3 -> OpenPayments.Sdk.Generated.Auth.Actions2
+OpenPayments.Sdk.Generated.Auth.Actions2.ListAll = 4 -> OpenPayments.Sdk.Generated.Auth.Actions2
+OpenPayments.Sdk.Generated.Auth.Actions2.Read = 1 -> OpenPayments.Sdk.Generated.Auth.Actions2
+OpenPayments.Sdk.Generated.Auth.Actions2.ReadAll = 2 -> OpenPayments.Sdk.Generated.Auth.Actions2
+OpenPayments.Sdk.Generated.Auth.Actions3
+OpenPayments.Sdk.Generated.Auth.Actions3.Create = 0 -> OpenPayments.Sdk.Generated.Auth.Actions3
+OpenPayments.Sdk.Generated.Auth.Actions3.Read = 1 -> OpenPayments.Sdk.Generated.Auth.Actions3
+OpenPayments.Sdk.Generated.Auth.Actions3.ReadAll = 2 -> OpenPayments.Sdk.Generated.Auth.Actions3
+OpenPayments.Sdk.Generated.Auth.Amount
+OpenPayments.Sdk.Generated.Auth.Amount.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Amount.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Amount.Amount() -> void
+OpenPayments.Sdk.Generated.Auth.Amount.Amount(string! value, string! assetCode, int? assetScale = 2) -> void
+OpenPayments.Sdk.Generated.Auth.Amount.AssetCode.get -> string!
+OpenPayments.Sdk.Generated.Auth.Amount.AssetCode.set -> void
+OpenPayments.Sdk.Generated.Auth.Amount.AssetScale.get -> int
+OpenPayments.Sdk.Generated.Auth.Amount.AssetScale.set -> void
+OpenPayments.Sdk.Generated.Auth.Amount.Value.get -> string!
+OpenPayments.Sdk.Generated.Auth.Amount.Value.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthContinue
+OpenPayments.Sdk.Generated.Auth.AuthContinue.AccessToken.get -> OpenPayments.Sdk.Generated.Auth.ContinueAccessToken!
+OpenPayments.Sdk.Generated.Auth.AuthContinue.AccessToken.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthContinue.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.AuthContinue.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthContinue.AuthContinue() -> void
+OpenPayments.Sdk.Generated.Auth.AuthContinue.Uri.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.AuthContinue.Uri.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthContinue.Wait.get -> int?
+OpenPayments.Sdk.Generated.Auth.AuthContinue.Wait.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthContractResolver
+OpenPayments.Sdk.Generated.Auth.AuthContractResolver.AuthContractResolver() -> void
+OpenPayments.Sdk.Generated.Auth.AuthResponse
+OpenPayments.Sdk.Generated.Auth.AuthResponse.AccessToken.get -> OpenPayments.Sdk.Generated.Auth.AccessTokenResponse?
+OpenPayments.Sdk.Generated.Auth.AuthResponse.AccessToken.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthResponse.AuthResponse() -> void
+OpenPayments.Sdk.Generated.Auth.AuthResponse.Continue.get -> OpenPayments.Sdk.Generated.Auth.AuthContinue!
+OpenPayments.Sdk.Generated.Auth.AuthResponse.Continue.set -> void
+OpenPayments.Sdk.Generated.Auth.AuthResponse.Interact.get -> OpenPayments.Sdk.Generated.Auth.InteractResponse?
+OpenPayments.Sdk.Generated.Auth.AuthResponse.Interact.set -> void
+OpenPayments.Sdk.Generated.Auth.Body
+OpenPayments.Sdk.Generated.Auth.Body.Access_token.get -> OpenPayments.Sdk.Generated.Auth.Access_token3!
+OpenPayments.Sdk.Generated.Auth.Body.Access_token.set -> void
+OpenPayments.Sdk.Generated.Auth.Body.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Body.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Body.Body() -> void
+OpenPayments.Sdk.Generated.Auth.Body.Client.get -> string!
+OpenPayments.Sdk.Generated.Auth.Body.Client.set -> void
+OpenPayments.Sdk.Generated.Auth.Body.Interact.get -> OpenPayments.Sdk.Generated.Auth.InteractRequest?
+OpenPayments.Sdk.Generated.Auth.Body.Interact.set -> void
+OpenPayments.Sdk.Generated.Auth.Body2
+OpenPayments.Sdk.Generated.Auth.Body2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Body2.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Body2.Body2() -> void
+OpenPayments.Sdk.Generated.Auth.Body2.Interact_ref.get -> string?
+OpenPayments.Sdk.Generated.Auth.Body2.Interact_ref.set -> void
+OpenPayments.Sdk.Generated.Auth.Continue
+OpenPayments.Sdk.Generated.Auth.Continue.Access_token.get -> OpenPayments.Sdk.Generated.Auth.Access_token2!
+OpenPayments.Sdk.Generated.Auth.Continue.Access_token.set -> void
+OpenPayments.Sdk.Generated.Auth.Continue.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Continue.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Continue.Continue() -> void
+OpenPayments.Sdk.Generated.Auth.Continue.Uri.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.Continue.Uri.set -> void
+OpenPayments.Sdk.Generated.Auth.Continue.Wait.get -> int?
+OpenPayments.Sdk.Generated.Auth.Continue.Wait.set -> void
+OpenPayments.Sdk.Generated.Auth.ContinueAccessToken
+OpenPayments.Sdk.Generated.Auth.ContinueAccessToken.ContinueAccessToken() -> void
+OpenPayments.Sdk.Generated.Auth.Error
+OpenPayments.Sdk.Generated.Auth.Error.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Error.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Error.Code.get -> OpenPayments.Sdk.Generated.Auth.ErrorCode?
+OpenPayments.Sdk.Generated.Auth.Error.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.Error.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.Error.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.Error.Error() -> void
+OpenPayments.Sdk.Generated.Auth.Error2
+OpenPayments.Sdk.Generated.Auth.Error2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Error2.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Error2.Code.get -> OpenPayments.Sdk.Generated.Auth.Error2Code?
+OpenPayments.Sdk.Generated.Auth.Error2.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.Error2.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.Error2.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.Error2.Error2() -> void
+OpenPayments.Sdk.Generated.Auth.Error2Code
+OpenPayments.Sdk.Generated.Auth.Error2Code.Invalid_request = 0 -> OpenPayments.Sdk.Generated.Auth.Error2Code
+OpenPayments.Sdk.Generated.Auth.Error3
+OpenPayments.Sdk.Generated.Auth.Error3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Error3.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Error3.Code.get -> OpenPayments.Sdk.Generated.Auth.Error3Code?
+OpenPayments.Sdk.Generated.Auth.Error3.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.Error3.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.Error3.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.Error3.Error3() -> void
+OpenPayments.Sdk.Generated.Auth.Error3Code
+OpenPayments.Sdk.Generated.Auth.Error3Code.Request_denied = 0 -> OpenPayments.Sdk.Generated.Auth.Error3Code
+OpenPayments.Sdk.Generated.Auth.Error4
+OpenPayments.Sdk.Generated.Auth.Error4.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Error4.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Error4.Code.get -> OpenPayments.Sdk.Generated.Auth.Error4Code?
+OpenPayments.Sdk.Generated.Auth.Error4.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.Error4.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.Error4.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.Error4.Error4() -> void
+OpenPayments.Sdk.Generated.Auth.Error4Code
+OpenPayments.Sdk.Generated.Auth.Error4Code.Too_fast = 0 -> OpenPayments.Sdk.Generated.Auth.Error4Code
+OpenPayments.Sdk.Generated.Auth.Error5
+OpenPayments.Sdk.Generated.Auth.Error5.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Error5.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Error5.Code.get -> OpenPayments.Sdk.Generated.Auth.Error5Code?
+OpenPayments.Sdk.Generated.Auth.Error5.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.Error5.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.Error5.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.Error5.Error5() -> void
+OpenPayments.Sdk.Generated.Auth.Error5Code
+OpenPayments.Sdk.Generated.Auth.Error5Code.Invalid_continuation = 0 -> OpenPayments.Sdk.Generated.Auth.Error5Code
+OpenPayments.Sdk.Generated.Auth.Error6
+OpenPayments.Sdk.Generated.Auth.Error6.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Error6.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Error6.Code.get -> OpenPayments.Sdk.Generated.Auth.Error6Code?
+OpenPayments.Sdk.Generated.Auth.Error6.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.Error6.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.Error6.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.Error6.Error6() -> void
+OpenPayments.Sdk.Generated.Auth.Error6Code
+OpenPayments.Sdk.Generated.Auth.Error6Code.Invalid_rotation = 0 -> OpenPayments.Sdk.Generated.Auth.Error6Code
+OpenPayments.Sdk.Generated.Auth.ErrorCode
+OpenPayments.Sdk.Generated.Auth.ErrorCode.Invalid_client = 0 -> OpenPayments.Sdk.Generated.Auth.ErrorCode
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidClient
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidClient.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidClient.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidClient.Error.get -> OpenPayments.Sdk.Generated.Auth.Error?
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidClient.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidClient.ErrorInvalidClient() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidContinuation
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidContinuation.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidContinuation.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidContinuation.Error.get -> OpenPayments.Sdk.Generated.Auth.Error5?
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidContinuation.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidContinuation.ErrorInvalidContinuation() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRequest
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRequest.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRequest.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRequest.Error.get -> OpenPayments.Sdk.Generated.Auth.Error2?
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRequest.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRequest.ErrorInvalidRequest() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRotation
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRotation.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRotation.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRotation.Error.get -> OpenPayments.Sdk.Generated.Auth.Error6?
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRotation.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorInvalidRotation.ErrorInvalidRotation() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorItem
+OpenPayments.Sdk.Generated.Auth.ErrorItem.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorItem.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorItem.Code.get -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItem.Code.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorItem.Description.get -> string?
+OpenPayments.Sdk.Generated.Auth.ErrorItem.Description.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorItem.ErrorItem() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode.InvalidClient = 0 -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode.InvalidContinuation = 4 -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode.InvalidRequest = 1 -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode.InvalidRotation = 5 -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode.RequestDenied = 2 -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorItemCode.TooFast = 3 -> OpenPayments.Sdk.Generated.Auth.ErrorItemCode
+OpenPayments.Sdk.Generated.Auth.ErrorRequestDenied
+OpenPayments.Sdk.Generated.Auth.ErrorRequestDenied.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorRequestDenied.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorRequestDenied.Error.get -> OpenPayments.Sdk.Generated.Auth.Error3?
+OpenPayments.Sdk.Generated.Auth.ErrorRequestDenied.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorRequestDenied.ErrorRequestDenied() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorResponse
+OpenPayments.Sdk.Generated.Auth.ErrorResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorResponse.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorResponse.Error.get -> OpenPayments.Sdk.Generated.Auth.ErrorItem!
+OpenPayments.Sdk.Generated.Auth.ErrorResponse.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorResponse.ErrorResponse() -> void
+OpenPayments.Sdk.Generated.Auth.ErrorTooFast
+OpenPayments.Sdk.Generated.Auth.ErrorTooFast.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.ErrorTooFast.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorTooFast.Error.get -> OpenPayments.Sdk.Generated.Auth.Error4?
+OpenPayments.Sdk.Generated.Auth.ErrorTooFast.Error.set -> void
+OpenPayments.Sdk.Generated.Auth.ErrorTooFast.ErrorTooFast() -> void
+OpenPayments.Sdk.Generated.Auth.Finish
+OpenPayments.Sdk.Generated.Auth.Finish.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Finish.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Finish.Finish() -> void
+OpenPayments.Sdk.Generated.Auth.Finish.Method.get -> OpenPayments.Sdk.Generated.Auth.FinishMethod
+OpenPayments.Sdk.Generated.Auth.Finish.Method.set -> void
+OpenPayments.Sdk.Generated.Auth.Finish.Nonce.get -> string!
+OpenPayments.Sdk.Generated.Auth.Finish.Nonce.set -> void
+OpenPayments.Sdk.Generated.Auth.Finish.Uri.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.Finish.Uri.set -> void
+OpenPayments.Sdk.Generated.Auth.FinishMethod
+OpenPayments.Sdk.Generated.Auth.FinishMethod.Redirect = 0 -> OpenPayments.Sdk.Generated.Auth.FinishMethod
+OpenPayments.Sdk.Generated.Auth.GrantContinueBody
+OpenPayments.Sdk.Generated.Auth.GrantContinueBody.GrantContinueBody() -> void
+OpenPayments.Sdk.Generated.Auth.GrantContinueBody.InteractRef.get -> string?
+OpenPayments.Sdk.Generated.Auth.GrantContinueBody.InteractRef.set -> void
+OpenPayments.Sdk.Generated.Auth.GrantCreateBody
+OpenPayments.Sdk.Generated.Auth.GrantCreateBody.AccessToken.get -> OpenPayments.Sdk.Generated.Auth.AccessToken?
+OpenPayments.Sdk.Generated.Auth.GrantCreateBody.AccessToken.set -> void
+OpenPayments.Sdk.Generated.Auth.GrantCreateBody.Client.get -> System.Uri?
+OpenPayments.Sdk.Generated.Auth.GrantCreateBody.Client.set -> void
+OpenPayments.Sdk.Generated.Auth.GrantCreateBody.GrantCreateBody() -> void
+OpenPayments.Sdk.Generated.Auth.GrantCreateBodyWithInteract
+OpenPayments.Sdk.Generated.Auth.GrantCreateBodyWithInteract.AccessToken.get -> OpenPayments.Sdk.Generated.Auth.AccessToken!
+OpenPayments.Sdk.Generated.Auth.GrantCreateBodyWithInteract.AccessToken.set -> void
+OpenPayments.Sdk.Generated.Auth.GrantCreateBodyWithInteract.GrantCreateBodyWithInteract() -> void
+OpenPayments.Sdk.Generated.Auth.GrantCreateBodyWithInteract.Interact.get -> OpenPayments.Sdk.Generated.Auth.InteractRequest!
+OpenPayments.Sdk.Generated.Auth.GrantCreateBodyWithInteract.Interact.set -> void
+OpenPayments.Sdk.Generated.Auth.IncomingAccess
+OpenPayments.Sdk.Generated.Auth.IncomingAccess.Identifier.get -> System.Uri?
+OpenPayments.Sdk.Generated.Auth.IncomingAccess.Identifier.set -> void
+OpenPayments.Sdk.Generated.Auth.IncomingAccess.IncomingAccess() -> void
+OpenPayments.Sdk.Generated.Auth.InteractRequest
+OpenPayments.Sdk.Generated.Auth.InteractRequest.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.InteractRequest.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.InteractRequest.Finish.get -> OpenPayments.Sdk.Generated.Auth.Finish?
+OpenPayments.Sdk.Generated.Auth.InteractRequest.Finish.set -> void
+OpenPayments.Sdk.Generated.Auth.InteractRequest.InteractRequest() -> void
+OpenPayments.Sdk.Generated.Auth.InteractRequest.Start.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Auth.Start>!
+OpenPayments.Sdk.Generated.Auth.InteractRequest.Start.set -> void
+OpenPayments.Sdk.Generated.Auth.InteractResponse
+OpenPayments.Sdk.Generated.Auth.InteractResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.InteractResponse.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.InteractResponse.Finish.get -> string!
+OpenPayments.Sdk.Generated.Auth.InteractResponse.Finish.set -> void
+OpenPayments.Sdk.Generated.Auth.InteractResponse.InteractResponse() -> void
+OpenPayments.Sdk.Generated.Auth.InteractResponse.Redirect.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.InteractResponse.Redirect.set -> void
+OpenPayments.Sdk.Generated.Auth.LimitsOutgoing
+OpenPayments.Sdk.Generated.Auth.LimitsOutgoing.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.LimitsOutgoing.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.LimitsOutgoing.LimitsOutgoing() -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccess
+OpenPayments.Sdk.Generated.Auth.OutgoingAccess.Identifier.get -> System.Uri!
+OpenPayments.Sdk.Generated.Auth.OutgoingAccess.Identifier.set -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccess.Limits.get -> OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits?
+OpenPayments.Sdk.Generated.Auth.OutgoingAccess.Limits.set -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccess.OutgoingAccess() -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.DebitAmount.get -> OpenPayments.Sdk.Generated.Auth.Amount?
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.DebitAmount.set -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.Interval.get -> string?
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.Interval.set -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.OutgoingAccessLimits() -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.ReceiveAmount.get -> OpenPayments.Sdk.Generated.Auth.Amount?
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.ReceiveAmount.set -> void
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.Receiver.get -> string?
+OpenPayments.Sdk.Generated.Auth.OutgoingAccessLimits.Receiver.set -> void
+OpenPayments.Sdk.Generated.Auth.QuoteAccess
+OpenPayments.Sdk.Generated.Auth.QuoteAccess.QuoteAccess() -> void
+OpenPayments.Sdk.Generated.Auth.Response
+OpenPayments.Sdk.Generated.Auth.Response.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Response.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Response.Continue.get -> OpenPayments.Sdk.Generated.Auth.Continue!
+OpenPayments.Sdk.Generated.Auth.Response.Continue.set -> void
+OpenPayments.Sdk.Generated.Auth.Response.Interact.get -> OpenPayments.Sdk.Generated.Auth.InteractResponse!
+OpenPayments.Sdk.Generated.Auth.Response.Interact.set -> void
+OpenPayments.Sdk.Generated.Auth.Response.Response() -> void
+OpenPayments.Sdk.Generated.Auth.Response2
+OpenPayments.Sdk.Generated.Auth.Response2.Access_token.get -> OpenPayments.Sdk.Generated.Auth.Access_token?
+OpenPayments.Sdk.Generated.Auth.Response2.Access_token.set -> void
+OpenPayments.Sdk.Generated.Auth.Response2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Response2.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Response2.Continue.get -> OpenPayments.Sdk.Generated.Auth.Continue!
+OpenPayments.Sdk.Generated.Auth.Response2.Continue.set -> void
+OpenPayments.Sdk.Generated.Auth.Response2.Response2() -> void
+OpenPayments.Sdk.Generated.Auth.Response3
+OpenPayments.Sdk.Generated.Auth.Response3.Access_token.get -> OpenPayments.Sdk.Generated.Auth.Access_token!
+OpenPayments.Sdk.Generated.Auth.Response3.Access_token.set -> void
+OpenPayments.Sdk.Generated.Auth.Response3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Auth.Response3.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Auth.Response3.Response3() -> void
+OpenPayments.Sdk.Generated.Auth.RotateTokenResponse
+OpenPayments.Sdk.Generated.Auth.RotateTokenResponse.AccessToken.get -> OpenPayments.Sdk.Generated.Auth.AccessTokenResponse!
+OpenPayments.Sdk.Generated.Auth.RotateTokenResponse.AccessToken.set -> void
+OpenPayments.Sdk.Generated.Auth.RotateTokenResponse.RotateTokenResponse() -> void
+OpenPayments.Sdk.Generated.Auth.Start
+OpenPayments.Sdk.Generated.Auth.Start.Redirect = 0 -> OpenPayments.Sdk.Generated.Auth.Start
+OpenPayments.Sdk.Generated.Helpers
+OpenPayments.Sdk.Generated.Resource.Amount
+OpenPayments.Sdk.Generated.Resource.Amount.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.Amount.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.Amount.Amount() -> void
+OpenPayments.Sdk.Generated.Resource.Amount.Amount(string! value, string! assetCode, int? assetScale = 2) -> void
+OpenPayments.Sdk.Generated.Resource.Amount.AssetCode.get -> string!
+OpenPayments.Sdk.Generated.Resource.Amount.AssetCode.set -> void
+OpenPayments.Sdk.Generated.Resource.Amount.AssetScale.get -> int
+OpenPayments.Sdk.Generated.Resource.Amount.AssetScale.set -> void
+OpenPayments.Sdk.Generated.Resource.Amount.Value.get -> string!
+OpenPayments.Sdk.Generated.Resource.Amount.Value.set -> void
+OpenPayments.Sdk.Generated.Resource.Body
+OpenPayments.Sdk.Generated.Resource.Body.Body() -> void
+OpenPayments.Sdk.Generated.Resource.Body.ExpiresAt.get -> System.DateTimeOffset?
+OpenPayments.Sdk.Generated.Resource.Body.ExpiresAt.set -> void
+OpenPayments.Sdk.Generated.Resource.Body.IncomingAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount?
+OpenPayments.Sdk.Generated.Resource.Body.IncomingAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.Body.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.Body.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.Body.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Body.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.Body2
+OpenPayments.Sdk.Generated.Resource.Body2.Body2() -> void
+OpenPayments.Sdk.Generated.Resource.Body2.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.Body2.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.Body2.QuoteId.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Body2.QuoteId.set -> void
+OpenPayments.Sdk.Generated.Resource.Body2.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Body2.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.Body3
+OpenPayments.Sdk.Generated.Resource.Body3.Body3() -> void
+OpenPayments.Sdk.Generated.Resource.Body3.Method.get -> OpenPayments.Sdk.Generated.Resource.PaymentMethod
+OpenPayments.Sdk.Generated.Resource.Body3.Method.set -> void
+OpenPayments.Sdk.Generated.Resource.Body3.Receiver.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Body3.Receiver.set -> void
+OpenPayments.Sdk.Generated.Resource.Body3.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Body3.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.Error
+OpenPayments.Sdk.Generated.Resource.Error.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.Error.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.Error.Code.get -> string!
+OpenPayments.Sdk.Generated.Resource.Error.Code.set -> void
+OpenPayments.Sdk.Generated.Resource.Error.Description.get -> string!
+OpenPayments.Sdk.Generated.Resource.Error.Description.set -> void
+OpenPayments.Sdk.Generated.Resource.Error.Details.get -> object?
+OpenPayments.Sdk.Generated.Resource.Error.Details.set -> void
+OpenPayments.Sdk.Generated.Resource.Error.Error() -> void
+OpenPayments.Sdk.Generated.Resource.ErrorResponse
+OpenPayments.Sdk.Generated.Resource.ErrorResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.ErrorResponse.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.ErrorResponse.Error.get -> OpenPayments.Sdk.Generated.Resource.Error!
+OpenPayments.Sdk.Generated.Resource.ErrorResponse.Error.set -> void
+OpenPayments.Sdk.Generated.Resource.ErrorResponse.ErrorResponse() -> void
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.IlpAddress.get -> string!
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.IlpAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.IlpPaymentMethod() -> void
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.SharedSecret.get -> string!
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.SharedSecret.set -> void
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.Type.get -> OpenPayments.Sdk.Generated.Resource.IlpPaymentMethodType
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod.Type.set -> void
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethodType
+OpenPayments.Sdk.Generated.Resource.IlpPaymentMethodType.Ilp = 0 -> OpenPayments.Sdk.Generated.Resource.IlpPaymentMethodType
+OpenPayments.Sdk.Generated.Resource.IncomingPayment
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.Completed.get -> bool
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.Completed.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.CreatedAt.get -> System.DateTimeOffset
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.CreatedAt.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.ExpiresAt.get -> System.DateTimeOffset?
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.ExpiresAt.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.Id.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.Id.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.IncomingAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount?
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.IncomingAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.IncomingPayment() -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.ReceivedAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.ReceivedAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.IncomingPayment.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody.ExpiresAt.get -> System.DateTimeOffset?
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody.ExpiresAt.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody.IncomingPaymentBody() -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentBody.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse.IncomingPaymentResponse() -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentWithMethods
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentWithMethods.IncomingPaymentWithMethods() -> void
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentWithMethods.Methods.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Resource.IlpPaymentMethod!>!
+OpenPayments.Sdk.Generated.Resource.IncomingPaymentWithMethods.Methods.set -> void
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.Cursor.get -> string?
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.Cursor.set -> void
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.First.get -> int?
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.First.set -> void
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.Last.get -> int?
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.Last.set -> void
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.ListIncomingPaymentQuery() -> void
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.WalletAddress.get -> string!
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentQuery.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentsResponse
+OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentsResponse.ListIncomingPaymentsResponse() -> void
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.Cursor.get -> string?
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.Cursor.set -> void
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.First.get -> int?
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.First.set -> void
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.Last.get -> int?
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.Last.set -> void
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.ListOutgoingPaymentQuery() -> void
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.WalletAddress.get -> string!
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse
+OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse.ListOutgoingPaymentsResponse() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.CreatedAt.get -> System.DateTimeOffset
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.CreatedAt.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.DebitAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.DebitAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Failed.get -> bool?
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Failed.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Id.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Id.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.OutgoingPayment() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.QuoteId.get -> System.Uri?
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.QuoteId.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.ReceiveAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.ReceiveAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Receiver.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.Receiver.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.SentAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.SentAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPayment.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody.OutgoingPaymentBody() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.DebitAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.DebitAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.IncomingPayment.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.IncomingPayment.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromIncomingPayment.OutgoingPaymentBodyFromIncomingPayment() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromQuote
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromQuote.OutgoingPaymentBodyFromQuote() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromQuote.QuoteId.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBodyFromQuote.QuoteId.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentResponse
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentResponse.OutgoingPaymentResponse() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.CreatedAt.get -> System.DateTimeOffset
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.CreatedAt.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.DebitAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.DebitAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Failed.get -> bool?
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Failed.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentDebitAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount?
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentDebitAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentReceiveAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount?
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.GrantSpentReceiveAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Id.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Id.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Metadata.get -> object?
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Metadata.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.OutgoingPaymentWithSpentAmounts() -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.QuoteId.get -> System.Uri?
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.QuoteId.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.ReceiveAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.ReceiveAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Receiver.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.Receiver.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.SentAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.SentAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmounts.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse
+OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse.OutgoingPaymentWithSpentAmountsResponse() -> void
+OpenPayments.Sdk.Generated.Resource.PageInfo
+OpenPayments.Sdk.Generated.Resource.PageInfo.EndCursor.get -> string?
+OpenPayments.Sdk.Generated.Resource.PageInfo.EndCursor.set -> void
+OpenPayments.Sdk.Generated.Resource.PageInfo.HasNextPage.get -> bool
+OpenPayments.Sdk.Generated.Resource.PageInfo.HasNextPage.set -> void
+OpenPayments.Sdk.Generated.Resource.PageInfo.HasPreviousPage.get -> bool
+OpenPayments.Sdk.Generated.Resource.PageInfo.HasPreviousPage.set -> void
+OpenPayments.Sdk.Generated.Resource.PageInfo.PageInfo() -> void
+OpenPayments.Sdk.Generated.Resource.PageInfo.StartCursor.get -> string?
+OpenPayments.Sdk.Generated.Resource.PageInfo.StartCursor.set -> void
+OpenPayments.Sdk.Generated.Resource.PaymentMethod
+OpenPayments.Sdk.Generated.Resource.PaymentMethod.Ilp = 0 -> OpenPayments.Sdk.Generated.Resource.PaymentMethod
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.AuthServer.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.AuthServer.set -> void
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.PublicIncomingPayment() -> void
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.ReceivedAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount?
+OpenPayments.Sdk.Generated.Resource.PublicIncomingPayment.ReceivedAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote
+OpenPayments.Sdk.Generated.Resource.Quote.CreatedAt.get -> System.DateTimeOffset
+OpenPayments.Sdk.Generated.Resource.Quote.CreatedAt.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.DebitAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.Quote.DebitAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.ExpiresAt.get -> string?
+OpenPayments.Sdk.Generated.Resource.Quote.ExpiresAt.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.Id.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Quote.Id.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.Method.get -> OpenPayments.Sdk.Generated.Resource.PaymentMethod
+OpenPayments.Sdk.Generated.Resource.Quote.Method.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.Quote() -> void
+OpenPayments.Sdk.Generated.Resource.Quote.ReceiveAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.Quote.ReceiveAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.Receiver.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Quote.Receiver.set -> void
+OpenPayments.Sdk.Generated.Resource.Quote.WalletAddress.get -> System.Uri!
+OpenPayments.Sdk.Generated.Resource.Quote.WalletAddress.set -> void
+OpenPayments.Sdk.Generated.Resource.QuoteBody
+OpenPayments.Sdk.Generated.Resource.QuoteBody.QuoteBody() -> void
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithDebitAmount
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithDebitAmount.DebitAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithDebitAmount.DebitAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithDebitAmount.QuoteBodyWithDebitAmount() -> void
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithReceiveAmount
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithReceiveAmount.QuoteBodyWithReceiveAmount() -> void
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithReceiveAmount.ReceiveAmount.get -> OpenPayments.Sdk.Generated.Resource.Amount!
+OpenPayments.Sdk.Generated.Resource.QuoteBodyWithReceiveAmount.ReceiveAmount.set -> void
+OpenPayments.Sdk.Generated.Resource.QuoteResponse
+OpenPayments.Sdk.Generated.Resource.QuoteResponse.QuoteResponse() -> void
+OpenPayments.Sdk.Generated.Resource.ResourceContractResolver
+OpenPayments.Sdk.Generated.Resource.ResourceContractResolver.ResourceContractResolver() -> void
+OpenPayments.Sdk.Generated.Resource.ResourceError
+OpenPayments.Sdk.Generated.Resource.ResourceError.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.ResourceError.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.ResourceError.Code.get -> string!
+OpenPayments.Sdk.Generated.Resource.ResourceError.Code.set -> void
+OpenPayments.Sdk.Generated.Resource.ResourceError.Description.get -> string!
+OpenPayments.Sdk.Generated.Resource.ResourceError.Description.set -> void
+OpenPayments.Sdk.Generated.Resource.ResourceError.Details.get -> object!
+OpenPayments.Sdk.Generated.Resource.ResourceError.Details.set -> void
+OpenPayments.Sdk.Generated.Resource.ResourceError.ResourceError() -> void
+OpenPayments.Sdk.Generated.Resource.ResourceErrorResponse
+OpenPayments.Sdk.Generated.Resource.ResourceErrorResponse.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.ResourceErrorResponse.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.ResourceErrorResponse.Error.get -> OpenPayments.Sdk.Generated.Resource.ResourceError!
+OpenPayments.Sdk.Generated.Resource.ResourceErrorResponse.Error.set -> void
+OpenPayments.Sdk.Generated.Resource.ResourceErrorResponse.ResourceErrorResponse() -> void
+OpenPayments.Sdk.Generated.Resource.Response
+OpenPayments.Sdk.Generated.Resource.Response.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.Response.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.Response.Pagination.get -> OpenPayments.Sdk.Generated.Resource.PageInfo?
+OpenPayments.Sdk.Generated.Resource.Response.Pagination.set -> void
+OpenPayments.Sdk.Generated.Resource.Response.Response() -> void
+OpenPayments.Sdk.Generated.Resource.Response.Result.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Resource.IncomingPayment!>?
+OpenPayments.Sdk.Generated.Resource.Response.Result.set -> void
+OpenPayments.Sdk.Generated.Resource.Response2
+OpenPayments.Sdk.Generated.Resource.Response2.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.Response2.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.Response2.Pagination.get -> OpenPayments.Sdk.Generated.Resource.PageInfo?
+OpenPayments.Sdk.Generated.Resource.Response2.Pagination.set -> void
+OpenPayments.Sdk.Generated.Resource.Response2.Response2() -> void
+OpenPayments.Sdk.Generated.Resource.Response2.Result.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Resource.OutgoingPayment!>?
+OpenPayments.Sdk.Generated.Resource.Response2.Result.set -> void
+OpenPayments.Sdk.Generated.Resource.Response3
+OpenPayments.Sdk.Generated.Resource.Response3.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Resource.Response3.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Resource.Response3.Response3() -> void
+OpenPayments.Sdk.Generated.Wallet.DidDocument
+OpenPayments.Sdk.Generated.Wallet.DidDocument.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Wallet.DidDocument.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Wallet.DidDocument.DidDocument() -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Alg.get -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyAlg
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Alg.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Crv.get -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyCrv
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Crv.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.JsonWebKey() -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Kid.get -> string!
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Kid.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Kty.get -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyKty
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Kty.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Use.get -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyUse?
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.Use.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.X.get -> string!
+OpenPayments.Sdk.Generated.Wallet.JsonWebKey.X.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyAlg
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyAlg.EdDSA = 0 -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyAlg
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyCrv
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyCrv.Ed25519 = 0 -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyCrv
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyKty
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyKty.OKP = 0 -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyKty
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeySet
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeySet.JsonWebKeySet() -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeySet.Keys.get -> System.Collections.Generic.ICollection<OpenPayments.Sdk.Generated.Wallet.JsonWebKey!>!
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeySet.Keys.set -> void
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyUse
+OpenPayments.Sdk.Generated.Wallet.JsonWebKeyUse.Sig = 0 -> OpenPayments.Sdk.Generated.Wallet.JsonWebKeyUse
+OpenPayments.Sdk.Generated.Wallet.WalletAddress
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AdditionalProperties.get -> System.Collections.Generic.IDictionary<string!, object!>!
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AdditionalProperties.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AssetCode.get -> string!
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AssetCode.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AssetScale.get -> int
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AssetScale.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AuthServer.get -> System.Uri!
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.AuthServer.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.Id.get -> System.Uri!
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.Id.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.PublicName.get -> string?
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.PublicName.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.ResourceServer.get -> System.Uri!
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.ResourceServer.set -> void
+OpenPayments.Sdk.Generated.Wallet.WalletAddress.WalletAddress() -> void
+OpenPayments.Sdk.Http.AuthServerClient
+OpenPayments.Sdk.Http.AuthServerClient.AuthServerClient(System.Net.Http.HttpClient! httpClient) -> void
+OpenPayments.Sdk.Http.AuthServerClient.CancelGrantAsync(System.Uri! continueUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Http.AuthServerClient.ContinueGrantAsync(System.Uri! continueUrl, string! accessToken, OpenPayments.Sdk.Generated.Auth.GrantContinueBody! body, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Http.AuthServerClient.CreateGrantAsync(System.Uri! authServerUrl, OpenPayments.Sdk.Generated.Auth.GrantCreateBody! body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.AuthResponse!>!
+OpenPayments.Sdk.Http.AuthServerClient.RevokeTokenAsync(System.Uri! tokenUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Http.AuthServerClient.RotateTokenAsync(System.Uri! tokenUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Auth.RotateTokenResponse!>!
+OpenPayments.Sdk.Http.OpenPaymentsClientBase
+OpenPayments.Sdk.Http.OpenPaymentsClientBase.OpenPaymentsClientBase(System.Net.Http.HttpClient! httpClient, Newtonsoft.Json.JsonSerializerSettings! serializerSettings) -> void
+OpenPayments.Sdk.Http.OpenPaymentsClientBase.SendAsync(System.Net.Http.HttpMethod! method, System.Uri! url, object? body, string? accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+OpenPayments.Sdk.Http.OpenPaymentsClientBase.SendAsync<TResponse>(System.Net.Http.HttpMethod! method, System.Uri! url, object? body, string? accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResponse>!
+OpenPayments.Sdk.Http.ResourceServerClient
+OpenPayments.Sdk.Http.ResourceServerClient.PostIncomingPaymentAsync(System.Uri! resourceServerUrl, OpenPayments.Sdk.Generated.Resource.Body! body, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+OpenPayments.Sdk.Http.ResourceServerClient.PostOutgoingPaymentAsync(System.Uri! resourceServerUrl, OpenPayments.Sdk.Generated.Resource.OutgoingPaymentBody! body, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentWithSpentAmountsResponse!>!
+OpenPayments.Sdk.Http.ResourceServerClient.PostQuoteAsync(System.Uri! resourceServerUrl, OpenPayments.Sdk.Generated.Resource.QuoteBody! body, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+OpenPayments.Sdk.Http.ResourceServerClient.ResourceServerClient(System.Net.Http.HttpClient! httpClient) -> void
+OpenPayments.Sdk.Http.WalletAddressClient
+OpenPayments.Sdk.Http.WalletAddressClient.GetWalletAddressAsync(string! walletAddress, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Wallet.WalletAddress!>!
+OpenPayments.Sdk.Http.WalletAddressClient.GetWalletAddressKeysAsync(string! walletAddress, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Wallet.JsonWebKeySet!>!
+OpenPayments.Sdk.Http.WalletAddressClient.WalletAddressClient(System.Net.Http.HttpClient! httpClient) -> void
+static OpenPayments.Sdk.Extensions.ServiceCollectionExtensions.UseOpenPayments(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, Microsoft.Extensions.Configuration.IConfiguration! section) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static OpenPayments.Sdk.Extensions.ServiceCollectionExtensions.UseOpenPayments(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<OpenPayments.Sdk.Configuration.OpenPaymentsOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static OpenPayments.Sdk.Generated.Helpers.ExtractHeaders(System.Net.Http.HttpResponseMessage! response) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.IEnumerable<string!>!>!
+virtual OpenPayments.Sdk.Http.ResourceServerClient.CompleteIncomingPaymentAsync(System.Uri! incomingPaymentUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+virtual OpenPayments.Sdk.Http.ResourceServerClient.GetIncomingPaymentAsync(System.Uri! incomingPaymentUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+virtual OpenPayments.Sdk.Http.ResourceServerClient.GetOutgoingPaymentAsync(System.Uri! outgoingPaymentUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.OutgoingPaymentResponse!>!
+virtual OpenPayments.Sdk.Http.ResourceServerClient.GetQuoteAsync(System.Uri! quoteUrl, string! accessToken, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.QuoteResponse!>!
+virtual OpenPayments.Sdk.Http.ResourceServerClient.ListIncomingPaymentsAsync(System.Uri! resourceServerUrl, string! accessToken, string! walletAddress, string? cursor, int? first, int? last, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListIncomingPaymentsResponse!>!
+virtual OpenPayments.Sdk.Http.ResourceServerClient.ListOutgoingPaymentsAsync(System.Uri! resourceServerUrl, string! accessToken, string! walletAddress, string? cursor, int? first, int? last, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse!>!

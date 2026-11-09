@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using NSec.Cryptography;
 using Xunit;
 
 namespace OpenPayments.Sdk.HttpSignatureUtils.Tests;
@@ -101,5 +102,63 @@ public class HttpRequestSignerTests
 
         Assert.Contains("\"content-digest\"", headers.SignatureInput);
         Assert.Equal(json, await request.Content.ReadAsStringAsync());
+    }
+
+    [Fact]
+    public async Task SignHttpRequestAsync_NonUtf8Body_DigestsRawBytes()
+    {
+        var key = KeyUtils.GenerateKey();
+        // UTF-8 BOM plus an invalid UTF-8 byte. Both change if the body is decoded and re-encoded.
+        var raw = new byte[] { 0xEF, 0xBB, 0xBF, (byte)'{', 0xFF, (byte)'}' };
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new ByteArrayContent(raw),
+        };
+
+        await HttpRequestSigner.SignHttpRequestAsync(request, key, "raw-key");
+
+        var expectedDigest = Convert.ToBase64String(SHA512.HashData(raw));
+        Assert.Equal(
+            $"sha-512=:{expectedDigest}:",
+            request.Content.Headers.GetValues("Content-Digest").Single()
+        );
+        Assert.Equal(raw.Length, request.Content.Headers.ContentLength);
+    }
+
+    [Fact]
+    public async Task SignHttpRequestAsync_SignatureInputCarriesTheSignedSignatureParams()
+    {
+        var key = KeyUtils.GenerateKey();
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com/resource");
+
+        var headers = await HttpRequestSigner.SignHttpRequestAsync(request, key, "params-key");
+
+        // Rebuild the base string from the params the HEADER advertises. If the header and the
+        // signed base are built from separate literals they can drift, and the signature becomes
+        // unverifiable by every implementation including this one.
+        var advertisedParams = headers.SignatureInput["sig1=".Length..];
+        var signatureBase = SignatureBaseBuilder.Build(
+            ["@method", "@target-uri"],
+            advertisedParams,
+            request
+        );
+
+        var publicKey = PublicKey.Import(
+            SignatureAlgorithm.Ed25519,
+            Convert.FromBase64String(KeyUtils.GenerateJwk("params-key", key).X),
+            KeyBlobFormat.RawPublicKey
+        );
+        var signatureBytes = Convert.FromBase64String(
+            headers.Signature["sig1=:".Length..].TrimEnd(':')
+        );
+
+        Assert.True(
+            SignatureAlgorithm.Ed25519.Verify(
+                publicKey,
+                Encoding.UTF8.GetBytes(signatureBase),
+                signatureBytes
+            ),
+            "Signature-Input must advertise the same @signature-params that were signed."
+        );
     }
 }
