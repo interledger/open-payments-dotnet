@@ -35,3 +35,5 @@
 *REMOVED*OpenPayments.Sdk.Clients.ResourceClientBase.ListOutgoingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentQuery! query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.ListOutgoingPaymentsResponse!>!
 *REMOVED*OpenPayments.Sdk.Clients.ResourceClientBase.ResourceClientBase(System.Net.Http.HttpClient! http) -> void
 OpenPayments.Sdk.Clients.IAuthenticatedClient.CompleteIncomingPaymentAsync(OpenPayments.Sdk.Clients.AuthRequestArgs! requestArgs, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<OpenPayments.Sdk.Generated.Resource.IncomingPaymentResponse!>!
+static OpenPayments.Sdk.Http.OpenPaymentsClientBase.AppendPath(System.Uri! baseUrl, string! segment) -> string!
+static OpenPayments.Sdk.Http.OpenPaymentsClientBase.AppendPath(string! baseUrl, string! segment) -> string!

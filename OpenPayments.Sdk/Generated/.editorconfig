@@ -1,5 +1,5 @@
-# Suppresses CS1591 (missing XML doc comment) for NSwag-generated output. Only *.g.cs files
-# belong under Generated/; the drift check fails on anything else.
+# Suppresses CS1591 (missing XML doc comment) for NSwag-generated output. Only *.g.cs lives
+# under Generated/ (the drift check enforces that), so this pattern covers everything here.
 
 [*.g.cs]
 dotnet_diagnostic.CS1591.severity = none

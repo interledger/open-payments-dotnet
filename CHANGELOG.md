@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `UseOpenPayments` registers `IAuthenticatedClient` and `IUnauthenticatedClient` as transient
   typed `HttpClient` clients instead of singletons. Missing or invalid options (`KeyId`,
   `ClientUrl`, signing key) now throw at registration time instead of on first resolve, and
-  `ClientUrl` must be absolute.
+  `ClientUrl` must be an absolute http(s) URL.
 - **BREAKING:** `IAuthenticatedClient.CompleteIncomingPaymentsAsync` is renamed to
   `CompleteIncomingPaymentAsync`. The method completes a single incoming payment, and the
   resource layer already used the singular name. Callers must rename the call.
@@ -70,3 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `HttpSignatureValidator` now checks `Content-Digest` against the actual request body, and
   rejects a request with a non-empty body that the signature doesn't cover. Before, a signed
   request's body could be swapped without failing validation.
+- `Content-Digest` is computed over the raw body bytes when signing and verifying. It used to be
+  computed over the body decoded as a string and re-encoded as UTF-8, which could mismatch what
+  was actually sent (BOMs, non-UTF-8 charsets, invalid bytes) and what non-.NET peers compute.

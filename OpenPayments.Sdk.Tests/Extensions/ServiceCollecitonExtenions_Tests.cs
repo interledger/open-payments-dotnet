@@ -546,6 +546,40 @@ public class ServiceCollectionExtensions_Tests : IDisposable
         Assert.Contains("ClientUrl", ex.Message);
     }
 
+    [Theory]
+    [InlineData("ftp://wallet.example")]
+    [InlineData("file:///wallet")]
+    public void UseOpenPayments_WithNonHttpClientUrl_Throws(string clientUrl)
+    {
+        var services = new ServiceCollection();
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            services.UseOpenPayments(options =>
+            {
+                options.UseAuthenticatedClient = true;
+                options.ClientUrl = new Uri(clientUrl);
+                options.KeyId = "1234";
+                options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+            })
+        );
+
+        Assert.Contains("ClientUrl", ex.Message);
+    }
+
+    [Fact]
+    public void UseOpenPayments_WithHttpClientUrl_DoesNotThrow()
+    {
+        var services = new ServiceCollection();
+
+        services.UseOpenPayments(options =>
+        {
+            options.UseAuthenticatedClient = true;
+            options.ClientUrl = new Uri("http://localhost:3000");
+            options.KeyId = "1234";
+            options.PrivateKey = Key.Create(SignatureAlgorithm.Ed25519);
+        });
+    }
+
     [Fact]
     public void UseOpenPayments_MissingConfigurationSection_ThrowsAtRegistration()
     {

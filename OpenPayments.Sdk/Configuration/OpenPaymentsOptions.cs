@@ -21,23 +21,24 @@ public class OpenPaymentsOptions
     public bool UseUnauthenticatedClient { get; set; }
 
     /// <summary>
-    /// Indicates whether the authenticated client (<see cref="IAuthenticatedClient"/>) should be registered. When true,
-    /// <see cref="KeyId"/> and <see cref="ClientUrl"/> are required, and exactly one of
-    /// <see cref="PrivateKey"/>, <see cref="PrivateKeyPem"/> and <see cref="PrivateKeyPath"/>
-    /// must be set.
+    /// Indicates whether the authenticated client (<see cref="IAuthenticatedClient"/>) should be
+    /// registered. When true, <see cref="KeyId"/> and <see cref="ClientUrl"/> are required, and
+    /// exactly one of <see cref="PrivateKey"/>, <see cref="PrivateKeyPem"/> and
+    /// <see cref="PrivateKeyPath"/> must be set.
     /// </summary>
     public bool UseAuthenticatedClient { get; set; }
 
     /// <summary>
-    /// Key ID advertised in the <c>Signature-Input</c> header of every signed request.
-    /// Required when <see cref="UseAuthenticatedClient"/> is true.
+    /// Key identifier (<c>kid</c>) of the signing key, advertised in the <c>Signature-Input</c>
+    /// header of every signed request. Required when <see cref="UseAuthenticatedClient"/> is
+    /// <c>true</c>.
     /// </summary>
     public string? KeyId { get; set; }
 
     /// <summary>
     /// Ed25519 private key used to sign requests, supplied in code. The caller owns this key: the
     /// SDK never disposes it. This property cannot be set from configuration, because
-    /// <see cref="Key"/> is an opaque handle rather than a value — use <see cref="PrivateKeyPem"/>
+    /// <see cref="Key"/> is an opaque handle rather than a value. Use <see cref="PrivateKeyPem"/>
     /// or <see cref="PrivateKeyPath"/> instead.
     /// </summary>
     public Key? PrivateKey { get; set; }
@@ -56,8 +57,9 @@ public class OpenPaymentsOptions
     public string? PrivateKeyPath { get; set; }
 
     /// <summary>
-    /// Client wallet address URL, for example <c>https://wallet.example</c>. Sent as the client
-    /// identifier on grant requests. Required when <see cref="UseAuthenticatedClient"/> is true.
+    /// The client's own wallet address as an absolute http(s) URL, for example
+    /// <c>https://wallet.example</c>. Sent as the client identifier on grant requests. Required
+    /// when <see cref="UseAuthenticatedClient"/> is <c>true</c>.
     /// </summary>
     public Uri? ClientUrl { get; set; }
 }

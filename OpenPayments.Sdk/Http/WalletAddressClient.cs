@@ -4,8 +4,7 @@ using OpenPayments.Sdk.Generated.Wallet;
 namespace OpenPayments.Sdk.Http;
 
 /// <summary>
-/// Low-level transport client for public wallet address endpoints. These requests are unsigned.
-/// Most callers should use <see cref="OpenPayments.Sdk.Clients.IUnauthenticatedClient"/> instead.
+/// Transport client for wallet address discovery: the wallet address document and its JSON Web Key Set.
 /// </summary>
 public class WalletAddressClient : OpenPaymentsClientBase
 {
@@ -50,7 +49,7 @@ public class WalletAddressClient : OpenPaymentsClientBase
     {
         return await SendAsync<JsonWebKeySet>(
                 HttpMethod.Get,
-                new Uri(walletAddress.TrimEnd('/') + "/jwks.json", UriKind.RelativeOrAbsolute),
+                new Uri(AppendPath(walletAddress, "jwks.json"), UriKind.RelativeOrAbsolute),
                 body: null,
                 accessToken: null,
                 cancellationToken)

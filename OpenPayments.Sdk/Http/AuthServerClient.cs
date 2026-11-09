@@ -4,8 +4,7 @@ using OpenPayments.Sdk.Generated.Auth;
 namespace OpenPayments.Sdk.Http;
 
 /// <summary>
-/// Low-level transport client for an Open Payments authorization server (GNAP grants and tokens).
-/// Most callers should use <see cref="OpenPayments.Sdk.Clients.IAuthenticatedClient"/> instead.
+/// Transport client for the Open Payments authorization server: grant requests, continuation, cancellation, and token rotation and revocation.
 /// </summary>
 public class AuthServerClient : OpenPaymentsClientBase
 {

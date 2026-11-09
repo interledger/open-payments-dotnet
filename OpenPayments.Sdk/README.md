@@ -82,23 +82,13 @@ see the runnable guides in
 
 ## Error handling
 
-Every client method throws `OpenPayments.Sdk.Exceptions.OpenPaymentsApiException` when the server
-reports a failure: any non-2xx response, or a 2xx whose body is empty or can't be deserialized. It
-carries `StatusCode`, `ErrorCode`, `Description`, `ResponseBody`, `Headers` and `RetryAfter`.
+Every client method throws `OpenPaymentsApiException` when the server returns a non-2xx status, or a
+2xx whose body is empty or can't be deserialized into the expected model. It carries the
+`StatusCode`, the parsed Open Payments `ErrorCode` and `Description` when the body has them, the raw
+`ResponseBody`, the response `Headers`, and `RetryAfter` when the server sent one.
 
-```csharp
-try
-{
-    var quote = await client.CreateQuoteAsync(requestArgs, quoteBody);
-}
-catch (OpenPaymentsApiException ex) when (ex.StatusCode == 429)
-{
-    await Task.Delay(ex.RetryAfter ?? TimeSpan.FromSeconds(5));
-}
-```
-
-Transport failures before a response arrives (DNS, connection, TLS, timeout) still surface as
-`HttpRequestException` / `TaskCanceledException` from `HttpClient`.
+Transport failures that happen before a response arrives (DNS, connection, TLS, timeout) aren't
+wrapped; they surface as `HttpRequestException` or `TaskCanceledException` from `HttpClient`.
 
 ## Versioning
 

@@ -6,9 +6,7 @@ using OpenPayments.Sdk.Generated.Resource;
 namespace OpenPayments.Sdk.Http;
 
 /// <summary>
-/// Low-level transport client for an Open Payments resource server (incoming payments, outgoing
-/// payments and quotes). Most callers should use
-/// <see cref="OpenPayments.Sdk.Clients.IAuthenticatedClient"/> instead.
+/// Transport client for the Open Payments resource server: incoming payments, outgoing payments, and quotes.
 /// </summary>
 public class ResourceServerClient : OpenPaymentsClientBase
 {
@@ -298,13 +296,6 @@ public class ResourceServerClient : OpenPaymentsClientBase
                 HttpMethod.Get, quoteUrl, body: null, accessToken, cancellationToken)
             .ConfigureAwait(false);
     }
-
-    /// <summary>
-    /// Joins <paramref name="segment"/> onto <paramref name="baseUrl"/> with exactly one
-    /// separating slash, whether or not the caller's URL carries a trailing one.
-    /// </summary>
-    private static string AppendPath(Uri baseUrl, string segment) =>
-        $"{baseUrl.ToString().TrimEnd('/')}/{segment}";
 
     private static Uri BuildListUrl(
         Uri resourceServerUrl,
