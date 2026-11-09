@@ -40,23 +40,55 @@ var client = new ServiceCollection()
 var walletAddress = await client.GetWalletAddressAsync("https://wallet.example/alice");
 ```
 
+Or bind the options from configuration instead of a delegate:
+
+```csharp
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
+
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+var client = new ServiceCollection()
+    .UseOpenPayments(configuration.GetSection("OpenPayments"))
+    .BuildServiceProvider()
+    .GetRequiredService<IAuthenticatedClient>();
+```
+
+```json
+{
+  "OpenPayments": {
+    "UseAuthenticatedClient": true,
+    "KeyId": "your-key-id",
+    "ClientUrl": "https://wallet.example",
+    "PrivateKeyPath": "/run/secrets/private-key.pem"
+  }
+}
+```
+
+Exactly one signing key source must be set. `PrivateKey` takes an `NSec.Cryptography.Key` and is
+only reachable from the delegate overload; `PrivateKeyPem` takes PEM-encoded PKCS#8 text, and
+`PrivateKeyPath` takes a path to a PEM or raw key file. Options are validated when
+`UseOpenPayments` is called, so a missing or ambiguous setting fails at startup rather than on the
+first request.
+
 For complete end-to-end flows — one-time payments, recurring remittances, grant continuation, and more —
 see the runnable guides in
 [`OpenPayments.Snippets/Guides`](https://github.com/interledger/open-payments-dotnet/tree/main/OpenPayments.Snippets/Guides).
 
 ## Error handling
 
-Generated client methods throw `ApiException` — or its generic subtype `ApiException<TResult>` — when the
-server returns an unexpected status code. `ApiException` carries the response `StatusCode`, `Response`
-body, and `Headers`. A distinct `ApiException` type exists per generated namespace
-(`OpenPayments.Sdk.Generated.Auth`, `OpenPayments.Sdk.Generated.Resource`,
-`OpenPayments.Sdk.Generated.Wallet`), since each is generated independently from its own OpenAPI spec.
+Every client method throws `OpenPaymentsApiException` when the server returns a non-2xx status, or a
+2xx whose body is empty or can't be deserialized into the expected model. It carries the
+`StatusCode`, the parsed Open Payments `ErrorCode` and `Description` when the body has them, the raw
+`ResponseBody`, the response `Headers`, and `RetryAfter` when the server sent one.
 
-The unauthenticated client's `GetIncomingPaymentAsync` throws `InvalidOperationException` if the server
-responds successfully but returns an empty or unparsable body.
-
-A unified exception type that wraps all of the above into a single public type is planned for a future
-release.
+Transport failures that happen before a response arrives (DNS, connection, TLS, timeout) aren't
+wrapped; they surface as `HttpRequestException` or `TaskCanceledException` from `HttpClient`.
 
 ## Versioning
 

@@ -1,0 +1,9 @@
+# Suppresses CS1591 (missing XML doc comment) for the DTO types copied out of NSwag output.
+# These moved here from Generated/ and carry the same suppression they had there. Don't widen
+# these patterns; everything else under Models/ is hand-authored and must be documented.
+
+[Auth/Types.cs]
+dotnet_diagnostic.CS1591.severity = none
+
+[Resource/Types.cs]
+dotnet_diagnostic.CS1591.severity = none

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenPayments.Sdk.Clients;
 using OpenPayments.Sdk.Configuration;
@@ -24,19 +25,69 @@ public static class ServiceCollectionExtensions
         Action<OpenPaymentsOptions> configure
     )
     {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configure);
+
         var options = new OpenPaymentsOptions();
         configure(options);
 
-        services.AddHttpClient(OpenPaymentsHttpClients.Unsigned);
+        return AddOpenPaymentsCore(services, options);
+    }
+
+    /// <summary>
+    /// Registers OpenPayments services by binding <see cref="OpenPaymentsOptions"/> from a
+    /// configuration section.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
+    /// <param name="section">
+    /// The configuration holding the options, for example
+    /// <c>configuration.GetSection("OpenPayments")</c>. Note that
+    /// <see cref="OpenPaymentsOptions.PrivateKey"/> cannot be bound from configuration — supply the
+    /// key through <see cref="OpenPaymentsOptions.PrivateKeyPem"/> or
+    /// <see cref="OpenPaymentsOptions.PrivateKeyPath"/> instead.
+    /// </param>
+    /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
+    public static IServiceCollection UseOpenPayments(
+        this IServiceCollection services,
+        IConfiguration section
+    )
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(section);
+
+        // A missing or misspelled section name binds every property to its default, silently
+        // registering nothing (both Use*Client flags stay false). Fail fast instead of letting
+        // that surface later as an opaque DI resolution error.
+        if (section is IConfigurationSection configSection && !configSection.Exists())
+            throw new InvalidOperationException(
+                "The configuration section is missing or empty."
+            );
+
+        // Bound eagerly rather than through IOptions so the same validation runs at registration
+        // time on both overloads. Deferred binding would push a misconfiguration to first use.
+        var options = new OpenPaymentsOptions();
+        section.Bind(options);
+
+        return AddOpenPaymentsCore(services, options);
+    }
+
+    /// <summary>
+    /// Validates the options and registers the clients. Both public overloads funnel through here
+    /// so a misconfiguration fails at registration whichever way the options were supplied.
+    /// </summary>
+    private static IServiceCollection AddOpenPaymentsCore(
+        IServiceCollection services,
+        OpenPaymentsOptions options
+    )
+    {
+        services
+            .AddHttpClient(OpenPaymentsHttpClients.Unsigned)
+            .ConfigurePrimaryHttpMessageHandler(CreatePrimaryHandler);
 
         if (options.UseUnauthenticatedClient)
         {
-            services.AddSingleton<UnauthenticatedClient>(sp => new UnauthenticatedClient(
-                sp.GetRequiredService<IHttpClientFactory>()
-                    .CreateClient(OpenPaymentsHttpClients.Unsigned)
-            ));
-            services.AddSingleton<IUnauthenticatedClient>(sp =>
-                sp.GetRequiredService<UnauthenticatedClient>()
+            services.AddHttpClient<IUnauthenticatedClient, UnauthenticatedClient>(
+                OpenPaymentsHttpClients.Unsigned
             );
         }
 
@@ -47,38 +98,54 @@ public static class ServiceCollectionExtensions
             // never be built.
             if (string.IsNullOrWhiteSpace(options.KeyId))
                 throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
-            if (options.PrivateKey is null)
+            // IsAbsoluteUri alone also accepts ftp:// and file:// (on Unix a rooted path like
+            // "/wallet" can bind as file:///wallet), so the scheme is checked too.
+            if (
+                options.ClientUrl is null
+                || !options.ClientUrl.IsAbsoluteUri
+                || (
+                    options.ClientUrl.Scheme != Uri.UriSchemeHttps
+                    && options.ClientUrl.Scheme != Uri.UriSchemeHttp
+                )
+            )
                 throw new InvalidOperationException(
-                    "OpenPaymentsOptions.PrivateKey must be provided."
-                );
-            if (options.ClientUrl is null)
-                throw new InvalidOperationException(
-                    "OpenPaymentsOptions.ClientUrl must be provided."
+                    "OpenPaymentsOptions.ClientUrl must be provided as an absolute http(s) URL, "
+                        + $"for example https://wallet.example. Got: '{options.ClientUrl}'."
                 );
 
+            var privateKey = SigningKeyResolver.Resolve(options);
+
             // Captured into locals so the closures below do not hold the mutable options object.
-            var privateKey = options.PrivateKey;
             var keyId = options.KeyId;
             var clientUrl = options.ClientUrl;
 
+            // A typed client supplies exactly one HttpClient, but AuthenticatedClient needs two.
+            // The factory overload gives us the signed pipeline as the typed client and lets us
+            // pull the unsigned one from the factory in the same transient resolution.
             services
-                .AddHttpClient(OpenPaymentsHttpClients.Signed)
+                .AddHttpClient<IAuthenticatedClient, AuthenticatedClient>(
+                    OpenPaymentsHttpClients.Signed,
+                    (signed, sp) =>
+                        new AuthenticatedClient(
+                            signed,
+                            sp.GetRequiredService<IHttpClientFactory>()
+                                .CreateClient(OpenPaymentsHttpClients.Unsigned),
+                            clientUrl
+                        )
+                )
+                .ConfigurePrimaryHttpMessageHandler(CreatePrimaryHandler)
                 .AddHttpMessageHandler(() => new SigningHttpMessageHandler(privateKey, keyId));
-
-            services.AddSingleton<AuthenticatedClient>(sp =>
-            {
-                var factory = sp.GetRequiredService<IHttpClientFactory>();
-                return new AuthenticatedClient(
-                    factory.CreateClient(OpenPaymentsHttpClients.Signed),
-                    factory.CreateClient(OpenPaymentsHttpClients.Unsigned),
-                    clientUrl
-                );
-            });
-            services.AddSingleton<IAuthenticatedClient>(sp =>
-                sp.GetRequiredService<AuthenticatedClient>()
-            );
         }
 
         return services;
     }
+
+    /// <summary>
+    /// Primary handler for both pipelines. Typed clients are transient, so a fresh resolution
+    /// always gets a rotated handler chain — but a client injected into a singleton consumer is
+    /// still held for the application lifetime. Recycling pooled connections every two minutes
+    /// means such a client still picks up DNS changes.
+    /// </summary>
+    private static HttpMessageHandler CreatePrimaryHandler() =>
+        new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(2) };
 }

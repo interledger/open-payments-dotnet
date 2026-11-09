@@ -1,11 +1,5 @@
-# Suppresses CS1591 (missing XML doc comment) for pure NSwag-generated output only.
-# Do not widen these patterns — everything else under Generated/ is hand-authored and must be documented.
+# Suppresses CS1591 (missing XML doc comment) for NSwag-generated output. Only *.g.cs lives
+# under Generated/ (the drift check enforces that), so this pattern covers everything here.
 
 [*.g.cs]
-dotnet_diagnostic.CS1591.severity = none
-
-[Auth/Types.cs]
-dotnet_diagnostic.CS1591.severity = none
-
-[Resource/Types.cs]
 dotnet_diagnostic.CS1591.severity = none

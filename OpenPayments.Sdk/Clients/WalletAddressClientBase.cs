@@ -1,5 +1,6 @@
 using System.Text;
 using OpenPayments.Sdk.Generated.Wallet;
+using OpenPayments.Sdk.Http;
 
 namespace OpenPayments.Sdk.Clients;
 

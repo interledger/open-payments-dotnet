@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using NSec.Cryptography;
+using OpenPayments.Sdk.HttpSignatureUtils;
 
 [assembly: InternalsVisibleTo("OpenPayments.Sdk.HttpSignatureUtils.Tests")]
 
@@ -26,76 +27,18 @@ public class SignatureHeaders
 /// </summary>
 public static class HttpRequestSigner
 {
-    private static string BuildSignatureInput(List<string> components, string keyId, long created)
+    private static string BuildSignatureParams(List<string> components, string keyId, long created)
     {
-        var fields = string.Join(" ", components.Select(h => $"\"{h}\""));
+        var fields = string.Join(" ", components.Select(c => $"\"{c}\""));
         return $"({fields});created={created};keyid=\"{keyId}\";alg=\"ed25519\"";
     }
 
-    private static string ComputeContentDigest(string body)
+    // RFC 9530 digests the content octets as sent, so this hashes the raw bytes rather than a decoded
+    // string (decoding would apply charset conversion, BOM stripping and invalid UTF-8 replacement first).
+    private static string ComputeContentDigest(byte[] body)
     {
-        var hash = SHA512.HashData(Encoding.UTF8.GetBytes(body));
+        var hash = SHA512.HashData(body);
         return Convert.ToBase64String(hash);
-    }
-
-    private static string TryGetHeaderValue(HttpRequestMessage request, string name, string? body)
-    {
-        name = name.ToLowerInvariant();
-
-        if (request.Headers.TryGetValues(name, out var values))
-        {
-            return string.Join(", ", values);
-        }
-
-        if (
-            request.Content != null
-            && request.Content.Headers.TryGetValues(name, out var contentValues)
-        )
-        {
-            return string.Join(", ", contentValues);
-        }
-
-        if (name == "content-digest" && body != null)
-        {
-            return $"sha-512=:{ComputeContentDigest(body)}:";
-        }
-
-        return "";
-    }
-
-    private static string BuildSignatureBase(
-        HttpRequestMessage request,
-        List<string> components,
-        long created,
-        string keyId,
-        string? body
-    )
-    {
-        var lines = new List<string>();
-
-        foreach (var component in components)
-        {
-            switch (component)
-            {
-                case "@method":
-                    lines.Add($"\"@method\": {request.Method.Method.ToUpper()}");
-                    break;
-                case "@target-uri":
-                    lines.Add($"\"@target-uri\": {request.RequestUri}");
-                    break;
-                default:
-                    var value = TryGetHeaderValue(request, component, body);
-                    lines.Add($"\"{component.ToLower()}\": {value}");
-                    break;
-            }
-        }
-
-        var fieldList = string.Join(" ", components.Select(c => $"\"{c}\""));
-        lines.Add(
-            $"\"@signature-params\": ({fieldList});created={created};keyid=\"{keyId}\";alg=\"ed25519\""
-        );
-
-        return string.Join("\n", lines);
     }
 
     /// <summary>
@@ -128,12 +71,10 @@ public static class HttpRequestSigner
             components.Add("authorization");
         }
 
-        string? body = null;
-
         if (request.Content != null)
         {
-            body = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (!string.IsNullOrEmpty(body))
+            var body = await request.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            if (body.Length > 0)
             {
                 components.AddRange(["content-digest", "content-length", "content-type"]);
 
@@ -148,7 +89,7 @@ public static class HttpRequestSigner
                 {
                     request.Content.Headers.TryAddWithoutValidation(
                         "Content-Length",
-                        Encoding.UTF8.GetByteCount(body).ToString()
+                        body.Length.ToString(System.Globalization.CultureInfo.InvariantCulture)
                     );
                 }
 
@@ -163,8 +104,11 @@ public static class HttpRequestSigner
         }
 
         var created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        var signatureInput = BuildSignatureInput(components, keyId, created);
-        var signatureBase = BuildSignatureBase(request, components, created, keyId, body);
+
+        // Built once, then used for both the Signature-Input header and the signed base. Two copies
+        // could drift, and a header that disagrees with the signed base is unverifiable.
+        var signatureParams = BuildSignatureParams(components, keyId, created);
+        var signatureBase = SignatureBaseBuilder.Build(components, signatureParams, request);
         var signatureBytes = SignatureAlgorithm.Ed25519.Sign(
             privateKey,
             Encoding.UTF8.GetBytes(signatureBase)
@@ -174,7 +118,7 @@ public static class HttpRequestSigner
         return new SignatureHeaders
         {
             Signature = $"sig1=:{base64Signature}:",
-            SignatureInput = $"sig1={signatureInput}",
+            SignatureInput = $"sig1={signatureParams}",
         };
     }
 }
