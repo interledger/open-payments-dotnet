@@ -16,12 +16,7 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock(_fixture.ApprovedGrantResponse);
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -47,12 +42,7 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock(_fixture.ApprovedGrantResponse);
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -78,12 +68,7 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock();
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -103,12 +88,7 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock(_fixture.TokenResponse);
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -130,12 +110,7 @@ public class AuthenticatedClient_Tests
         {
             _fixture = fixture;
             var httpClient = _fixture.CreateHttpClientMock();
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -163,12 +138,7 @@ public class AuthenticatedClient_Tests
                 _fixture.CreateIncomingPaymentResponse,
                 HttpStatusCode.Created
             );
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
             var result = await _client.CreateIncomingPaymentAsync(
                 _fixture.GrantWithTokenArgs,
                 _fixture.CreateIncomingPaymentBody
@@ -184,12 +154,7 @@ public class AuthenticatedClient_Tests
                 _fixture.CreateIncomingPaymentResponseWithMetadata,
                 HttpStatusCode.Created
             );
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
             var result = await _client.CreateIncomingPaymentAsync(
                 _fixture.GrantWithTokenArgs,
                 _fixture.CreateIncomingPaymentBody
@@ -212,12 +177,7 @@ public class AuthenticatedClient_Tests
                 _fixture.CreateQuoteResponse,
                 HttpStatusCode.Created
             );
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -267,12 +227,7 @@ public class AuthenticatedClient_Tests
                 _fixture.CreateOutgoingPaymentResponse,
                 HttpStatusCode.Created
             );
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -311,12 +266,7 @@ public class AuthenticatedClient_Tests
                 _fixture.GetOutgoingPaymentResponse,
                 HttpStatusCode.OK
             );
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]
@@ -341,12 +291,7 @@ public class AuthenticatedClient_Tests
                 _fixture.ListOutgoingPaymentsResponse,
                 HttpStatusCode.OK
             );
-            _client = new AuthenticatedClient(
-                httpClient,
-                _fixture.PrivateKey,
-                _fixture.KeyId,
-                _fixture.ClientUrl
-            );
+            _client = new AuthenticatedClient(httpClient, httpClient, _fixture.ClientUrl);
         }
 
         [Fact]

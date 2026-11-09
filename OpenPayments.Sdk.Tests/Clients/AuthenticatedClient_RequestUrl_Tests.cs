@@ -11,7 +11,7 @@ public class AuthenticatedClient_RequestUrl_Tests(AuthenticatedClientFixture fix
     private readonly AuthenticatedClientFixture _fixture = fixture;
 
     private AuthenticatedClient CreateClient(HttpClient http) =>
-        new(http, _fixture.PrivateKey, _fixture.KeyId, _fixture.ClientUrl);
+        new(http, http, _fixture.ClientUrl);
 
     [Fact]
     public async Task RotateTokenAsync_RequestsTheTokenUrlVerbatim()

@@ -1,19 +1,14 @@
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Clients;
 
-public class ResourceClientBase : IResourceClientBase
+internal sealed class ResourceClientBase : IResourceClientBase
 {
     private readonly ResourceServerClient _client;
-    private readonly HttpClient _httpClient;
 
-    public ResourceClientBase(HttpClient http, Key privateKey, string keyId, Uri clientUrl)
+    public ResourceClientBase(HttpClient http)
     {
-        _httpClient = http;
         _client = new ResourceServerClient(http);
-        _client.AddSigningKey(privateKey, keyId);
-        _client.ClientUrl = clientUrl;
     }
 
     public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(
@@ -137,7 +132,7 @@ public class ResourceClientBase : IResourceClientBase
     }
 }
 
-public interface IResourceClientBase
+internal interface IResourceClientBase
 {
     public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(
         AuthRequestArgs requestArgs,
