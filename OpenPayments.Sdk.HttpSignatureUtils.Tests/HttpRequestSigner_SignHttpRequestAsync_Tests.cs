@@ -105,6 +105,27 @@ public class HttpRequestSignerTests
     }
 
     [Fact]
+    public async Task SignHttpRequestAsync_NonUtf8Body_DigestsRawBytes()
+    {
+        var key = KeyUtils.GenerateKey();
+        // UTF-8 BOM plus an invalid UTF-8 byte. Both change if the body is decoded and re-encoded.
+        var raw = new byte[] { 0xEF, 0xBB, 0xBF, (byte)'{', 0xFF, (byte)'}' };
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new ByteArrayContent(raw),
+        };
+
+        await HttpRequestSigner.SignHttpRequestAsync(request, key, "raw-key");
+
+        var expectedDigest = Convert.ToBase64String(SHA512.HashData(raw));
+        Assert.Equal(
+            $"sha-512=:{expectedDigest}:",
+            request.Content.Headers.GetValues("Content-Digest").Single()
+        );
+        Assert.Equal(raw.Length, request.Content.Headers.ContentLength);
+    }
+
+    [Fact]
     public async Task SignHttpRequestAsync_SignatureInputCarriesTheSignedSignatureParams()
     {
         var key = KeyUtils.GenerateKey();

@@ -43,15 +43,15 @@ public class HttpSignatureValidator : IHttpSignatureValidator
         if (!_validator.Validate(components, request))
             return false;
 
-        // Mirrors HttpRequestSigner's own condition (HttpRequestSigner.cs:77): it only adds
+        // Mirrors HttpRequestSigner's own condition: it only adds
         // content-digest to the covered components when the body is non-empty. Without this check, a
         // signature produced for a bodyless request (covering only @method/@target-uri) validates
         // successfully against any body an attacker attaches afterward, since nothing ever commits to
         // it.
         if (request.Content != null)
         {
-            var requestBody = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (!string.IsNullOrEmpty(requestBody) && !components.Contains("content-digest"))
+            var requestBody = await request.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            if (requestBody.Length > 0 && !components.Contains("content-digest"))
                 return false;
         }
 
