@@ -23,6 +23,7 @@ public partial class ResourceServerClient
     /// <br/>
     /// <br/>If an `expiresAt` value is defined, and the current date and time on the receiving Account Servicing Entity's systems exceeds that value, the receiving Account Servicing Entity MUST reject any further payments.
     /// </remarks>
+    /// <param name="resourceServerUrl">The resource server URL to which the incoming-payments segment will be appended.</param>
     /// <param name="body">A subset of the incoming payments schema is accepted as input to create a new incoming payment.
     /// <br/>
     /// <br/>The `incomingAmount` must use the same `assetCode` and `assetScale` as the wallet address.</param>
@@ -30,6 +31,7 @@ public partial class ResourceServerClient
     /// <returns>Incoming Payment Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<IncomingPaymentResponse> PostIncomingPaymentAsync(
+        Uri resourceServerUrl,
         Body body,
         string accessToken,
         CancellationToken cancellationToken
@@ -48,10 +50,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("incoming-payments");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "incoming-payments"));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -149,11 +148,13 @@ public partial class ResourceServerClient
     /// <remarks>
     /// A client can fetch the latest state of an incoming payment to determine the amount received into the wallet address.
     /// </remarks>
+    /// <param name="incomingPaymentUrl">The absolute URL of the incoming payment to retrieve.</param>
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Incoming Payment Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> GetIncomingPaymentAsync(
+        Uri incomingPaymentUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -166,7 +167,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(incomingPaymentUrl.ToString());
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -266,6 +267,7 @@ public partial class ResourceServerClient
     /// <remarks>
     /// List all incoming payments on the wallet address
     /// </remarks>
+    /// <param name="resourceServerUrl">The resource server URL to which the incoming-payments segment will be appended.</param>
     /// <param name="accessToken">Access Token</param>
     /// <param name="walletAddress">URL of a wallet address hosted by a Rafiki instance.</param>
     /// <param name="cursor">The cursor key to list from.</param>
@@ -274,6 +276,7 @@ public partial class ResourceServerClient
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<ListIncomingPaymentsResponse> ListIncomingPaymentsAsync(
+        Uri resourceServerUrl,
         string accessToken,
         string walletAddress,
         string? cursor,
@@ -291,10 +294,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("incoming-payments");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "incoming-payments"));
         urlBuilder.Append('?');
         urlBuilder
             .Append(Uri.EscapeDataString("wallet-address"))
@@ -445,11 +445,13 @@ public partial class ResourceServerClient
     /// <br/>
     /// <br/>This indicates to the receiving Account Servicing Entity that it can begin any post processing of the payment such as generating account statements or notifying the account holder of the completed payment.
     /// </remarks>
+    /// <param name="incomingPaymentUrl">The absolute URL of the incoming payment to complete.</param>
     /// <param name="accessToken"></param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>OK</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<IncomingPaymentResponse> CompleteIncomingPaymentAsync(
+        Uri incomingPaymentUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -463,8 +465,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
-        urlBuilder.Append("/complete");
+        var urlBuilder = new StringBuilder(AppendPath(incomingPaymentUrl, "complete"));
 
         PrepareRequest(client, request, urlBuilder);
 

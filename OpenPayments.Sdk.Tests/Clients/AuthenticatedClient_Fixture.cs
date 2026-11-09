@@ -238,6 +238,18 @@ public class AuthenticatedClientFixture
         ],
     };
 
+    public ListIncomingPaymentsResponse ListIncomingPaymentsResponse = new()
+    {
+        Pagination = new PageInfo
+        {
+            StartCursor = "1234",
+            EndCursor = "1234",
+            HasNextPage = false,
+            HasPreviousPage = false,
+        },
+        Result = [],
+    };
+
     public HttpClient CreateHttpClientMock(
         object? responseObject = null,
         HttpStatusCode? code = null
@@ -270,5 +282,19 @@ public class AuthenticatedClientFixture
             );
 
         return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
+    }
+
+    /// <summary>
+    /// Builds a client whose handler records request URIs. Deliberately leaves
+    /// <see cref="HttpClient.BaseAddress"/> unset: every SDK request must carry an absolute URI,
+    /// and a relative one should fail loudly rather than be silently resolved.
+    /// </summary>
+    public (HttpClient Client, RecordingHandler Handler) CreateRecordingHttpClient(
+        object? responseObject = null,
+        HttpStatusCode? code = null
+    )
+    {
+        var handler = new RecordingHandler(responseObject, code);
+        return (new HttpClient(handler), handler);
     }
 }

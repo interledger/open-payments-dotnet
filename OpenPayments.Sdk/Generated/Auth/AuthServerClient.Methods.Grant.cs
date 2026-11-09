@@ -5,6 +5,7 @@ namespace OpenPayments.Sdk.Generated.Auth;
 
 public partial class AuthServerClient
 {
+    /// <param name="authServerUrl">Auth server URL.</param>
     /// <param name="body">Body for grant request.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <summary>
@@ -16,6 +17,7 @@ public partial class AuthServerClient
     /// <returns>OK</returns>
     /// <exception cref="ErrorResponse">A server side error occurred.</exception>
     public async Task<AuthResponse> CreateGrantAsync(
+        Uri authServerUrl,
         GrantCreateBody body,
         CancellationToken cancellationToken = default
     )
@@ -30,9 +32,7 @@ public partial class AuthServerClient
         request.Content = content;
         request.Method = new HttpMethod("POST");
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-        var urlBuilder = new System.Text.StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
+        var urlBuilder = new System.Text.StringBuilder(authServerUrl.ToString());
 
         PrepareRequest(client, request, urlBuilder);
 

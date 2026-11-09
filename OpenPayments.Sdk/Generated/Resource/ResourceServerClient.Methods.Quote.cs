@@ -12,6 +12,7 @@ public partial class ResourceServerClient
     /// <remarks>
     /// A **quote** is a sub-resource of a wallet address. It represents a quote for a payment from the wallet address.
     /// </remarks>
+    /// <param name="resourceServerUrl">The resource server URL to which the quotes segment will be appended.</param>
     /// <param name="body">A subset of the quotes schema is accepted as input to create a new quote.
     /// <br/>
     /// <br/>The quote must be created with a (`debitAmount` xor `receiveAmount`) unless the `receiver` is an Incoming Payment which has an `incomingAmount`.</param>
@@ -20,6 +21,7 @@ public partial class ResourceServerClient
     /// <returns>Quote Created</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public async Task<QuoteResponse> PostQuoteAsync(
+        Uri resourceServerUrl,
         QuoteBody body,
         string accessToken,
         CancellationToken cancellationToken
@@ -38,10 +40,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder();
-        if (!string.IsNullOrEmpty(_baseUrl))
-            urlBuilder.Append(_baseUrl);
-        urlBuilder.Append("quotes");
+        var urlBuilder = new StringBuilder(AppendPath(resourceServerUrl, "quotes"));
 
         PrepareRequest(client, request, urlBuilder);
 
@@ -140,11 +139,13 @@ public partial class ResourceServerClient
     /// <remarks>
     /// A client can fetch the latest state of a quote.
     /// </remarks>
+    /// <param name="quoteUrl">The absolute URL of the quote to retrieve.</param>
     /// <param name="accessToken">Access Token.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>Quote Found</returns>
     /// <exception cref="ApiException">A server side error occurred.</exception>
     public virtual async Task<QuoteResponse> GetQuoteAsync(
+        Uri quoteUrl,
         string accessToken,
         CancellationToken cancellationToken
     )
@@ -157,7 +158,7 @@ public partial class ResourceServerClient
         request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
 
-        var urlBuilder = new StringBuilder(_baseUrl);
+        var urlBuilder = new StringBuilder(quoteUrl.ToString());
 
         PrepareRequest(client, request, urlBuilder);
 
