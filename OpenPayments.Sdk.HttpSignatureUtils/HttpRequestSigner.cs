@@ -33,9 +33,11 @@ public static class HttpRequestSigner
         return $"({fields});created={created};keyid=\"{keyId}\";alg=\"ed25519\"";
     }
 
-    private static string ComputeContentDigest(string body)
+    // RFC 9530 digests the content octets as sent, so this hashes the raw bytes rather than a decoded
+    // string (decoding would apply charset conversion, BOM stripping and invalid UTF-8 replacement first).
+    private static string ComputeContentDigest(byte[] body)
     {
-        var hash = SHA512.HashData(Encoding.UTF8.GetBytes(body));
+        var hash = SHA512.HashData(body);
         return Convert.ToBase64String(hash);
     }
 
@@ -69,12 +71,10 @@ public static class HttpRequestSigner
             components.Add("authorization");
         }
 
-        string? body = null;
-
         if (request.Content != null)
         {
-            body = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (!string.IsNullOrEmpty(body))
+            var body = await request.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            if (body.Length > 0)
             {
                 components.AddRange(["content-digest", "content-length", "content-type"]);
 
@@ -89,7 +89,7 @@ public static class HttpRequestSigner
                 {
                     request.Content.Headers.TryAddWithoutValidation(
                         "Content-Length",
-                        Encoding.UTF8.GetByteCount(body).ToString()
+                        body.Length.ToString(System.Globalization.CultureInfo.InvariantCulture)
                     );
                 }
 
