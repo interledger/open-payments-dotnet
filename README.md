@@ -5,7 +5,7 @@
 </p>
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/kylelobo/open-payments-dotnet/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/pulls)
 
 ## What is Open Payments?
@@ -119,7 +119,7 @@ git submodule update --init
 Alternatively, clone the repository with submodules in one step:
 
 ```bash
-git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
+git clone --recurse-submodules git@github.com:interledger/open-payments-dotnet.git
 ```
 
 ### Prerequisites
@@ -151,72 +151,16 @@ dotnet test
 
 ## 🎈 Usage
 
-To use in your project, just add the package using the command line
+This repository publishes two NuGet packages, each with its own install/quickstart instructions:
 
-```bash
-dotnet add package Interledger.OpenPayments
-```
+- [`Interledger.OpenPayments`](OpenPayments.Sdk/README.md) — the main SDK: authenticated/unauthenticated
+  clients for the wallet address, resource, and authorization servers.
+- [`Interledger.OpenPayments.HttpSignatureUtils`](OpenPayments.Sdk.HttpSignatureUtils/README.md) — HTTP
+  Message Signatures (RFC 9421), usable standalone.
 
-Then add it to your project code
-
-```csharp
-// Import dependencies
-using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Extensions;
-using OpenPayments.Sdk.HttpSignatureUtils;
-
-// Initialize client
-var client = new ServiceCollection()
-    .UseOpenPayments(opts =>
-    {
-        opts.UseAuthenticatedClient = true;
-        opts.KeyId = CLIENT_ID;
-        opts.PrivateKey = KeyUtils.LoadPem(CLIENT_SECRET);
-        opts.ClientUrl = new Uri(CLIENT_WALLET_ADDRESS);
-    })
-    .BuildServiceProvider()
-    .GetRequiredService<IAuthenticatedClient>();
-```
-
-Or bind the options from configuration instead of a delegate:
-
-```csharp
-// Import dependencies
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Extensions;
-
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .AddEnvironmentVariables()
-    .Build();
-
-var client = new ServiceCollection()
-    .UseOpenPayments(configuration.GetSection("OpenPayments"))
-    .BuildServiceProvider()
-    .GetRequiredService<IAuthenticatedClient>();
-```
-
-```json
-{
-  "OpenPayments": {
-    "UseAuthenticatedClient": true,
-    "KeyId": "your-key-id",
-    "ClientUrl": "https://wallet.example",
-    "PrivateKeyPath": "/run/secrets/private-key.pem"
-  }
-}
-```
-
-Exactly one signing key source must be set. `PrivateKey` takes an `NSec.Cryptography.Key` and is
-only reachable from the delegate overload; `PrivateKeyPem` takes PEM-encoded PKCS#8 text, and
-`PrivateKeyPath` takes a path to a PEM or raw key file. Options are validated when
-`UseOpenPayments` is called, so a missing or ambiguous setting fails at startup rather than on the
-first request.
-
-Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
+For complete end-to-end flows, see the runnable guides in
+[`OpenPayments.Snippets/Guides`](OpenPayments.Snippets/Guides), or visit
+[openpayments.dev](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
 
 ## Releasing
 

@@ -1,0 +1,8 @@
+# Suppresses CS1591 (missing XML doc comment) for the DTO partials that used to be NSwag output.
+# Do not widen these patterns. Everything else under Models/ is hand-authored and must be documented.
+
+[Auth/Types.cs]
+dotnet_diagnostic.CS1591.severity = none
+
+[Resource/Types.cs]
+dotnet_diagnostic.CS1591.severity = none

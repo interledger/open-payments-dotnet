@@ -5,8 +5,19 @@ using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Http;
 
+/// <summary>
+/// Low-level transport client for an Open Payments resource server (incoming payments, outgoing
+/// payments and quotes). Most callers should use
+/// <see cref="OpenPayments.Sdk.Clients.IAuthenticatedClient"/> instead.
+/// </summary>
 public class ResourceServerClient : OpenPaymentsClientBase
 {
+    /// <param name="httpClient">
+    /// The client to send requests with; not disposed by this class. Requests are sent as-is, so
+    /// the client's pipeline must include
+    /// <see cref="OpenPayments.Sdk.HttpSignatureUtils.SigningHttpMessageHandler"/> for the server to
+    /// accept them.
+    /// </param>
     public ResourceServerClient(HttpClient httpClient)
         : base(httpClient, new JsonSerializerSettings { ContractResolver = new ResourceContractResolver() })
     {

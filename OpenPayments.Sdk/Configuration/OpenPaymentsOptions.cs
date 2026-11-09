@@ -21,7 +21,7 @@ public class OpenPaymentsOptions
     public bool UseUnauthenticatedClient { get; set; }
 
     /// <summary>
-    /// Indicates whether the <see cref="AuthenticatedClient"/> should be registered. When true,
+    /// Indicates whether the authenticated client (<see cref="IAuthenticatedClient"/>) should be registered. When true,
     /// <see cref="KeyId"/> and <see cref="ClientUrl"/> are required, and exactly one of
     /// <see cref="PrivateKey"/>, <see cref="PrivateKeyPem"/> and <see cref="PrivateKeyPath"/>
     /// must be set.

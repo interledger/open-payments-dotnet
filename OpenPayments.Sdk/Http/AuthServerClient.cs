@@ -3,8 +3,18 @@ using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Sdk.Http;
 
+/// <summary>
+/// Low-level transport client for an Open Payments authorization server (GNAP grants and tokens).
+/// Most callers should use <see cref="OpenPayments.Sdk.Clients.IAuthenticatedClient"/> instead.
+/// </summary>
 public class AuthServerClient : OpenPaymentsClientBase
 {
+    /// <param name="httpClient">
+    /// The client to send requests with; not disposed by this class. Requests are sent as-is, so
+    /// the client's pipeline must include
+    /// <see cref="OpenPayments.Sdk.HttpSignatureUtils.SigningHttpMessageHandler"/> for the server to
+    /// accept them.
+    /// </param>
     public AuthServerClient(HttpClient httpClient)
         : base(httpClient, new JsonSerializerSettings { ContractResolver = new AuthContractResolver() })
     {

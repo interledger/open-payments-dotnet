@@ -29,10 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   switch to `OpenPaymentsApiException`, which exposes `StatusCode`, `ErrorCode`, `Description`,
   `ResponseBody`, `Headers` and `RetryAfter`. Transport failures still surface as
   `HttpRequestException` / `TaskCanceledException`.
-- **BREAKING:** `AuthClientBase` and `ResourceClientBase` constructors no longer take a signing
-  key, key id or (for `ResourceClientBase`) client URL. They expect an `HttpClient` whose pipeline
-  already signs requests: `AuthClientBase(HttpClient, Uri clientUrl)` and
-  `ResourceClientBase(HttpClient)`.
+- **BREAKING:** `AuthClientBase`, `ResourceClientBase`, `IAuthClientBase` and
+  `IResourceClientBase` are now internal. They accept any `HttpClient`, so constructing one
+  without `SigningHttpMessageHandler` would send unsigned requests. Use `IAuthenticatedClient`
+  from `UseOpenPayments`, or the `OpenPayments.Sdk.Http` clients with a signing pipeline.
 - `UseOpenPayments` registers `IAuthenticatedClient` and `IUnauthenticatedClient` as transient
   typed `HttpClient` clients instead of singletons. Missing or invalid options (`KeyId`,
   `ClientUrl`, signing key) now throw at registration time instead of on first resolve, and
@@ -40,11 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING:** `IAuthenticatedClient.CompleteIncomingPaymentsAsync` is renamed to
   `CompleteIncomingPaymentAsync`. The method completes a single incoming payment, and the
   resource layer already used the singular name. Callers must rename the call.
-- **BREAKING:** `IResourceClientBase.ListOutgoingPaymentAsync` and
-  `ResourceClientBase.ListOutgoingPaymentAsync` are renamed to `ListOutgoingPaymentsAsync`.
-  The method lists many payments, and the authenticated layer already used the plural name.
-  Callers using `ResourceClientBase` directly must rename the call;
-  `AuthenticatedClient.ListOutgoingPaymentsAsync` is unaffected.
 
 ### Added
 
