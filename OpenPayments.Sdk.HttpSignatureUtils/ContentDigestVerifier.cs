@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 
 namespace OpenPayments.Sdk.HttpSignatureUtils;
 
@@ -31,11 +30,10 @@ internal static class ContentDigestVerifier
         if (string.IsNullOrEmpty(headerValue))
             return false;
 
-        // Hashes the UTF-8 bytes of the decoded body to mirror HttpRequestSigner.ComputeContentDigest
-        // exactly. Hashing raw octets would be closer to RFC 9530, but matching the signer is what
-        // guarantees the round trip.
-        var body = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var bodyBytes = Encoding.UTF8.GetBytes(body);
+        // RFC 9530 digests the content octets as sent. Hashing a decoded string instead would let
+        // charset decoding, BOM stripping and invalid UTF-8 replacement change what is verified, and
+        // breaks against non-.NET senders whose body isn't plain UTF-8.
+        var bodyBytes = await request.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 
         var recognised = 0;
 

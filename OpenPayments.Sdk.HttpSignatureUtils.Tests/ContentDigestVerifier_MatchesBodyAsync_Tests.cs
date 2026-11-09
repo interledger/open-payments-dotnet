@@ -123,4 +123,22 @@ public class ContentDigestVerifierTests
 
         Assert.True(await ContentDigestVerifier.MatchesBodyAsync(request));
     }
+
+    [Fact]
+    public async Task MatchesBodyAsync_HashesRawBytesNotDecodedString()
+    {
+        // UTF-8 BOM plus an invalid UTF-8 byte: decoding strips the BOM and replaces 0xFF with U+FFFD,
+        // so a digest of the decoded string would differ from one over the bytes actually sent.
+        var raw = new byte[] { 0xEF, 0xBB, 0xBF, (byte)'{', 0xFF, (byte)'}' };
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+        {
+            Content = new ByteArrayContent(raw),
+        };
+        request.Content.Headers.TryAddWithoutValidation(
+            "Content-Digest",
+            $"sha-512=:{Convert.ToBase64String(SHA512.HashData(raw))}:"
+        );
+
+        Assert.True(await ContentDigestVerifier.MatchesBodyAsync(request));
+    }
 }

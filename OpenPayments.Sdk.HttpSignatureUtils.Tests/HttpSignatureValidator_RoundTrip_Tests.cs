@@ -62,6 +62,27 @@ public class HttpSignatureValidatorRoundTripTests
     }
 
     [Fact]
+    public async Task ValidateSignatureAsync_Latin1BodySignedByThisLibrary_IsValid()
+    {
+        var key = KeyUtils.GenerateKey();
+        var jwk = KeyUtils.GenerateJwk("round-trip-key", key);
+        var request = await SignAsync(
+            new HttpRequestMessage(HttpMethod.Post, "https://example.com/pay")
+            {
+                Content = new StringContent(
+                    "{\"note\":\"caf\u00e9\"}",
+                    Encoding.Latin1,
+                    "application/json"
+                ),
+            },
+            key,
+            "round-trip-key"
+        );
+
+        Assert.True(await NewValidator().ValidateSignatureAsync(request, jwk));
+    }
+
+    [Fact]
     public async Task ValidateSignatureAsync_GetWithAuthorizationHeader_IsValid()
     {
         var key = KeyUtils.GenerateKey();
