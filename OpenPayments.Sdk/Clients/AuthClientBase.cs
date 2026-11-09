@@ -1,33 +1,28 @@
-using System.Globalization;
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Sdk.Clients;
 
 /// <summary>
-/// Default <see cref="IAuthClientBase"/> implementation. Wraps a signed <see cref="AuthServerClient"/>,
-/// passing the target URL from <see cref="RequestArgs.Url"/> on each call (rewriting <c>BaseUrl</c> for
-/// the initial grant request) since a single auth server client is shared across requests to different
-/// authorization servers.
+/// Default <see cref="IAuthClientBase"/> implementation. Wraps an <see cref="AuthServerClient"/>, passing
+/// the target URL from <see cref="RequestArgs.Url"/> on each call since a single auth server client is
+/// shared across requests to different authorization servers.
 /// </summary>
-public class AuthClientBase : IAuthClientBase
+internal sealed class AuthClientBase : IAuthClientBase
 {
     private readonly AuthServerClient _client;
-    private readonly HttpClient _httpClient;
+    private readonly Uri _clientUrl;
 
     /// <summary>
-    /// Creates a new <see cref="AuthClientBase"/> that signs every outgoing request with the given key.
+    /// Creates a new <see cref="AuthClientBase"/>.
     /// </summary>
-    /// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-    /// <param name="privateKey">Private key used to sign requests.</param>
-    /// <param name="keyId">Key ID used to sign requests.</param>
-    /// <param name="clientUrl">Client wallet address URL (e.g. <c>https://wallet.example/alice</c>).</param>
-    public AuthClientBase(HttpClient http, Key privateKey, string keyId, Uri clientUrl)
+    /// <param name="http"><see cref="HttpClient"/> whose pipeline signs outgoing requests. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
+    /// <param name="clientUrl">Client wallet address URL (e.g. <c>https://wallet.example/alice</c>), sent as the <c>client</c> field of grant requests.</param>
+    public AuthClientBase(HttpClient http, Uri clientUrl)
     {
-        _httpClient = http;
+        ArgumentNullException.ThrowIfNull(clientUrl);
+
         _client = new AuthServerClient(http);
-        _client.AddSigningKey(privateKey, keyId);
-        _client.ClientUrl = clientUrl;
+        _clientUrl = clientUrl;
     }
 
     /// <inheritdoc/>
@@ -37,10 +32,11 @@ public class AuthClientBase : IAuthClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-        body.Client = _client.ClientUrl;
+        body.Client = _clientUrl;
 
-        return await _client.CreateGrantAsync(body, cancellationToken).ConfigureAwait(false);
+        return await _client
+            .CreateGrantAsync(requestArgs.Url, body, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -93,7 +89,7 @@ public class AuthClientBase : IAuthClientBase
 /// Authorization-server operations (grant request, continuation, cancellation, and token
 /// rotation/revocation) available to an authenticated Open Payments client.
 /// </summary>
-public interface IAuthClientBase
+internal interface IAuthClientBase
 {
     /// <summary>
     /// Requests a new access grant from the authorization server.

@@ -1,32 +1,23 @@
-using NSec.Cryptography;
 using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Clients;
 
 /// <summary>
-/// Default <see cref="IResourceClientBase"/> implementation. Wraps a signed
-/// <see cref="ResourceServerClient"/>, rewriting its base URL on every call from
-/// <see cref="RequestArgs.Url"/> since a single resource server client is shared across requests to
-/// different resource servers.
+/// Default <see cref="IResourceClientBase"/> implementation. Wraps a <see cref="ResourceServerClient"/>,
+/// passing the target URL from <see cref="RequestArgs.Url"/> on each call since a single resource server
+/// client is shared across requests to different resource servers.
 /// </summary>
-public class ResourceClientBase : IResourceClientBase
+internal sealed class ResourceClientBase : IResourceClientBase
 {
     private readonly ResourceServerClient _client;
-    private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Creates a new <see cref="ResourceClientBase"/> that signs every outgoing request with the given key.
+    /// Creates a new <see cref="ResourceClientBase"/>.
     /// </summary>
-    /// <param name="http">Pre-configured <see cref="HttpClient"/> instance. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
-    /// <param name="privateKey">Private key used to sign requests.</param>
-    /// <param name="keyId">Key ID used to sign requests.</param>
-    /// <param name="clientUrl">Client wallet address URL (e.g. <c>https://wallet.example/alice</c>).</param>
-    public ResourceClientBase(HttpClient http, Key privateKey, string keyId, Uri clientUrl)
+    /// <param name="http"><see cref="HttpClient"/> whose pipeline signs outgoing requests. Its <see cref="HttpClient.BaseAddress"/> is ignored; absolute request URIs are used instead.</param>
+    public ResourceClientBase(HttpClient http)
     {
-        _httpClient = http;
         _client = new ResourceServerClient(http);
-        _client.AddSigningKey(privateKey, keyId);
-        _client.ClientUrl = clientUrl;
     }
 
     /// <inheritdoc/>
@@ -36,9 +27,12 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.PostIncomingPaymentAsync(body, requestArgs.AccessToken, cancellationToken);
+        return _client.PostIncomingPaymentAsync(
+            requestArgs.Url,
+            body,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     /// <inheritdoc/>
@@ -47,9 +41,11 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.GetIncomingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.GetIncomingPaymentAsync(
+            requestArgs.Url,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     /// <inheritdoc/>
@@ -58,9 +54,11 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.CompleteIncomingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.CompleteIncomingPaymentAsync(
+            requestArgs.Url,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     /// <inheritdoc/>
@@ -70,9 +68,8 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
         return _client.ListIncomingPaymentsAsync(
+            requestArgs.Url,
             requestArgs.AccessToken,
             query.WalletAddress,
             query.Cursor,
@@ -89,9 +86,12 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.PostQuoteAsync(body, requestArgs.AccessToken, cancellationToken);
+        return _client.PostQuoteAsync(
+            requestArgs.Url,
+            body,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     /// <inheritdoc/>
@@ -100,9 +100,7 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.GetQuoteAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.GetQuoteAsync(requestArgs.Url, requestArgs.AccessToken, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -112,9 +110,12 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.PostOutgoingPaymentAsync(body, requestArgs.AccessToken, cancellationToken);
+        return _client.PostOutgoingPaymentAsync(
+            requestArgs.Url,
+            body,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     /// <inheritdoc/>
@@ -123,9 +124,11 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
-        return _client.GetOutgoingPaymentAsync(requestArgs.AccessToken, cancellationToken);
+        return _client.GetOutgoingPaymentAsync(
+            requestArgs.Url,
+            requestArgs.AccessToken,
+            cancellationToken
+        );
     }
 
     /// <inheritdoc/>
@@ -135,9 +138,8 @@ public class ResourceClientBase : IResourceClientBase
         CancellationToken cancellationToken = default
     )
     {
-        _client.BaseUrl = requestArgs.Url.ToString();
-
         return _client.ListOutgoingPaymentsAsync(
+            requestArgs.Url,
             requestArgs.AccessToken,
             query.WalletAddress,
             query.Cursor,
@@ -152,7 +154,7 @@ public class ResourceClientBase : IResourceClientBase
 /// Resource-server operations (incoming payments, quotes, outgoing payments) available to an authenticated
 /// Open Payments client.
 /// </summary>
-public interface IResourceClientBase
+internal interface IResourceClientBase
 {
     /// <summary>
     /// Creates an incoming payment on the resource server.
