@@ -1,7 +1,7 @@
 # Open Payments .NET SDK
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/kylelobo/open-payments-dotnet/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/interledger/open-payments-dotnet.svg)](https://github.com/interledger/open-payments-dotnet/pulls)
 
 ## What is Open Payments?
@@ -33,6 +33,60 @@ Never heard of Interledger before? Or would you like to learn more? Here are som
 - [Open Payments](https://openpayments.dev/)
 - [Web monetization](https://webmonetization.org/)
 
+## Error handling
+
+Every client method throws a single exception type, `OpenPaymentsApiException`, whenever a request
+fails — on any non-2xx response, and on a 2xx whose body is empty or cannot be deserialized.
+
+```csharp
+using OpenPayments.Sdk.Exceptions;
+
+try
+{
+    var quote = await client.CreateQuoteAsync(requestArgs, quoteBody);
+}
+catch (OpenPaymentsApiException ex) when (ex.StatusCode == 429)
+{
+    // The server asked us to slow down. RetryAfter is null if it sent no usable hint.
+    await Task.Delay(ex.RetryAfter ?? TimeSpan.FromSeconds(5));
+}
+catch (OpenPaymentsApiException ex)
+{
+    logger.LogError(
+        "Open Payments call failed: {Status} {Code} {Description}. Body: {Body}",
+        ex.StatusCode,
+        ex.ErrorCode,
+        ex.Description,
+        ex.ResponseBody
+    );
+    throw;
+}
+```
+
+| Property | Type | Notes |
+|---|---|---|
+| `StatusCode` | `int` | The status the server returned. On a malformed success response this is the 2xx it sent. |
+| `ErrorCode` | `string?` | The machine-readable code from the body, e.g. `invalid_request`, `too_fast`, `unauthorized`. |
+| `Description` | `string?` | The human-readable description from the body. |
+| `ResponseBody` | `string?` | The raw body, verbatim and untruncated. |
+| `Headers` | `IReadOnlyDictionary<string, IEnumerable<string>>` | Response headers. Never null. |
+| `RetryAfter` | `TimeSpan?` | Parsed from `Retry-After`. Commonly present on 429 and 503. |
+
+`ErrorCode` and `Description` are `null` when the server returns something other than the Open
+Payments error shape — an HTML page from a gateway, an empty body, a rate-limit response with no
+payload. `ResponseBody` is always the place to look in that case. The SDK never retries on your
+behalf; `RetryAfter` is provided so you can.
+
+`OpenPaymentsApiException` covers every failure the *server* reports. Transport-level failures
+before a response arrives (DNS, connection, TLS, timeout) still surface as `HttpRequestException` /
+`TaskCanceledException` from `HttpClient`.
+
+> **Breaking change.** `OpenPaymentsApiException` replaces the generated `ApiException` and
+> `ApiException<ErrorResponse>` types, the `HttpRequestException` that `EnsureSuccessStatusCode` used
+> to throw on non-2xx responses, and the `InvalidOperationException` that unauthenticated calls used
+> to throw. None of those escape client methods any more — transport-level failures (see above) are
+> a separate case and still propagate as-is.
+
 ## Contributing
 
 Please read the [contribution guidelines](.github/contributing.md) before submitting contributions. All contributions must adhere to our [code of conduct](.github/code_of_conduct.md).
@@ -61,7 +115,7 @@ git submodule update --init
 Alternatively, clone the repository with submodules in one step:
 
 ```bash
-git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
+git clone --recurse-submodules git@github.com:interledger/open-payments-dotnet.git
 ```
 
 ### Prerequisites
@@ -92,35 +146,16 @@ dotnet test
 
 ## 🎈 Usage
 
-To use in your project, just add the package using the command line
+This repository publishes two NuGet packages, each with its own install/quickstart instructions:
 
-```bash
-dotnet add package Interledger.OpenPayments
-```
+- [`Interledger.OpenPayments`](OpenPayments.Sdk/README.md) — the main SDK: authenticated/unauthenticated
+  clients for the wallet address, resource, and authorization servers.
+- [`Interledger.OpenPayments.HttpSignatureUtils`](OpenPayments.Sdk.HttpSignatureUtils/README.md) — HTTP
+  Message Signatures (RFC 9421), usable standalone.
 
-Then add it to your project code
-
-```csharp
-// Import dependencies
-using Microsoft.Extensions.DependencyInjection;
-using OpenPayments.Sdk.Clients;
-using OpenPayments.Sdk.Extensions;
-using OpenPayments.Sdk.HttpSignatureUtils;
-
-// Initialize client
-var client = new ServiceCollection()
-    .UseOpenPayments(opts =>
-    {
-        opts.UseAuthenticatedClient = true;
-        opts.KeyId = CLIENT_ID;
-        opts.PrivateKey = KeyUtils.LoadPem(CLIENT_SECRET);
-        opts.ClientUrl = new Uri(CLIENT_WALLET_ADDRESS);
-    })
-    .BuildServiceProvider()
-    .GetRequiredService<IAuthenticatedClient>();
-```
-
-Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
+For complete end-to-end flows, see the runnable guides in
+[`OpenPayments.Snippets/Guides`](OpenPayments.Snippets/Guides), or visit
+[openpayments.dev](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
 
 ## ✍️ Authors
 

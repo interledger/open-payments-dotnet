@@ -38,10 +38,7 @@ public static class HttpRequestSigner
         return Convert.ToBase64String(hash);
     }
 
-    private static async Task<string> TryGetHeaderValueAsync(
-        HttpRequestMessage request,
-        string name
-    )
+    private static string TryGetHeaderValue(HttpRequestMessage request, string name, string? body)
     {
         name = name.ToLowerInvariant();
 
@@ -58,20 +55,20 @@ public static class HttpRequestSigner
             return string.Join(", ", contentValues);
         }
 
-        if (name == "content-digest" && request.Content != null)
+        if (name == "content-digest" && body != null)
         {
-            var body = await request.Content.ReadAsStringAsync();
             return $"sha-512=:{ComputeContentDigest(body)}:";
         }
 
         return "";
     }
 
-    private static async Task<string> BuildSignatureBaseAsync(
+    private static string BuildSignatureBase(
         HttpRequestMessage request,
         List<string> components,
         long created,
-        string keyId
+        string keyId,
+        string? body
     )
     {
         var lines = new List<string>();
@@ -87,7 +84,7 @@ public static class HttpRequestSigner
                     lines.Add($"\"@target-uri\": {request.RequestUri}");
                     break;
                 default:
-                    var value = await TryGetHeaderValueAsync(request, component);
+                    var value = TryGetHeaderValue(request, component, body);
                     lines.Add($"\"{component.ToLower()}\": {value}");
                     break;
             }
@@ -131,14 +128,16 @@ public static class HttpRequestSigner
             components.Add("authorization");
         }
 
+        string? body = null;
+
         if (request.Content != null)
         {
-            var content = await request.Content.ReadAsStringAsync();
-            if (!string.IsNullOrEmpty(content))
+            body = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (!string.IsNullOrEmpty(body))
             {
                 components.AddRange(["content-digest", "content-length", "content-type"]);
 
-                var digest = ComputeContentDigest(content);
+                var digest = ComputeContentDigest(body);
 
                 request.Content.Headers.TryAddWithoutValidation(
                     "Content-Digest",
@@ -149,7 +148,7 @@ public static class HttpRequestSigner
                 {
                     request.Content.Headers.TryAddWithoutValidation(
                         "Content-Length",
-                        Encoding.UTF8.GetByteCount(content).ToString()
+                        Encoding.UTF8.GetByteCount(body).ToString()
                     );
                 }
 
@@ -165,7 +164,7 @@ public static class HttpRequestSigner
 
         var created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var signatureInput = BuildSignatureInput(components, keyId, created);
-        var signatureBase = await BuildSignatureBaseAsync(request, components, created, keyId);
+        var signatureBase = BuildSignatureBase(request, components, created, keyId, body);
         var signatureBytes = SignatureAlgorithm.Ed25519.Sign(
             privateKey,
             Encoding.UTF8.GetBytes(signatureBase)
