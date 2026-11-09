@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyName>Interledger.OpenPayments</AssemblyName>
     <RootNamespace>Interledger.OpenPayments</RootNamespace>
     <RepositoryUrl>https://github.com/interledger/open-payments-dotnet</RepositoryUrl>
@@ -28,7 +28,7 @@
     <PackageReference Include="NSec.Cryptography" Version="25.4.0"/>
     <ProjectReference Include="..\OpenPayments.Sdk.HttpSignatureUtils\OpenPayments.Sdk.HttpSignatureUtils.csproj" />
     <None Include="../LICENSE" Pack="true" PackagePath=""/>
-    <None Include="../README.md" Pack="true" PackagePath=""/>
+    <None Include="README.md" Pack="true" PackagePath=""/>
     <None Update="icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
