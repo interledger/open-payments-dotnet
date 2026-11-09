@@ -288,13 +288,6 @@ public class ResourceServerClient : OpenPaymentsClientBase
             .ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Joins <paramref name="segment"/> onto <paramref name="baseUrl"/> with exactly one
-    /// separating slash, whether or not the caller's URL carries a trailing one.
-    /// </summary>
-    private static string AppendPath(Uri baseUrl, string segment) =>
-        $"{baseUrl.ToString().TrimEnd('/')}/{segment}";
-
     private static Uri BuildListUrl(
         Uri resourceServerUrl,
         string segment,

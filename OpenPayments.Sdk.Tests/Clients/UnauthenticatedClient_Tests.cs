@@ -67,6 +67,24 @@ public class UnauthenticatedClient_Tests
         }
 
         [Theory]
+        [InlineData("https://example.com/alice", "https://example.com/alice/jwks.json")]
+        [InlineData("https://example.com/alice/", "https://example.com/alice/jwks.json")]
+        [InlineData("$example.com/bond", "https://example.com/bond/jwks.json")]
+        [InlineData("https://example.com", "https://example.com/jwks.json")]
+        public async Task GetWalletAddressKeysAsync_AppendsJwksWithOneSlash(
+            string input,
+            string expected
+        )
+        {
+            var handler = new RecordingHandler(_fixture.WalletAddressKeys);
+            var client = new UnauthenticatedClient(new HttpClient(handler));
+
+            await client.GetWalletAddressKeysAsync(input);
+
+            handler.LastRequestUri.AbsoluteUri.Should().Be(expected);
+        }
+
+        [Theory]
         [InlineData("")]
         [InlineData("foobar")]
         public async Task GetWalletAddressKeysAsync_InvalidInput_Throws(string url)

@@ -30,6 +30,17 @@ public abstract class OpenPaymentsClientBase
     }
 
     /// <summary>
+    /// Joins <paramref name="segment"/> onto <paramref name="baseUrl"/> with exactly one
+    /// separating slash, whether or not the caller's URL carries a trailing one.
+    /// </summary>
+    protected static string AppendPath(Uri baseUrl, string segment) =>
+        AppendPath(baseUrl.ToString(), segment);
+
+    /// <inheritdoc cref="AppendPath(Uri, string)"/>
+    protected static string AppendPath(string baseUrl, string segment) =>
+        $"{baseUrl.TrimEnd('/')}/{segment}";
+
+    /// <summary>
     /// Sends a request and deserializes the success body into <typeparamref name="TResponse"/>.
     /// </summary>
     /// <exception cref="OpenPayments.Sdk.Exceptions.OpenPaymentsApiException">The request failed.</exception>
