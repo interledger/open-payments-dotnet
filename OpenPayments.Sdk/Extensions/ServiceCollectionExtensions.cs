@@ -98,9 +98,18 @@ public static class ServiceCollectionExtensions
             // never be built.
             if (string.IsNullOrWhiteSpace(options.KeyId))
                 throw new InvalidOperationException("OpenPaymentsOptions.KeyId must be provided.");
-            if (options.ClientUrl is null || !options.ClientUrl.IsAbsoluteUri)
+            // IsAbsoluteUri alone also accepts ftp:// and file:// (on Unix a rooted path like
+            // "/wallet" can bind as file:///wallet), so the scheme is checked too.
+            if (
+                options.ClientUrl is null
+                || !options.ClientUrl.IsAbsoluteUri
+                || (
+                    options.ClientUrl.Scheme != Uri.UriSchemeHttps
+                    && options.ClientUrl.Scheme != Uri.UriSchemeHttp
+                )
+            )
                 throw new InvalidOperationException(
-                    "OpenPaymentsOptions.ClientUrl must be provided as an absolute URL, "
+                    "OpenPaymentsOptions.ClientUrl must be provided as an absolute http(s) URL, "
                         + $"for example https://wallet.example. Got: '{options.ClientUrl}'."
                 );
 
