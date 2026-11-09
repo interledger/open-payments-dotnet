@@ -5,8 +5,12 @@ using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Http;
 
+/// <summary>
+/// Transport client for the Open Payments resource server: incoming payments, outgoing payments, and quotes.
+/// </summary>
 public class ResourceServerClient : OpenPaymentsClientBase
 {
+    /// <param name="httpClient">The client to send requests with; not disposed by this class.</param>
     public ResourceServerClient(HttpClient httpClient)
         : base(httpClient, new JsonSerializerSettings { ContractResolver = new ResourceContractResolver() })
     {

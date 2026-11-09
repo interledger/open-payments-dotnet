@@ -37,7 +37,7 @@ public class OpenPaymentsOptions
     /// <summary>
     /// Ed25519 private key used to sign requests, supplied in code. The caller owns this key: the
     /// SDK never disposes it. This property cannot be set from configuration, because
-    /// <see cref="Key"/> is an opaque handle rather than a value — use <see cref="PrivateKeyPem"/>
+    /// <see cref="Key"/> is an opaque handle rather than a value; use <see cref="PrivateKeyPem"/>
     /// or <see cref="PrivateKeyPath"/> instead.
     /// </summary>
     public Key? PrivateKey { get; set; }

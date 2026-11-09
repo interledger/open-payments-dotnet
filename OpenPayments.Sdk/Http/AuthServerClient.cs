@@ -3,8 +3,12 @@ using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Sdk.Http;
 
+/// <summary>
+/// Transport client for the Open Payments authorization server: grant requests, continuation, cancellation, and token rotation and revocation.
+/// </summary>
 public class AuthServerClient : OpenPaymentsClientBase
 {
+    /// <param name="httpClient">The client to send requests with; not disposed by this class.</param>
     public AuthServerClient(HttpClient httpClient)
         : base(httpClient, new JsonSerializerSettings { ContractResolver = new AuthContractResolver() })
     {
