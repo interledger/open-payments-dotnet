@@ -40,6 +40,42 @@ var client = new ServiceCollection()
 var walletAddress = await client.GetWalletAddressAsync("https://wallet.example/alice");
 ```
 
+Or bind the options from configuration instead of a delegate:
+
+```csharp
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Extensions;
+
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+var client = new ServiceCollection()
+    .UseOpenPayments(configuration.GetSection("OpenPayments"))
+    .BuildServiceProvider()
+    .GetRequiredService<IAuthenticatedClient>();
+```
+
+```json
+{
+  "OpenPayments": {
+    "UseAuthenticatedClient": true,
+    "KeyId": "your-key-id",
+    "ClientUrl": "https://wallet.example",
+    "PrivateKeyPath": "/run/secrets/private-key.pem"
+  }
+}
+```
+
+Exactly one signing key source must be set. `PrivateKey` takes an `NSec.Cryptography.Key` and is
+only reachable from the delegate overload; `PrivateKeyPem` takes PEM-encoded PKCS#8 text, and
+`PrivateKeyPath` takes a path to a PEM or raw key file. Options are validated when
+`UseOpenPayments` is called, so a missing or ambiguous setting fails at startup rather than on the
+first request.
+
 For complete end-to-end flows — one-time payments, recurring remittances, grant continuation, and more —
 see the runnable guides in
 [`OpenPayments.Snippets/Guides`](https://github.com/interledger/open-payments-dotnet/tree/main/OpenPayments.Snippets/Guides).
