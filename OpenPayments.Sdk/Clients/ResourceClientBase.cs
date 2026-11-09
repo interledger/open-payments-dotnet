@@ -2,7 +2,7 @@ using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Clients;
 
-public class ResourceClientBase : IResourceClientBase
+internal sealed class ResourceClientBase : IResourceClientBase
 {
     private readonly ResourceServerClient _client;
 
@@ -132,7 +132,7 @@ public class ResourceClientBase : IResourceClientBase
     }
 }
 
-public interface IResourceClientBase
+internal interface IResourceClientBase
 {
     public Task<IncomingPaymentResponse> CreateIncomingPaymentAsync(
         AuthRequestArgs requestArgs,

@@ -2,7 +2,7 @@ using OpenPayments.Sdk.Generated.Auth;
 
 namespace OpenPayments.Sdk.Clients;
 
-public class AuthClientBase : IAuthClientBase
+internal sealed class AuthClientBase : IAuthClientBase
 {
     private readonly AuthServerClient _client;
     private readonly Uri _clientUrl;
@@ -70,7 +70,7 @@ public class AuthClientBase : IAuthClientBase
     }
 }
 
-public interface IAuthClientBase
+internal interface IAuthClientBase
 {
     public Task<AuthResponse> RequestGrantAsync(
         RequestArgs requestArgs,
