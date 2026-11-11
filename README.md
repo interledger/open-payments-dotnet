@@ -73,7 +73,7 @@ git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
 
 ```bash
 npm install -g swagger-cli && \
-dotnet tool install --global NSwag.ConsoleCore
+dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
 ```
 
 Now generate models from the OpenAPI specs. You can generate all of them by running the command below:

@@ -27,7 +27,7 @@ namespace OpenPayments.Sdk.Generated.Resource
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ResourceServerClient
+    public partial class ResourceServerClient 
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -526,7 +526,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <remarks>
         /// List all outgoing payments on the wallet address
         /// </remarks>
-        /// <param name="walletAddress">URL of a wallet address hosted by a Rafiki instance.</param>
+        /// <param name="wallet_address">URL of a wallet address hosted by a Rafiki instance.</param>
         /// <param name="cursor">The cursor key to list from.</param>
         /// <param name="first">The number of items to return after the cursor.</param>
         /// <param name="last">The number of items to return before the cursor.</param>
@@ -534,9 +534,9 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string walletAddress, string? cursor, int? first, int? last, string signature_Input, string signature)
+        public virtual System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature)
         {
-            return ListOutgoingPaymentsAsync(walletAddress, cursor, first, last, signature_Input, signature, System.Threading.CancellationToken.None);
+            return ListOutgoingPaymentsAsync(wallet_address, cursor, first, last, signature_Input, signature, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -546,7 +546,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <remarks>
         /// List all outgoing payments on the wallet address
         /// </remarks>
-        /// <param name="walletAddress">URL of a wallet address hosted by a Rafiki instance.</param>
+        /// <param name="wallet_address">URL of a wallet address hosted by a Rafiki instance.</param>
         /// <param name="cursor">The cursor key to list from.</param>
         /// <param name="first">The number of items to return after the cursor.</param>
         /// <param name="last">The number of items to return before the cursor.</param>
@@ -554,10 +554,10 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string walletAddress, string? cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response2> ListOutgoingPaymentsAsync(string wallet_address, string? cursor, int? first, int? last, string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
         {
-            if (walletAddress == null)
-                throw new System.ArgumentNullException("walletAddress");
+            if (wallet_address == null)
+                throw new System.ArgumentNullException("wallet_address");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -581,7 +581,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     // Operation Path: "outgoing-payments"
                     urlBuilder_.Append("outgoing-payments");
                     urlBuilder_.Append('?');
-                    urlBuilder_.Append(System.Uri.EscapeDataString("wallet-address")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(walletAddress, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    urlBuilder_.Append(System.Uri.EscapeDataString("wallet-address")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(wallet_address, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     if (cursor != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("cursor")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(cursor, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
@@ -1369,6 +1369,128 @@ namespace OpenPayments.Sdk.Generated.Resource
             }
         }
 
+        /// <summary>
+        /// Get spent amounts for current outgoing payment grant
+        /// </summary>
+        /// <remarks>
+        /// Returns the spent amounts for the current outgoing payment grant corresponding to the presented GNAP access token, if any. If a grant was created with an interval (recurring), the amounts returned are for the current interval.
+        /// </remarks>
+        /// <param name="signature_Input">The Signature-Input field is a Dictionary structured field containing the metadata for one or more message signatures generated from components within the HTTP message.  Each member describes a single message signature.  The member's key is the label that uniquely identifies the message signature within the context of the HTTP message.  The member's value is the serialization of the covered components Inner List plus all signature metadata parameters identified by the label.  The following components MUST be included: - "@method" - "@target-uri" - "authorization".  When the message contains a request body, the covered components MUST also include the following: - "content-digest"  The keyid parameter of the signature MUST be set to the kid value of the JWK.      See [ietf-httpbis-message-signatures](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-message-signatures#section-4.1) for more details.</param>
+        /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<Response4> GetOutgoingPaymentGrantAsync(string signature_Input, string signature)
+        {
+            return GetOutgoingPaymentGrantAsync(signature_Input, signature, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get spent amounts for current outgoing payment grant
+        /// </summary>
+        /// <remarks>
+        /// Returns the spent amounts for the current outgoing payment grant corresponding to the presented GNAP access token, if any. If a grant was created with an interval (recurring), the amounts returned are for the current interval.
+        /// </remarks>
+        /// <param name="signature_Input">The Signature-Input field is a Dictionary structured field containing the metadata for one or more message signatures generated from components within the HTTP message.  Each member describes a single message signature.  The member's key is the label that uniquely identifies the message signature within the context of the HTTP message.  The member's value is the serialization of the covered components Inner List plus all signature metadata parameters identified by the label.  The following components MUST be included: - "@method" - "@target-uri" - "authorization".  When the message contains a request body, the covered components MUST also include the following: - "content-digest"  The keyid parameter of the signature MUST be set to the kid value of the JWK.      See [ietf-httpbis-message-signatures](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-message-signatures#section-4.1) for more details.</param>
+        /// <param name="signature">The signature generated based on the Signature-Input, using the signing algorithm specified in the "alg" field of the JWK.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<Response4> GetOutgoingPaymentGrantAsync(string signature_Input, string signature, System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+
+                    if (signature_Input == null)
+                        throw new System.ArgumentNullException("signature_Input");
+                    request_.Headers.TryAddWithoutValidation("Signature-Input", ConvertToString(signature_Input, System.Globalization.CultureInfo.InvariantCulture));
+
+                    if (signature == null)
+                        throw new System.ArgumentNullException("signature");
+                    request_.Headers.TryAddWithoutValidation("Signature", ConvertToString(signature, System.Globalization.CultureInfo.InvariantCulture));
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "outgoing-payment-grant"
+                    urlBuilder_.Append("outgoing-payment-grant");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Response4>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Authorization required", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -1461,7 +1583,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -1473,7 +1595,7 @@ namespace OpenPayments.Sdk.Generated.Resource
                     return converted == null ? string.Empty : converted;
                 }
             }
-            else if (value is bool)
+            else if (value is bool) 
             {
                 return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
@@ -1863,7 +1985,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         public Amount ReceiveAmount { get; set; } = new Amount();
 
         /// <summary>
-        /// The total amount that should be deducted from the sender's account when the corresponding outgoing payment has been paid.
+        /// The total amount that should be deducted from the sender's account when the corresponding outgoing payment has been paid. 
         /// </summary>
         [Newtonsoft.Json.JsonProperty("debitAmount", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -2109,6 +2231,27 @@ namespace OpenPayments.Sdk.Generated.Resource
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Response4
+    {
+
+        [Newtonsoft.Json.JsonProperty("spentReceiveAmount", Required = Newtonsoft.Json.Required.Always)]
+        public SpentReceiveAmount SpentReceiveAmount { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("spentDebitAmount", Required = Newtonsoft.Json.Required.Always)]
+        public SpentDebitAmount SpentDebitAmount { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum IlpPaymentMethodType
     {
 
@@ -2134,6 +2277,36 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public object? Details { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SpentReceiveAmount
+    {
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SpentDebitAmount
+    {
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
