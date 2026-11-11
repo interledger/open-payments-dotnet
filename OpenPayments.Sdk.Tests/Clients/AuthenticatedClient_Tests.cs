@@ -1,7 +1,13 @@
 using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OpenPayments.Sdk.Generated.Auth;
 using OpenPayments.Sdk.Generated.Resource;
+using Amount = OpenPayments.Sdk.Generated.Resource.Amount;
+using ApiException = OpenPayments.Sdk.Generated.Resource.ApiException;
+using AuthAmount = OpenPayments.Sdk.Generated.Auth.Amount;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -466,6 +472,131 @@ public class AuthenticatedClient_Tests
             var act = () => client.GetGrantSpentAmountsAsync(Args());
 
             await act.Should().ThrowAsync<ApiException>().Where(e => e.StatusCode == (int)code);
+        }
+    }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_SubjectGrant_Tests
+    {
+        private const string SubjectJson =
+            "\"subject\":{\"sub_ids\":[{\"id\":\"https://example.com/alice\",\"format\":\"uri\"}]}";
+        private const string ContinueJson =
+            "\"continue\":{\"access_token\":{\"value\":\"c\"},\"uri\":\"https://example.com/continue/1\"}";
+
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_SubjectGrant_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        private AuthenticatedClient CreateClient(List<CapturedRequest> captured, string json) =>
+            new(
+                _fixture.CreateCapturingHttpClientMock(captured, json),
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
+
+        private static Subject AliceSubject =>
+            new()
+            {
+                Sub_ids = [new Sub_ids { Id = "https://example.com/alice", Format = Sub_idsFormat.Uri }],
+            };
+
+        private static InteractRequest Interact =>
+            new()
+            {
+                Start = [Start.Redirect],
+                Finish = new Finish
+                {
+                    Method = FinishMethod.Redirect,
+                    Uri = new Uri("https://example.com/finish"),
+                    Nonce = "n",
+                },
+            };
+
+        [Fact]
+        public async Task RequestGrantAsync_SubjectOnlyInteractive_SerializesSubjectWithoutAccessToken()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(
+                captured,
+                JsonConvert.SerializeObject(_fixture.ApprovedGrantResponse)
+            );
+
+            await client.RequestGrantAsync(
+                _fixture.RequestGrantArgs,
+                new GrantCreateBodyWithInteract { Subject = AliceSubject, Interact = Interact }
+            );
+
+            var json = JObject.Parse(captured[0].Body!);
+            json["access_token"].Should().BeNull();
+            json["subject"]!["sub_ids"]![0]!["id"]!.Value<string>().Should().Be("https://example.com/alice");
+            json["subject"]!["sub_ids"]![0]!["format"]!.Value<string>().Should().Be("uri");
+            json["client"]!.Type.Should().Be(JTokenType.String);
+            json["interact"].Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_InteractiveWithAccessToken_StillSerializesAccessToken()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(
+                captured,
+                JsonConvert.SerializeObject(_fixture.ApprovedGrantResponse)
+            );
+            var body = new GrantCreateBodyWithInteract
+            {
+                AccessToken = new AccessToken
+                {
+                    Access =
+                    [
+                        new OutgoingAccess
+                        {
+                            Identifier = new Uri("https://example.com/alice"),
+                            Actions = [Actions.Create],
+                            Limits = new OutgoingAccessLimits
+                            {
+                                DebitAmount = new AuthAmount("100", "USD", 2),
+                            },
+                        },
+                    ],
+                },
+                Interact = Interact,
+            };
+
+            await client.RequestGrantAsync(_fixture.RequestGrantArgs, body);
+
+            var json = JObject.Parse(captured[0].Body!);
+            json["access_token"]!["access"]![0]!["type"]!.Value<string>().Should().Be("outgoing-payment");
+            json["access_token"]!["access"]![0]!["limits"]!["debitAmount"]!["value"]!.Value<string>().Should().Be("100");
+            json["subject"].Should().BeNull();
+        }
+
+        [Fact]
+        public async Task ContinueGrantAsync_SubjectResponse_DeserializesSubject()
+        {
+            var client = CreateClient([], "{" + SubjectJson + "," + ContinueJson + "}");
+
+            var result = await client.ContinueGrantAsync(_fixture.GrantWithTokenArgs, null);
+
+            result.Subject!.Sub_ids.Single().Id.Should().Be("https://example.com/alice");
+            result.Subject.Sub_ids.Single().Format.Should().Be(Sub_idsFormat.Uri);
+            result.AccessToken.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task ContinueGrantAsync_SubjectAndAccessTokenResponse_DeserializesBoth()
+        {
+            const string token =
+                "\"access_token\":{\"value\":\"t\",\"manage\":\"https://example.com/token/1\",\"access\":[{\"type\":\"incoming-payment\",\"actions\":[\"read\"]}]}";
+            var client = CreateClient([], "{" + SubjectJson + "," + token + "," + ContinueJson + "}");
+
+            var result = await client.ContinueGrantAsync(_fixture.GrantWithTokenArgs, null);
+
+            result.Subject!.Sub_ids.Single().Id.Should().Be("https://example.com/alice");
+            result.AccessToken!.Value.Should().Be("t");
         }
     }
 }
