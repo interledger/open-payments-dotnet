@@ -30,7 +30,7 @@ jobs:
         run: npm install -g swagger-cli
 
       - name: Install NSwag CLI
-        run: dotnet tool install --global NSwag.ConsoleCore
+        run: dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool

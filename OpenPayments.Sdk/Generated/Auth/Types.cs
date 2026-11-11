@@ -7,13 +7,13 @@ namespace OpenPayments.Sdk.Generated.Auth
     {
         [JsonProperty("access_token")] public AccessToken? AccessToken { get; set; }
 
+        [JsonProperty("subject")] public Subject? Subject { get; set; }
+
         [JsonProperty("client")] public Uri? Client { get; set; }
     }
 
     public partial class GrantCreateBodyWithInteract : GrantCreateBody
     {
-        [JsonProperty("access_token")] public new required AccessToken AccessToken { get; set; }
-
         [JsonProperty("interact")] public required InteractRequest Interact { get; set; }
     }
 
@@ -84,8 +84,6 @@ namespace OpenPayments.Sdk.Generated.Auth
         }
 
         [JsonProperty("identifier")] public new required Uri Identifier { get; set; }
-
-        [JsonProperty("limits")] public new OutgoingAccessLimits? Limits { get; set; }
     }
 
     public enum AccessType
@@ -114,6 +112,8 @@ namespace OpenPayments.Sdk.Generated.Auth
     public partial class AuthResponse
     {
         [JsonProperty("access_token")] public AccessTokenResponse? AccessToken { get; set; }
+
+        [JsonProperty("subject")] public Subject? Subject { get; set; }
 
         [JsonProperty("interact")] public InteractResponse? Interact { get; set; }
 

@@ -73,7 +73,7 @@ git clone --recurse-submodules git@github.com:interledger/open-payments-node.git
 
 ```bash
 npm install -g swagger-cli && \
-dotnet tool install --global NSwag.ConsoleCore
+dotnet tool install --global NSwag.ConsoleCore --version 14.6.2
 ```
 
 Now generate models from the OpenAPI specs. You can generate all of them by running the command below:
@@ -121,6 +121,15 @@ var client = new ServiceCollection()
 ```
 
 Please visit [OpenPayments Docs](https://openpayments.dev/sdk/before-you-begin/) for a detailed guide.
+
+## Breaking changes
+
+Updating to Open Payments spec v1.3.0:
+
+- `GrantCreateBodyWithInteract.AccessToken` is no longer required, so you can request subject-only grants.
+- `RequestGrantAsync` now throws `ArgumentException` if the grant request has neither `AccessToken` nor `Subject`, or if an outgoing payment access item's limits set both `DebitAmount` and `ReceiveAmount`.
+- `GrantCreateBodyWithInteract` and `OutgoingAccess` no longer redeclare `AccessToken` and `Limits`; they use the base properties, so code that touches them through the base types keeps working.
+- In the generated layer, `Access_token3` is gone from the auth client, and the `walletAddress` parameter of the generated `ResourceServerClient.ListOutgoingPaymentsAsync` is now `wallet_address`. `AuthenticatedClient` isn't affected. The regen also emptied the generated auth `Body` (no more `Access_token`, `Client` or `Interact`), so the generated `AuthServerClient.PostRequestAsync(Body)` can't send a usable request, and the new generated `ResourceServerClient.GetOutgoingPaymentGrantAsync` returns a `Response4` with empty amount classes. Use `AuthenticatedClient` and `GetGrantSpentAmountsAsync` instead.
 
 ## ✍️ Authors
 

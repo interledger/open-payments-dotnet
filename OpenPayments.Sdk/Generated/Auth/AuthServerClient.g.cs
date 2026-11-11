@@ -977,6 +977,25 @@ namespace OpenPayments.Sdk.Generated.Auth
     }
 
     /// <summary>
+    /// DEPRECATED: This string format of the client wallet address is maintained only for backwards compatibility. Migrate to the object form with `jwk` or `walletAddress`.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Obsolete]
+    public partial class Client
+    {
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>
     /// If the AS determines that the request can be continued with additional requests, it responds with the continue field.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1200,20 +1219,91 @@ namespace OpenPayments.Sdk.Generated.Auth
 
     }
 
+    /// <summary>
+    /// Information about the subject for which the client is requesting information.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Subject
+    {
+
+        /// <summary>
+        /// A list of subject identifiers.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("sub_ids", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.MinLength(1)]
+        [System.ComponentModel.DataAnnotations.MaxLength(1)]
+        public System.Collections.Generic.ICollection<Sub_ids> Sub_ids { get; set; } = new System.Collections.ObjectModel.Collection<Sub_ids>();
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>
+    /// A JWK representation of an Ed25519 Public Key
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class JsonWebKey
+    {
+
+        [Newtonsoft.Json.JsonProperty("kid", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Kid { get; set; }
+
+        /// <summary>
+        /// The cryptographic algorithm family used with the key. The only allowed value is `EdDSA`. 
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("alg", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public JsonWebKeyAlg Alg { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("use", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public JsonWebKeyUse Use { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("kty", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public JsonWebKeyKty Kty { get; set; }
+
+        /// <summary>
+        /// The cryptographic curve used with the key. This parameter identifies the elliptic curve (for EC keys) or the Edwards curve (for OKP keys). The only allowed value is `Ed25519`.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("crv", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public JsonWebKeyCrv Crv { get; set; }
+
+        /// <summary>
+        /// The base64 url-encoded public key.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("x", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-zA-Z0-9-_]+$")]
+        public string X { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Body
     {
-
-        [Newtonsoft.Json.JsonProperty("access_token", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public Access_token3 Access_token { get; set; } = new Access_token3();
-
-        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Client { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("interact", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public InteractRequest Interact { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1277,6 +1367,9 @@ namespace OpenPayments.Sdk.Generated.Auth
 
         [Newtonsoft.Json.JsonProperty("access_token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Access_token Access_token { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("subject", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Subject Subject { get; set; }
 
         [Newtonsoft.Json.JsonProperty("continue", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -1597,13 +1690,23 @@ namespace OpenPayments.Sdk.Generated.Auth
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Access_token3
+    public partial class Sub_ids
     {
 
-        [Newtonsoft.Json.JsonProperty("access", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.MaxLength(3)]
-        public Access Access { get; set; } = new Access();
+        /// <summary>
+        /// Specific identifier for the subject for which the client is requesting information.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The format of subject identifier that the client can accept.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("format", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Sub_idsFormat Format { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1613,6 +1716,42 @@ namespace OpenPayments.Sdk.Generated.Auth
             get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum JsonWebKeyAlg
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"EdDSA")]
+        EdDSA = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum JsonWebKeyUse
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"sig")]
+        Sig = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum JsonWebKeyKty
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OKP")]
+        OKP = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum JsonWebKeyCrv
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Ed25519")]
+        Ed25519 = 0,
 
     }
 
@@ -1676,6 +1815,15 @@ namespace OpenPayments.Sdk.Generated.Auth
 
         [System.Runtime.Serialization.EnumMember(Value = @"invalid_rotation")]
         Invalid_rotation = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum Sub_idsFormat
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"uri")]
+        Uri = 0,
 
     }
 

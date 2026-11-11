@@ -124,6 +124,16 @@ public class ResourceClientBase : IResourceClientBase
             cancellationToken
         );
     }
+
+    public Task<OutgoingPaymentGrantSpentAmounts> GetGrantSpentAmountsAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
+    {
+        _client.BaseUrl = requestArgs.Url.ToString();
+
+        return _client.GetGrantSpentAmountsAsync(requestArgs.AccessToken, cancellationToken);
+    }
 }
 
 public interface IResourceClientBase
@@ -175,6 +185,11 @@ public interface IResourceClientBase
     public Task<ListOutgoingPaymentsResponse> ListOutgoingPaymentAsync(
         AuthRequestArgs requestArgs,
         ListOutgoingPaymentQuery query,
+        CancellationToken cancellationToken = default
+    );
+
+    public Task<OutgoingPaymentGrantSpentAmounts> GetGrantSpentAmountsAsync(
+        AuthRequestArgs requestArgs,
         CancellationToken cancellationToken = default
     );
 }

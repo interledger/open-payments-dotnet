@@ -203,6 +203,14 @@ internal sealed class AuthenticatedClient(
     {
         return _resClient.ListOutgoingPaymentAsync(requestArgs, query, cancellationToken);
     }
+
+    public Task<OutgoingPaymentGrantSpentAmounts> GetGrantSpentAmountsAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _resClient.GetGrantSpentAmountsAsync(requestArgs, cancellationToken);
+    }
 }
 
 public class RequestArgs

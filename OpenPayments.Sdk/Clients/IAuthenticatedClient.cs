@@ -223,4 +223,18 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
         ListOutgoingPaymentQuery query,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Retrieves the amounts spent so far under an outgoing payment grant. For grants with an
+    /// interval, the amounts cover the current interval.
+    /// </summary>
+    /// <param name="requestArgs">
+    /// <c>requestArgs.Url</c> is the wallet address's resource server; the access token comes from an outgoing payment grant.
+    /// </param>
+    /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
+    /// <returns>The spent debit and receive amounts; either may be null.</returns>
+    public Task<OutgoingPaymentGrantSpentAmounts> GetGrantSpentAmountsAsync(
+        AuthRequestArgs requestArgs,
+        CancellationToken cancellationToken = default
+    );
 }

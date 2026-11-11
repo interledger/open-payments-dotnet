@@ -68,5 +68,14 @@ public class GetGrantForFuturePayments(IAuthenticatedClient client)
                 InteractRef = interactRef
             }
         );
+
+        // 6. Get the outgoing payment grant's spent amounts
+        var grantSpentAmounts = await client.GetGrantSpentAmountsAsync(
+            new AuthRequestArgs
+            {
+                Url = userWalletAddress.ResourceServer,
+                AccessToken = userOutgoingPaymentGrant.AccessToken!.Value
+            }
+        );
     }
 }
