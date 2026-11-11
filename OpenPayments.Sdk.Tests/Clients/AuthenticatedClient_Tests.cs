@@ -1,6 +1,7 @@
 using System.Net;
 using FluentAssertions;
 using OpenPayments.Sdk.Clients;
+using OpenPayments.Sdk.Generated.Resource;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
@@ -358,6 +359,113 @@ public class AuthenticatedClient_Tests
             );
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(_fixture.ListOutgoingPaymentsResponse);
+        }
+    }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_GetGrantSpentAmounts_Tests
+    {
+        private const string Usd2600 =
+            "{\"value\":\"2600\",\"assetCode\":\"USD\",\"assetScale\":2}";
+        private const string Usd2500 =
+            "{\"value\":\"2500\",\"assetCode\":\"USD\",\"assetScale\":2}";
+
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_GetGrantSpentAmounts_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        private AuthenticatedClient CreateClient(
+            List<CapturedRequest> captured,
+            string? json,
+            HttpStatusCode code = HttpStatusCode.OK
+        ) =>
+            new(
+                _fixture.CreateCapturingHttpClientMock(captured, json, code),
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
+
+        private static AuthRequestArgs Args(string url = "https://example.com/op") =>
+            new() { Url = new Uri(url), AccessToken = "tok" };
+
+        [Fact]
+        public async Task GetGrantSpentAmountsAsync_ReturnsBothAmounts()
+        {
+            var client = CreateClient(
+                [],
+                $"{{\"spentDebitAmount\":{Usd2600},\"spentReceiveAmount\":{Usd2500}}}"
+            );
+
+            var result = await client.GetGrantSpentAmountsAsync(Args());
+
+            result.SpentDebitAmount!.Value.Should().Be("2600");
+            result.SpentReceiveAmount!.Value.Should().Be("2500");
+            result.SpentReceiveAmount.AssetCode.Should().Be("USD");
+        }
+
+        [Fact]
+        public async Task GetGrantSpentAmountsAsync_NullAmounts_ReturnsNulls()
+        {
+            var client = CreateClient(
+                [],
+                "{\"spentDebitAmount\":null,\"spentReceiveAmount\":null}"
+            );
+
+            var result = await client.GetGrantSpentAmountsAsync(Args());
+
+            result.SpentDebitAmount.Should().BeNull();
+            result.SpentReceiveAmount.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetGrantSpentAmountsAsync_OneNullAmount()
+        {
+            var client = CreateClient(
+                [],
+                $"{{\"spentDebitAmount\":{Usd2600},\"spentReceiveAmount\":null}}"
+            );
+
+            var result = await client.GetGrantSpentAmountsAsync(Args());
+
+            result.SpentDebitAmount!.Value.Should().Be("2600");
+            result.SpentReceiveAmount.Should().BeNull();
+        }
+
+        [Theory]
+        [InlineData("https://example.com/op")]
+        [InlineData("https://example.com/op/")]
+        public async Task GetGrantSpentAmountsAsync_SendsGetToOutgoingPaymentGrant(string url)
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(
+                captured,
+                "{\"spentDebitAmount\":null,\"spentReceiveAmount\":null}"
+            );
+
+            await client.GetGrantSpentAmountsAsync(Args(url));
+
+            captured.Should().ContainSingle();
+            captured[0].Method.Should().Be(HttpMethod.Get);
+            captured[0].Uri.Should().Be(new Uri("https://example.com/op/outgoing-payment-grant"));
+            captured[0].Authorization.Should().Be("GNAP tok");
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Unauthorized)]
+        [InlineData(HttpStatusCode.Forbidden)]
+        public async Task GetGrantSpentAmountsAsync_ErrorStatus_ThrowsApiException(
+            HttpStatusCode code
+        )
+        {
+            var client = CreateClient([], "{\"error\":{\"description\":\"denied\"}}", code);
+
+            var act = () => client.GetGrantSpentAmountsAsync(Args());
+
+            await act.Should().ThrowAsync<ApiException>().Where(e => e.StatusCode == (int)code);
         }
     }
 }

@@ -253,6 +253,124 @@ public partial class ResourceServerClient
     }
 
     /// <summary>
+    /// Get Outgoing Payment Grant spent amounts
+    /// </summary>
+    /// <remarks>
+    /// A client can fetch the amounts spent so far under an outgoing payment grant. Either amount is null when nothing has been spent.
+    /// </remarks>
+    /// <param name="accessToken">Access Token</param>
+    /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    /// <returns>Spent amounts for the grant</returns>
+    /// <exception cref="ApiException">A server side error occurred.</exception>
+    public virtual async Task<OutgoingPaymentGrantSpentAmounts> GetGrantSpentAmountsAsync(
+        string accessToken,
+        CancellationToken cancellationToken
+    )
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
+
+        var client = _httpClient;
+        using var request = new HttpRequestMessage();
+        request.Method = new HttpMethod("GET");
+        request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+        request.Headers.Authorization = new AuthenticationHeaderValue("GNAP", $"{accessToken}");
+
+        var urlBuilder = new StringBuilder();
+        if (!string.IsNullOrEmpty(_baseUrl))
+            urlBuilder.Append(_baseUrl);
+        urlBuilder.Append("outgoing-payment-grant");
+
+        PrepareRequest(client, request, urlBuilder);
+
+        var url = urlBuilder.ToString();
+        request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
+
+        PrepareRequest(client, request, url);
+
+        var response = await client
+            .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+            .ConfigureAwait(false);
+
+        try
+        {
+            var headers = Helpers.ExtractHeaders(response);
+
+            ProcessResponse(client, response);
+
+            var status = (int)response.StatusCode;
+            switch (status)
+            {
+                case 200:
+                {
+                    var objectResponse = await ReadObjectResponseAsync<OutgoingPaymentGrantSpentAmounts>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
+                    if (objectResponse.Object == null)
+                    {
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
+                    }
+
+                    return objectResponse.Object;
+                }
+                case 401:
+                case 403:
+                {
+                    var objectResponse = await ReadObjectResponseAsync<ErrorResponse>(
+                            response,
+                            headers,
+                            cancellationToken
+                        )
+                        .ConfigureAwait(false);
+                    if (objectResponse.Object == null)
+                    {
+                        throw new ApiException(
+                            "Response was null which was not expected.",
+                            status,
+                            objectResponse.Text,
+                            headers,
+                            null
+                        );
+                    }
+
+                    throw new ApiException<ErrorResponse>(
+                        objectResponse.Object.Error.Description,
+                        status,
+                        objectResponse.Text,
+                        headers,
+                        objectResponse.Object,
+                        null
+                    );
+                }
+                default:
+                {
+                    var responseData = await ReadAsStringAsync(response.Content, cancellationToken)
+                        .ConfigureAwait(false);
+                    throw new ApiException(
+                        "The HTTP status code of the response was not expected (" + status + ").",
+                        status,
+                        responseData,
+                        headers,
+                        null
+                    );
+                }
+            }
+        }
+        finally
+        {
+            response.Dispose();
+        }
+    }
+
+    /// <summary>
     /// List Outgoing Payments
     /// </summary>
     /// <remarks>

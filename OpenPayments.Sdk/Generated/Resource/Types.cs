@@ -201,4 +201,31 @@ namespace OpenPayments.Sdk.Generated.Resource
             set { _additionalProperties = value; }
         }
     }
+
+    /// <summary>
+    /// Amounts spent so far under an outgoing payment grant. Either amount is null
+    /// when nothing has been spent against that limit.
+    /// </summary>
+    public partial class OutgoingPaymentGrantSpentAmounts
+    {
+        /// <summary>
+        /// The total amount debited from the wallet address under this grant, or null.
+        /// </summary>
+        [JsonProperty(
+            "spentDebitAmount",
+            Required = Required.AllowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
+        public Amount? SpentDebitAmount { get; set; }
+
+        /// <summary>
+        /// The total amount received by receivers under this grant, or null.
+        /// </summary>
+        [JsonProperty(
+            "spentReceiveAmount",
+            Required = Required.AllowNull,
+            NullValueHandling = NullValueHandling.Ignore
+        )]
+        public Amount? SpentReceiveAmount { get; set; }
+    }
 }

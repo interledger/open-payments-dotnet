@@ -12,6 +12,13 @@ using Amount = OpenPayments.Sdk.Generated.Resource.Amount;
 
 namespace OpenPayments.Sdk.Tests.Clients;
 
+public sealed record CapturedRequest(
+    HttpMethod Method,
+    Uri? Uri,
+    string? Authorization,
+    string? Body
+);
+
 public class AuthenticatedClientFixture
 {
     public string BaseUrl => "https://example.com";
@@ -266,6 +273,49 @@ public class AuthenticatedClientFixture
                                 Encoding.UTF8,
                                 "application/json"
                             ),
+                }
+            );
+
+        return new HttpClient(handler.Object) { BaseAddress = new Uri(BaseUrl) };
+    }
+
+    public HttpClient CreateCapturingHttpClientMock(
+        List<CapturedRequest> captured,
+        string? responseJson = null,
+        HttpStatusCode code = HttpStatusCode.OK
+    )
+    {
+        var handler = new Mock<HttpMessageHandler>();
+        handler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Returns(
+                async (HttpRequestMessage request, CancellationToken _) =>
+                {
+                    // The request is disposed after SendAsync, so read the body here.
+                    var body =
+                        request.Content == null ? null : await request.Content.ReadAsStringAsync();
+                    captured.Add(
+                        new CapturedRequest(
+                            request.Method,
+                            request.RequestUri,
+                            request.Headers.Authorization?.ToString(),
+                            body
+                        )
+                    );
+                    return new HttpResponseMessage
+                    {
+                        StatusCode = code,
+                        Content = new StringContent(
+                            responseJson ?? "",
+                            Encoding.UTF8,
+                            "application/json"
+                        ),
+                    };
                 }
             );
 
