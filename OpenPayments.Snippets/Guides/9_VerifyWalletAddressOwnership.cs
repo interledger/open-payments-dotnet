@@ -26,7 +26,7 @@ public class VerifyWalletAddressOwnership(IAuthenticatedClient client)
                     [
                         new Sub_ids
                         {
-                            Id = userWalletAddress.Id.ToString(),
+                            Id = userWalletAddress.Id.OriginalString,
                             Format = Sub_idsFormat.Uri
                         }
                     ]

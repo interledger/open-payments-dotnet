@@ -213,8 +213,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [JsonProperty(
             "spentDebitAmount",
-            Required = Required.AllowNull,
-            NullValueHandling = NullValueHandling.Ignore
+            Required = Required.AllowNull
         )]
         public Amount? SpentDebitAmount { get; set; }
 
@@ -223,8 +222,7 @@ namespace OpenPayments.Sdk.Generated.Resource
         /// </summary>
         [JsonProperty(
             "spentReceiveAmount",
-            Required = Required.AllowNull,
-            NullValueHandling = NullValueHandling.Ignore
+            Required = Required.AllowNull
         )]
         public Amount? SpentReceiveAmount { get; set; }
     }

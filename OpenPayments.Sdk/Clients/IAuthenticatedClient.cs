@@ -225,7 +225,8 @@ public interface IAuthenticatedClient : IUnauthenticatedClient
     );
 
     /// <summary>
-    /// Retrieves the amounts spent so far under an outgoing payment grant.
+    /// Retrieves the amounts spent so far under an outgoing payment grant. For grants with an
+    /// interval, the amounts cover the current interval.
     /// </summary>
     /// <param name="requestArgs">
     /// <c>requestArgs.Url</c> is the wallet address's resource server; the access token comes from an outgoing payment grant.

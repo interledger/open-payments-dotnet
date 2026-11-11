@@ -441,6 +441,31 @@ public class AuthenticatedClient_Tests
             result.SpentReceiveAmount.Should().BeNull();
         }
 
+        [Fact]
+        public void OutgoingPaymentGrantSpentAmounts_RoundTripsWithNullAmount()
+        {
+            var original = new OutgoingPaymentGrantSpentAmounts
+            {
+                SpentDebitAmount = new Amount
+                {
+                    Value = "2600",
+                    AssetCode = "USD",
+                    AssetScale = 2,
+                },
+                SpentReceiveAmount = null,
+            };
+
+            var json = JsonConvert.SerializeObject(original);
+            var parsed = JObject.Parse(json);
+            parsed.ContainsKey("spentDebitAmount").Should().BeTrue();
+            parsed.ContainsKey("spentReceiveAmount").Should().BeTrue();
+
+            var back = JsonConvert.DeserializeObject<OutgoingPaymentGrantSpentAmounts>(json)!;
+            back.SpentDebitAmount!.Value.Should().Be("2600");
+            back.SpentDebitAmount.AssetCode.Should().Be("USD");
+            back.SpentReceiveAmount.Should().BeNull();
+        }
+
         [Theory]
         [InlineData("https://example.com/op")]
         [InlineData("https://example.com/op/")]
@@ -467,11 +492,13 @@ public class AuthenticatedClient_Tests
             HttpStatusCode code
         )
         {
-            var client = CreateClient([], "{\"error\":{\"description\":\"denied\"}}", code);
+            var client = CreateClient([], "{\"error\":{\"code\":\"invalid_request\",\"description\":\"denied\"}}", code);
 
             var act = () => client.GetGrantSpentAmountsAsync(Args());
 
-            await act.Should().ThrowAsync<ApiException>().Where(e => e.StatusCode == (int)code);
+            await act.Should()
+                .ThrowAsync<OpenPayments.Sdk.Generated.Resource.ApiException<OpenPayments.Sdk.Generated.Resource.ErrorResponse>>()
+                .Where(e => e.StatusCode == (int)code);
         }
     }
 
