@@ -23,10 +23,42 @@ public class AuthClientBase : IAuthClientBase
         CancellationToken cancellationToken = default
     )
     {
+        ValidateGrantRequest(body);
+
         _client.BaseUrl = requestArgs.Url.ToString();
         body.Client = _client.ClientUrl;
 
         return await _client.CreateGrantAsync(body, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static void ValidateGrantRequest(GrantCreateBody body)
+    {
+        if (body.AccessToken == null && body.Subject == null)
+        {
+            throw new ArgumentException(
+                "Grant request must include at least one of \"access_token\" or \"subject\"."
+            );
+        }
+
+        var access = body.AccessToken?.Access;
+        if (access == null)
+        {
+            return;
+        }
+
+        foreach (var item in access)
+        {
+            if (
+                item.Type == AccessType.OutgoingPayment
+                && item.Limits?.DebitAmount != null
+                && item.Limits?.ReceiveAmount != null
+            )
+            {
+                throw new ArgumentException(
+                    "Grant request outgoing-payment limits cannot include both \"debitAmount\" and \"receiveAmount\"."
+                );
+            }
+        }
     }
 
     public async Task<AuthResponse> ContinueGrantAsync(

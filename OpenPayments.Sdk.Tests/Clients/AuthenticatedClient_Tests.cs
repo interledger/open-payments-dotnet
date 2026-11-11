@@ -599,4 +599,133 @@ public class AuthenticatedClient_Tests
             result.AccessToken!.Value.Should().Be("t");
         }
     }
+
+    [Collection("AuthenticatedClient")]
+    public class AuthenticatedClient_RequestGrantValidation_Tests
+    {
+        private readonly AuthenticatedClientFixture _fixture;
+
+        public AuthenticatedClient_RequestGrantValidation_Tests(AuthenticatedClientFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
+        private AuthenticatedClient CreateClient(List<CapturedRequest> captured) =>
+            new(
+                _fixture.CreateCapturingHttpClientMock(
+                    captured,
+                    JsonConvert.SerializeObject(_fixture.ApprovedGrantResponse)
+                ),
+                _fixture.PrivateKey,
+                _fixture.KeyId,
+                _fixture.ClientUrl
+            );
+
+        private static OutgoingAccessLimits Both =>
+            new()
+            {
+                DebitAmount = new AuthAmount("1", "USD", 2),
+                ReceiveAmount = new AuthAmount("1", "USD", 2),
+            };
+
+        private static OutgoingAccess Outgoing(OutgoingAccessLimits limits) =>
+            new()
+            {
+                Identifier = new Uri("https://example.com/alice"),
+                Actions = [Actions.Create],
+                Limits = limits,
+            };
+
+        private static GrantCreateBody BodyWith(params AccessItem[] items) =>
+            new() { AccessToken = new AccessToken { Access = [.. items] } };
+
+        [Fact]
+        public async Task RequestGrantAsync_NoAccessTokenNoSubject_Throws()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(captured);
+
+            var act = () => client.RequestGrantAsync(_fixture.RequestGrantArgs, new GrantCreateBody());
+
+            await act.Should().ThrowAsync<ArgumentException>().WithMessage("*\"access_token\" or \"subject\"*");
+            captured.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_OutgoingLimitsWithBothAmounts_Throws()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(captured);
+
+            var act = () => client.RequestGrantAsync(_fixture.RequestGrantArgs, BodyWith(Outgoing(Both)));
+
+            await act.Should().ThrowAsync<ArgumentException>().WithMessage("*\"debitAmount\" and \"receiveAmount\"*");
+            captured.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_SecondOutgoingItemWithBothAmounts_Throws()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(captured);
+            var debitOnly = new OutgoingAccessLimits { DebitAmount = new AuthAmount("1", "USD", 2) };
+
+            var act = () =>
+                client.RequestGrantAsync(
+                    _fixture.RequestGrantArgs,
+                    BodyWith(Outgoing(debitOnly), Outgoing(Both))
+                );
+
+            await act.Should().ThrowAsync<ArgumentException>();
+            captured.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_PlainAccessItemOutgoingWithBothAmounts_Throws()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(captured);
+            var item = new AccessItem
+            {
+                Type = AccessType.OutgoingPayment,
+                Actions = [Actions.Create],
+                Limits = Both,
+            };
+
+            var act = () => client.RequestGrantAsync(_fixture.RequestGrantArgs, BodyWith(item));
+
+            await act.Should().ThrowAsync<ArgumentException>();
+            captured.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task RequestGrantAsync_SubjectOnly_Sends()
+        {
+            var captured = new List<CapturedRequest>();
+            var client = CreateClient(captured);
+
+            await client.RequestGrantAsync(
+                _fixture.RequestGrantArgs,
+                new GrantCreateBodyWithInteract
+                {
+                    Subject = new Subject
+                    {
+                        Sub_ids = [new Sub_ids { Id = "https://example.com/alice", Format = Sub_idsFormat.Uri }],
+                    },
+                    Interact = new InteractRequest
+                    {
+                        Start = [Start.Redirect],
+                        Finish = new Finish
+                        {
+                            Method = FinishMethod.Redirect,
+                            Uri = new Uri("https://example.com/finish"),
+                            Nonce = "n",
+                        },
+                    },
+                }
+            );
+
+            captured.Should().ContainSingle();
+        }
+    }
 }
