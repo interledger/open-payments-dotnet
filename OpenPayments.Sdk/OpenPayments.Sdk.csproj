@@ -33,49 +33,5 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-  <UsingTask TaskName="WritePackageReadme" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
-    <ParameterGroup>
-      <SourceFile ParameterType="System.String" Required="true" />
-      <DestinationFile ParameterType="System.String" Required="true" />
-      <LogoUrl ParameterType="System.String" Required="true" />
-    </ParameterGroup>
-    <Task>
-      <Code Type="Fragment" Language="cs"><![CDATA[
-        var content = System.IO.File.ReadAllText(SourceFile);
-        var heading = "# Open Payments .NET SDK";
-        if (!content.StartsWith(heading))
-        {
-            Log.LogError("README.md must start with '" + heading + "'; GeneratePackageReadme inserts the logo after it.");
-            return false;
-        }
-        var lf = content.IndexOf('\n');
-        if (lf < 0)
-        {
-            Log.LogError("README.md must have a line break after '" + heading + "'; GeneratePackageReadme inserts the logo after the first line.");
-            return false;
-        }
-        var nl = lf > 0 && content[lf - 1] == '\r' ? "\r\n" : "\n";
-        var end = lf - (nl.Length - 1);
-        var result = content.Insert(end, nl + nl + "![Open Payments](" + LogoUrl + ")");
-        if (!System.IO.File.Exists(DestinationFile) || System.IO.File.ReadAllText(DestinationFile) != result)
-        {
-            System.IO.File.WriteAllText(DestinationFile, result);
-        }
-      ]]></Code>
-    </Task>
-  </UsingTask>
-  <Target Name="GeneratePackageReadme" BeforeTargets="_GetPackageFiles">
-    <PropertyGroup>
-      <PackedReadmePath>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'README.md'))</PackedReadmePath>
-    </PropertyGroup>
-    <WritePackageReadme SourceFile="$(MSBuildThisFileDirectory)../README.md" DestinationFile="$(PackedReadmePath)" LogoUrl="https://raw.githubusercontent.com/interledger/open-payments-dotnet/main/docs/open_payments_logo.png" />
-    <ItemGroup>
-      <None Include="$(PackedReadmePath)" Pack="true" PackagePath="" />
-    </ItemGroup>
-  </Target>
-  <Target Name="RegisterPackedReadmeFileWrite" BeforeTargets="IncrementalClean;_CleanGetCurrentAndPriorFileWrites">
-    <ItemGroup>
-      <FileWrites Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'README.md'))" />
-    </ItemGroup>
-  </Target>
+  <Import Project="PackageReadme.targets" />
 </Project>
